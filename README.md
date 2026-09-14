@@ -17,7 +17,7 @@ NovaMart is a simulated e-commerce retailer that is **executed rather than autho
 
 | Estate surface | Scale |
 |---|---|
-| Application repo, full git history | 108 commits |
+| Application repo, full git history | 112 commits |
 | Warehouse tables | 32 |
 | Warehouse rows | 878,918 |
 | Runtime + query log lines | 5,168,645 |
