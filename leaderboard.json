@@ -16,14 +16,22 @@
       "model": "Fable 5",
       "effort": "high",
       "date": "2026-08-27",
-      "runs_sorted": [70.6, 58.8, 58.8],
+      "runs_sorted": [
+        70.6,
+        58.8,
+        58.8
+      ],
       "mean_recall": 62.7,
-      "ci95": [52.9, 72.5],
+      "ci95": [
+        52.9,
+        72.5
+      ],
       "pass3": 35.3,
       "any_run": 84.3,
       "mode": "cloud-bigquery",
       "verified": true,
-      "submitted_by": "maintainers"
+      "submitted_by": "maintainers",
+      "track": "frozen-brief"
     },
     {
       "rank": 2,
@@ -32,14 +40,22 @@
       "model": "Fable 5",
       "effort": "high",
       "date": "2026-08-27",
-      "runs_sorted": [62.7, 56.9, 56.9],
+      "runs_sorted": [
+        62.7,
+        56.9,
+        56.9
+      ],
       "mean_recall": 58.8,
-      "ci95": [48.4, 69.3],
+      "ci95": [
+        48.4,
+        69.3
+      ],
       "pass3": 35.3,
       "any_run": 80.4,
       "mode": "cloud-bigquery",
       "verified": true,
-      "submitted_by": "maintainers"
+      "submitted_by": "maintainers",
+      "track": "frozen-brief"
     },
     {
       "rank": 3,
@@ -48,14 +64,22 @@
       "model": "GPT-5.6 Sol",
       "effort": "high",
       "date": "2026-08-27",
-      "runs_sorted": [35.3, 33.3, 31.4],
+      "runs_sorted": [
+        35.3,
+        33.3,
+        31.4
+      ],
       "mean_recall": 33.3,
-      "ci95": [22.2, 44.4],
+      "ci95": [
+        22.2,
+        44.4
+      ],
       "pass3": 19.6,
       "any_run": 51.0,
       "mode": "cloud-bigquery",
       "verified": true,
-      "submitted_by": "maintainers"
+      "submitted_by": "maintainers",
+      "track": "frozen-brief"
     }
   ],
   "notes": "Entries 1 and 2 run the same model; their gap is inside the judge spread and they are statistically tied. Differences within roughly 10 points are inside the noise floor."

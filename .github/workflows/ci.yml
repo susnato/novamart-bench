@@ -17,7 +17,7 @@ jobs:
           python - <<'PYEOF'
           import json
           d = json.load(open("leaderboard.json"))
-          req = {"rank","system","version","model","effort","date","runs_sorted","mean_recall","ci95","pass3","mode","verified"}
+          req = {"rank","system","version","model","effort","date","runs_sorted","mean_recall","ci95","pass3","mode","verified","track"}
           assert d["entries"], "leaderboard has no entries"
           for e in d["entries"]:
               missing = req - set(e)
