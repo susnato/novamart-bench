@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use NovaMart, please cite it."
+title: "NovaMart: A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction"
+authors:
+  - name: "NovaMart Benchmark Maintainers"
+year: 2026
+url: "https://novamart-bench.github.io"
+repository-code: "https://github.com/susnato/novamart-bench"
+notes: "Author list and arXiv identifier are added at release."

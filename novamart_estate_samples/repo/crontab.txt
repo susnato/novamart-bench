@@ -1,0 +1,31 @@
+# RETIRED Jan 2020 — schedules migrated to Airflow (airflow/dags/).
+# Kept for reference; the entries below are no longer installed.
+# novamart job schedule (times are local)
+# format: HH:MM  daily|monthly  module
+# 03:00  daily    novamart.jobs.reconcile
+# 06:00  daily    novamart.jobs.daily_report
+# 06:45  daily    novamart.jobs.top_sellers
+# 06:30  monthly  novamart.jobs.monthly_statement
+
+# 03:30  daily    novamart.jobs.affinity
+
+# 05:15  daily    novamart.jobs.trending
+
+# 06:20  daily    novamart.jobs.funnel
+
+
+# 06:15  daily    novamart.jobs.kpi_daily
+
+# 04:45  daily    novamart.jobs.price_suggest
+
+# 06:50  daily    novamart.jobs.reorder_forecast
+
+# 07:15  daily    novamart.jobs.email_digest
+
+# 03:45  daily    novamart.jobs.affinity_v2
+
+# 05:45  daily    novamart.jobs.fraud_score
+# 12:00  daily    novamart.jobs.intraday_report
+# 17:00  daily    novamart.jobs.intraday_report
+
+# 04:15  daily    novamart.jobs.model_train

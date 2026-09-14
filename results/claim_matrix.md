@@ -1,0 +1,56 @@
+# Claim-by-run verdict matrix (Table G2 in the paper)
+
+Majority verdict over 5 judge passes per run, ties resolved to the worse verdict. Y correct, ~ partial, . missing, X contradicted. Rows sorted hardest-first by the number of runs solving the claim. cc = Claude Code, cur = Cursor, cx = Codex; r1-r3 = independent runs.
+
+    Claim      #Y   cc_r1  cc_r2  cc_r3 cur_r1 cur_r2 cur_r3  cx_r1  cx_r2  cx_r3
+    NB-15     0/9       ~      ~      ~      ~      .      ~      .      .      ~
+    NB-30     0/9       .      .      .      .      .      .      .      .      .
+    OP-04     0/9       ~      ~      ~      ~      ~      ~      ~      ~      ~
+    PR-03     0/9       .      .      .      .      ~      ~      .      .      .
+    XM-02     0/9       ~      ~      ~      ~      ~      ~      .      .      ~
+    XM-04     0/9       .      .      .      .      .      .      .      .      .
+    NB-28     1/9       .      Y      .      ~      .      .      .      .      .
+    NB-29     1/9       Y      .      ~      X      .      ~      .      .      .
+    XW-03     1/9       Y      ~      ~      ~      ~      ~      .      .      .
+    DB-01     2/9       .      .      .      .      .      Y      Y      .      .
+    MLD-02    2/9       Y      .      .      .      .      .      Y      .      ~
+    NB-18     2/9       ~      ~      Y      ~      Y      ~      .      .      .
+    XM-03     2/9       ~      Y      ~      ~      ~      Y      ~      .      .
+    XW-05     2/9       ~      .      ~      Y      Y      ~      .      .      .
+    HB-01     4/9       Y      ~      Y      ~      Y      Y      .      .      .
+    HB-02     4/9       Y      ~      Y      Y      ~      Y      .      .      .
+    MLB-03    4/9       Y      ~      Y      ~      Y      ~      ~      ~      Y
+    NB-21     4/9       Y      Y      Y      ~      Y      ~      ~      .      ~
+    NB-24     4/9       Y      Y      Y      Y      .      ~      .      ~      .
+    PR-01     4/9       Y      ~      ~      Y      ~      Y      ~      Y      ~
+    RS-01     4/9       Y      ~      Y      Y      ~      ~      ~      ~      Y
+    XW-04     4/9       Y      Y      ~      ~      Y      ~      ~      ~      Y
+    DB-02     5/9       ~      Y      Y      Y      ~      Y      ~      Y      ~
+    FIN-04    5/9       Y      ~      Y      ~      ~      Y      ~      Y      Y
+    HC-01     5/9       ~      Y      Y      Y      Y      ~      Y      ~      ~
+    HC-02     5/9       Y      Y      Y      ~      Y      Y      .      .      ~
+    MLD-01    5/9       Y      Y      Y      Y      ~      .      Y      ~      ~
+    NB-02     5/9       Y      Y      Y      ~      Y      Y      ~      .      ~
+    NB-03     5/9       Y      Y      Y      ~      Y      Y      .      .      ~
+    NB-05     5/9       Y      Y      Y      ~      Y      Y      ~      ~      ~
+    NB-22     5/9       Y      Y      ~      Y      Y      Y      .      ~      ~
+    RS-02     5/9       ~      Y      Y      Y      Y      Y      ~      ~      ~
+    RS-03     5/9       Y      Y      ~      Y      ~      Y      ~      Y      ~
+    XW-02     5/9       Y      .      .      Y      Y      Y      Y      .      .
+    HD-02     6/9       Y      Y      Y      Y      Y      Y      .      .      .
+    NB-11     6/9       ~      Y      Y      Y      ~      Y      .      Y      Y
+    NB-25     6/9       Y      Y      Y      Y      Y      Y      ~      ~      ~
+    RS-07     6/9       Y      Y      Y      Y      Y      Y      .      .      .
+    CU-04     7/9       Y      Y      ~      Y      Y      Y      Y      ~      Y
+    NB-09     7/9       Y      Y      X      Y      X      Y      Y      Y      Y
+    XM-01     7/9       Y      .      Y      Y      Y      Y      Y      X      Y
+    FR-01     8/9       Y      Y      Y      Y      Y      Y      ~      Y      Y
+    HB-06     8/9       Y      Y      ~      Y      Y      Y      Y      Y      Y
+    RS-06     8/9       Y      ~      Y      Y      Y      Y      Y      Y      Y
+    CU-03A    9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y
+    HD-01     9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y
+    MLE-01    9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y
+    NB-10     9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y
+    OP-02     9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y
+    OP-03     9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y
+    RS-04     9/9       Y      Y      Y      Y      Y      Y      Y      Y      Y

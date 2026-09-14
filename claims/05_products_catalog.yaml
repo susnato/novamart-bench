@@ -1,0 +1,204 @@
+- claim_id: PR-01
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'Product rows are created lazily on first sight: if a product''s first-ever event is a cart
+    add or purchase rather than a page view, the row is inserted with empty brand and category strings
+    — and later brand/category reporting inherits those blanks.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Catalog
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/catalog.py
+    span: 58-66
+    uri: novamart/routers/catalog.py
+    commit_hash: 2ae79e2
+    symbol: ensure_entities
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'if pid not in _known_products: await db.execute(conn, ts, PRODUCT_INSERT, _product_row(pid,
+      "", "", price, ts))  # empty category and brand'
+  match:
+    must_include:
+    - Product rows are auto-created on first event.
+    - When the first event is not a product view, brand and category are inserted empty.
+    - Brand/category reporting is affected by these blank rows.
+    must_not_include:
+    - Every product row always has a brand and category from creation.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: PR-03
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'Blank product metadata gets backfilled only partially: when a product is later viewed with
+    metadata, the code fills in its brand and title — but nothing ever fills in category. Products that
+    are never viewed again stay blank forever.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Catalog
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/catalog.py
+    span: 50-80
+    uri: novamart/routers/catalog.py
+    commit_hash: 2ae79e2
+    symbol: _repair_product_brand
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'await _repair_product_brand(conn, ts, pid, category, brand, price)  # inside view_product'
+  match:
+    must_include:
+    - Later product views carrying metadata backfill brand (and title) only.
+    - Category is never repaired by any code path.
+    - Products never viewed again keep blank metadata forever.
+    must_not_include:
+    - Views repair both brand and category.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-02
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'The blank-brand audit table (analytics.blank_brand_products) is not pipeline output — it
+    is a one-off snapshot created by hand on 2019-10-21, the day the brand-repair code shipped. Nothing
+    refreshes it: its counts describe October, not the present.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: true
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Products
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.db_queries
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.db_queries
+    columns:
+    - textPayload
+    sql: SELECT ts, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
+      '%blank_brand_products%' ORDER BY ts
+    excerpt: '2019-10-21 [engineer-backfill:dev] "CREATE TABLE IF NOT EXISTS analytics.blank_brand_products
+      AS SELECT p.id AS product_id, ..." - a hand-run CTAS, never refreshed. NOTE: the table''s own captured_at
+      column is untrustworthy (export-era timestamp); date the snapshot from the query log.'
+  match:
+    must_include:
+    - The blank-brand audit table was created by a one-off manual CTAS, not by a job.
+    - It is a frozen snapshot from late October and is never refreshed.
+    must_not_include:
+    - The blank-brand table is maintained by a scheduled pipeline.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-28
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'Until 2019-11-09, vendor price updates did nothing: the catalog feed inserted with ON CONFLICT
+    DO NOTHING, so for any known product every subsequent feed price was silently discarded. The Nov 9
+    fix made the feed upsert existing products — price behavior before and after that date follows different
+    rules.'
+  source_type: codebase
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Products
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/catalog.py
+    span: null
+    uri: git show d213f6e
+    commit_hash: d213f6e
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-11-09): "Fix catalog price feed to upsert existing product prices" - before
+      it, ON CONFLICT DO NOTHING dropped every price update for known products.'
+  match:
+    must_include:
+    - Before the November 9 fix, vendor feed price updates were silently discarded for existing products.
+    - Product prices were effectively frozen at their first-seen values during that era.
+    must_not_include:
+    - The price feed has always updated existing products' prices.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-29
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'The canonical price-history table starts mid-November: it was created by hand on 2019-11-15,
+    and its first rows landed with the next weekly feed run on Nov 18 — nothing earlier is recorded. Earlier
+    prices are not lost (they survive as parameter values in the database query log and as order prices),
+    but anyone trusting price_history alone sees prices that begin on 2019-11-18.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: true
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Products
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.db_queries
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.db_queries
+    columns:
+    - textPayload
+    sql: null
+    excerpt: '2019-11-15 [engineer-backfill:dev]: "CREATE TABLE IF NOT EXISTS analytics.price_history
+      (product_id BIGINT NOT NULL, list_pri..." - hand-created; recording starts here (commit 795d273
+      adds the writer).'
+  match:
+    must_include:
+    - analytics.price_history was created by hand on 2019-11-15; its first rows are from 2019-11-18.
+    - Prices before mid-November are absent from the canonical price-history table.
+    - Earlier prices survive only in the db_queries statement-log parameters and/or order prices.
+    must_not_include:
+    - Prices before mid-November are unreconstructable / no record of them exists anywhere.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

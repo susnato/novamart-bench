@@ -1,0 +1,9 @@
+system: ""            # agent product name, e.g. "Claude Code"
+version: ""           # agent version, e.g. "2.1.252"
+model: ""             # underlying model, e.g. "Fable 5"
+effort: ""            # reasoning effort / mode setting, e.g. "high"
+run_dates: []         # e.g. ["2026-10-02", "2026-10-02", "2026-10-03"]
+environment_mode: ""  # "cloud-bigquery" or "local-emulator"
+submitted_by: ""      # your GitHub handle or org
+contact: ""           # optional email
+notes: ""             # optional: anything unusual about the runs

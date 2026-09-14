@@ -1,0 +1,539 @@
+{
+ "version": "gold v1.1 category map",
+ "canonical": true,
+ "purpose": "Canonical per-claim category assignments for the 51-claim gold set: business segment, claim shape, temporal tag, evidence source, required history.",
+ "shape_definitions": {
+  "Mechanism": "How the system produces a value or state today; readable from the current code.",
+  "Temporal era": "What changed inside the company and when, so the same number means different things before and after a date.",
+  "Absence": "What looks live but does not exist, never ran, or is dead: no code path, no control arm, a job that silently does nothing, dead logic.",
+  "Reconciliation": "(unchanged from v1) two sources disagree and the claim states which is right and why.",
+  "Computed quantity": "(unchanged from v1) a number that is stored nowhere and must be calculated fresh from the artifacts.",
+  "Multi-source join": "(unchanged from v1) the fact only exists once evidence from two or more systems is joined.",
+  "Other": "Reviewed claims that fit none of the named shapes (RS-04: serving model pinned by config flag; RS-07: telemetry dropped by a refactor and restored). Not broken out in figures."
+ },
+ "counts_by_shape": {
+  "Computed quantity": 12,
+  "Multi-source join": 3,
+  "Absence": 9,
+  "Reconciliation": 9,
+  "Mechanism": 6,
+  "Temporal era": 10,
+  "Other": 2
+ },
+ "claims": {
+  "CU-03A": {
+   "business_segment": "Catalog & customers",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": []
+  },
+  "CU-04": {
+   "business_segment": "Catalog & customers",
+   "shape": "Multi-source join",
+   "shape_v1_auto": "Multi-source join",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "DB-01": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Absence",
+   "shape_v1_auto": "Execution-negative / phantom",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "DB-02": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "FIN-04": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": []
+  },
+  "FR-01": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Mechanism",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "HB-01": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "HB-02": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "HB-06": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "HC-01": {
+   "business_segment": "Catalog & customers",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Temporal \u2014 current-state, dated",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "HC-02": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "commit",
+    "query"
+   ]
+  },
+  "HD-01": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Absence",
+   "shape_v1_auto": "Execution-negative / phantom",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "query"
+   ]
+  },
+  "HD-02": {
+   "business_segment": "Pipelines & scheduling",
+   "shape": "Absence",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "commit",
+    "logs"
+   ]
+  },
+  "MLB-03": {
+   "business_segment": "ML & recommendations",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": []
+  },
+  "MLD-01": {
+   "business_segment": "ML & recommendations",
+   "shape": "Mechanism",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "MLD-02": {
+   "business_segment": "ML & recommendations",
+   "shape": "Absence",
+   "shape_v1_auto": "Execution-negative / phantom",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "MLE-01": {
+   "business_segment": "ML & recommendations",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "NB-02": {
+   "business_segment": "Catalog & customers",
+   "shape": "Absence",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Warehouse",
+   "requires_history": [
+    "query"
+   ]
+  },
+  "NB-03": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Warehouse",
+   "requires_history": [
+    "query"
+   ]
+  },
+  "NB-05": {
+   "business_segment": "Catalog & customers",
+   "shape": "Absence",
+   "shape_v1_auto": "Execution-negative / phantom",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 current-state, dated",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "query"
+   ]
+  },
+  "NB-09": {
+   "business_segment": "Pipelines & scheduling",
+   "shape": "Absence",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "NB-10": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Absence",
+   "shape_v1_auto": "Execution-negative / phantom",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "NB-11": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Multi-source join",
+   "shape_v1_auto": "Multi-source join",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "NB-15": {
+   "business_segment": "Pipelines & scheduling",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "NB-18": {
+   "business_segment": "Pipelines & scheduling",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "NB-21": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "logs"
+   ]
+  },
+  "NB-22": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "NB-24": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Temporal \u2014 current-state, dated",
+   "source": "Warehouse",
+   "requires_history": [
+    "logs"
+   ]
+  },
+  "NB-25": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": [
+    "logs"
+   ]
+  },
+  "NB-28": {
+   "business_segment": "Catalog & customers",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": [
+    "commit"
+   ]
+  },
+  "NB-29": {
+   "business_segment": "Catalog & customers",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": [
+    "query"
+   ]
+  },
+  "NB-30": {
+   "business_segment": "Pipelines & scheduling",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": [
+    "logs"
+   ]
+  },
+  "OP-02": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "OP-03": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Multi-source join",
+   "shape_v1_auto": "Multi-source join",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "OP-04": {
+   "business_segment": "Orders, payments & fraud",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": [
+    "commit",
+    "logs"
+   ]
+  },
+  "PR-01": {
+   "business_segment": "Catalog & customers",
+   "shape": "Mechanism",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "PR-03": {
+   "business_segment": "Catalog & customers",
+   "shape": "Mechanism",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "RS-01": {
+   "business_segment": "ML & recommendations",
+   "shape": "Mechanism",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "RS-02": {
+   "business_segment": "ML & recommendations",
+   "shape": "Mechanism",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "RS-03": {
+   "business_segment": "ML & recommendations",
+   "shape": "Temporal era",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Codebase",
+   "requires_history": [
+    "logs"
+   ]
+  },
+  "RS-04": {
+   "business_segment": "ML & recommendations",
+   "shape": "Other",
+   "shape_v1_auto": "Causality / mechanism",
+   "shape_review_status": "reviewed \u2014 placed in Other (not in any of the three new shapes); not plotted",
+   "temporal": "Point-in-time",
+   "source": "Codebase",
+   "requires_history": []
+  },
+  "RS-06": {
+   "business_segment": "ML & recommendations",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": []
+  },
+  "RS-07": {
+   "business_segment": "ML & recommendations",
+   "shape": "Other",
+   "shape_v1_auto": "Execution-negative / phantom",
+   "shape_review_status": "reviewed \u2014 placed in Other (not in any of the three new shapes); not plotted",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Warehouse",
+   "requires_history": [
+    "commit",
+    "logs"
+   ]
+  },
+  "XM-01": {
+   "business_segment": "ML & recommendations",
+   "shape": "Absence",
+   "shape_v1_auto": "Absence / temporal era",
+   "shape_review_status": "reviewed",
+   "shape_review_note": "reviewer marked as a weak fit for Absence",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Warehouse",
+   "requires_history": []
+  },
+  "XM-02": {
+   "business_segment": "ML & recommendations",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "XM-03": {
+   "business_segment": "ML & recommendations",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "XM-04": {
+   "business_segment": "ML & recommendations",
+   "shape": "Computed quantity",
+   "shape_v1_auto": "Computed quantity",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "XW-02": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": []
+  },
+  "XW-03": {
+   "business_segment": "ML & recommendations",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Temporal \u2014 historical reconstruction",
+   "source": "Warehouse",
+   "requires_history": [
+    "logs"
+   ]
+  },
+  "XW-04": {
+   "business_segment": "Catalog & customers",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Code + warehouse",
+   "requires_history": []
+  },
+  "XW-05": {
+   "business_segment": "Revenue & reporting",
+   "shape": "Reconciliation",
+   "shape_v1_auto": "Reconciliation",
+   "shape_review_status": "unchanged (shape not part of the 2026-08-29 review)",
+   "temporal": "Point-in-time",
+   "source": "Warehouse",
+   "requires_history": []
+  }
+ }
+}

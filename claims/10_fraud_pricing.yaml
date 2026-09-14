@@ -1,0 +1,222 @@
+- claim_id: FR-01
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: The nightly fraud scorer rates orders as core_score × (1 + 0.15 × new_account + 0.15 × high_velocity),
+    capped at 1.0 — new_account means the buyer signed up within the last 7 days, high_velocity means
+    3+ orders in 24 hours. Orders scoring above the 0.85 threshold are moved to status 6 (held), with
+    features logged to analytics.order_risk.
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Fraud
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/fraud_score.py
+    span: 4-40
+    uri: novamart/jobs/fraud_score.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'score = core * (1 + 0.15*new_account + 0.15*high_velocity), capped 1.0 ... Orders over FRAUD_HOLD_THRESHOLD
+      are moved to status 6 (held). constants.py: FRAUD_HOLD_THRESHOLD = 0.85'
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.order_risk
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.order_risk
+    columns:
+    - new_account
+    - high_velocity
+    sql: SELECT COUNT(*) FROM `<warehouse-project>.novamart_analytics.order_risk`
+    excerpt: Returns 1631 scored orders with the boolean feature columns.
+  match:
+    must_include:
+    - The fraud score multiplies a core score by boosts for new accounts and high order velocity (15 percent
+      each).
+    - Orders above a 0.85 threshold are put on hold (status 6).
+    - Scored features are persisted in an order-risk analytics table.
+    must_not_include:
+    - Fraud holds are applied manually without a scoring model.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: HC-02
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'On 2019-12-29 an engineer manually released fraud-held orders with a hand-run UPDATE (status
+    6 back to 1, for held orders under $2,600) — an operation no code path performs; only the database
+    session records its execution. The same day, a commit raised the fraud-hold threshold from 0.70 to
+    0.85: the release and the threshold change were one coordinated cleanup.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: true
+  requires_query_history: true
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Fraud
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.db_queries
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.db_queries
+    columns:
+    - textPayload
+    - timestamp
+    sql: SELECT textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE '%engineer%'
+      AND textPayload LIKE '%status = 6%' ORDER BY timestamp
+    excerpt: 2019-12-29T15:00 [engineer-backfill:maya] "UPDATE orders SET status = 1, updated_at = NOW()
+      WHERE status = 6 AND price < 2600;" preceded by two survey SELECTs over held orders in the same
+      session.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/constants.py
+    span: null
+    uri: git show 1cb8721
+    commit_hash: 1cb8721
+    symbol: FRAUD_HOLD_THRESHOLD
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-12-29): "Raise FRAUD_HOLD_THRESHOLD from 0.70 to 0.85 and release held orders
+      under $2600".'
+  match:
+    must_include:
+    - Held orders were mass-released by a manual SQL operation run by an engineer, not by any code path.
+    - The operation is attributable to an engineer session recorded in the database query log.
+    - It coincided with the fraud threshold being raised to 0.85 in late December.
+    must_not_include:
+    - The release of held orders was performed by an application endpoint or scheduled job.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: HD-01
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: Dynamic pricing was built but never switched on. A nightly job rewrites a price-suggestions
+    table (~500 rows), but nothing else ever reads it - across the whole query log, the only queries touching
+    that table are the job writing it. An exec review put the customer-facing rollout on hold, and it
+    never shipped.
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: true
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Pricing
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.db_queries
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.db_queries
+    columns:
+    - textPayload
+    sql: SELECT COUNTIF(textPayload LIKE '%price_suggestions%') any_mention, COUNTIF(textPayload LIKE
+      '%price_suggestions%' AND textPayload NOT LIKE '%[job]%') non_job FROM `<warehouse-project>.novamart_logs.db_queries`
+    excerpt: 18,574 mentions of price_suggestions in the query log; zero outside the [job] tag; zero SELECT
+      reads.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/price_suggest.py
+    span: null
+    uri: git show cca9b0d
+    commit_hash: cca9b0d
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-12-02): "hold dynamic pricing rollout per exec review" - phase-2 serving never
+      shipped.'
+  match:
+    must_include:
+    - The price-suggestions table is written nightly but read by nothing.
+    - The absence of readers is verifiable in the database query log.
+    - The serving rollout was explicitly put on hold and never shipped.
+    must_not_include:
+    - Prices shown to customers are influenced by the price-suggestions table.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-22
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'The fraud detection system holds very few orders, but the ones it holds are big: of 1,631
+    orders ever scored, only 17 crossed the hold threshold in force at the time. After the Dec 29 manual
+    release, the 12 still held total $40,213.29 — invisible to every status-1 revenue metric.'
+  source_type: data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Fraud
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.order_risk
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.order_risk
+    columns:
+    - score
+    sql: SELECT COUNT(*), COUNTIF(score > 0.85) FROM `<warehouse-project>.novamart_analytics.order_risk`
+    excerpt: 1,631 scored; 13 above 0.85. Orders at status 6 today - 12 rows, SUM(price) = $40,213.29.
+  - role: supporting
+    source_type: codebase
+    repo: null
+    path: novamart/constants.py
+    span: null
+    uri: novamart/constants.py
+    commit_hash: 1cb8721
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'FRAUD_HOLD_THRESHOLD history: 0.90 (e4656fb, Dec 3) -> 0.70 (53f6f6c, Dec 5) -> 0.85 (1cb8721,
+      Dec 29); ''in force at scoring time'' needs this git history.'
+  match:
+    must_include:
+    - 'Very few orders were ever held: 17 crossed the hold threshold in force at scoring time (13 score
+      above today''s 0.85 threshold; accept either count with the qualifier).'
+    - The 12 currently-held orders total about $40,213 and are excluded from status-1 revenue metrics.
+    must_not_include: []
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

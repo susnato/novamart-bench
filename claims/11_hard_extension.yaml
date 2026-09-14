@@ -1,0 +1,387 @@
+- claim_id: XW-02
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'Refunding an order still costs the company money, because the payment processor never gives
+    back its fee. The payments table shows it: the 9 refund entries all have fee = 0 (no fee is ever credited
+    back), while every one of the 9,361 rows follows the same accounting rule, net = gross minus fee.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.payments
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.payments
+    columns:
+    - gross
+    - fee
+    - net
+    sql: SELECT COUNTIF(ABS(net-(gross-fee))>0.005) viol, COUNTIF(gross<0 AND fee!=0) neg_with_fee FROM
+      `<warehouse-project>.novamart.payments`
+    excerpt: viol=0, neg_with_fee=0 across 9,361 rows; the 9 gateway credits all have fee=0.
+  match:
+    must_include:
+    - Negative (refund) payment rows carry zero fee.
+    - The processing fee is not returned on refunds (the company keeps paying it).
+    must_not_include:
+    - Fees are reversed when an order is refunded.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XW-03
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'The two recommendation exposure logs disagree by 1,340 rows: app_events records 669,190
+    rec_served events while the decision log holds 667,850. Nearly all of the gap is the Dec 17–19 logging
+    blackout, slightly offset by a 32-row surplus on Dec 11 where decision rows have no matching event.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.rec_decision_log
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.rec_decision_log
+    columns:
+    - ts
+    sql: WITH ev AS (SELECT DATE(TIMESTAMP(JSON_VALUE(jsonPayload.ts))) d, COUNT(*) n FROM `<warehouse-project>.novamart_logs.app_events`
+      WHERE JSON_VALUE(jsonPayload.event)='rec_served' GROUP BY d), dl AS (SELECT DATE(TIMESTAMP(ts))
+      d, COUNT(*) n FROM `<warehouse-project>.novamart_analytics.rec_decision_log` GROUP BY d) SELECT ev.d,
+      ev.n-IFNULL(dl.n,0) diff FROM ev LEFT JOIN dl USING(d) WHERE ev.n-IFNULL(dl.n,0)!=0 ORDER BY d
+    excerpt: 'Diffs: 2019-12-11 -32, 2019-12-17 +109, 2019-12-18 +848, 2019-12-19 +415.'
+  match:
+    must_include:
+    - The two exposure logs (served events vs decision log) do not reconcile; the decision log is short
+      by roughly 1,300-1,400 rows.
+    - The missing decision-log rows are concentrated in the mid-December logging gap.
+    must_not_include:
+    - The event log and decision log record identical exposure counts.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XW-04
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: The nightly kpi_daily job never excludes the QA smoke-test user, while the dashboards do.
+    The QA user has 13 paid orders spanning Oct 2 to Dec 25, so the nightly active-customers series silently
+    includes QA activity and can disagree with every dashboard on days the smoke test bought something.
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Customers
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/kpi_daily.py
+    span: null
+    uri: null
+    commit_hash: null
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: COUNT(DISTINCT user_id) ... interval '30 days' AND status = 1  -- no test_users exclusion
+      anywhere in the job's SQL
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.orders
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.orders
+    columns:
+    - user_id
+    - status
+    - created_at
+    sql: SELECT COUNT(*) n, MIN(created_at), MAX(created_at) FROM `<warehouse-project>.novamart.orders` WHERE
+      user_id=424242 AND status=1
+    excerpt: n=13, first 2019-10-02, last 2019-12-25.
+  match:
+    must_include:
+    - The nightly KPI job's active-customer count does not exclude the QA/test user, unlike the dashboards.
+    - The QA user has paid orders (on the order of a dozen) inside the measurement window.
+    must_not_include:
+    - All active-customer surfaces apply the same test-user exclusion.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XW-05
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'The three chargebacks (booked Dec 9) hit Oct 1 orders that today read as cancelled or refunded
+    — yet have zero negative payment rows. The cash-out for these orders exists only in the hand-booked
+    chargebacks table: status flags, gateway credits, and chargebacks are three money-out ledgers that
+    do not reconcile with each other.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.chargebacks
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.chargebacks
+    columns:
+    - order_id
+    - amount
+    sql: SELECT cb.order_id, o.status, cb.amount, (SELECT COUNT(*) FROM `<warehouse-project>.novamart.payments`
+      p WHERE p.order_id=cb.order_id AND p.gross<0) neg FROM `<warehouse-project>.novamart_analytics.chargebacks`
+      cb JOIN `<warehouse-project>.novamart.orders` o ON o.id=cb.order_id
+    excerpt: Orders 46/49/55, statuses 2/3/2, amounts equal full order price, neg=0 for all three.
+  match:
+    must_include:
+    - All 3 chargebacks hit Oct 1 orders whose current status is cancelled/refunded (2/3) and which have
+      zero negative payment rows.
+    - The cash-out amounts for these orders exist only in the hand-booked chargebacks table.
+    - Status flags, gateway credits, and chargebacks do not reconcile as money-out records.
+    must_not_include: []
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XM-01
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'The v2 recommendation rollout was never an experiment: the intended version hard-cut from
+    1.0.0 to 2.0.0 on 2019-12-06 with no overlap window, so there is no concurrent control arm. Post-cutover
+    serves that fall back to old behavior are score-missing fallbacks (logged as effective_version=''fallback''),
+    not an A/B cell.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.rec_decision_log
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.rec_decision_log
+    columns:
+    - ts
+    - intended_version
+    sql: SELECT MIN(IF(intended_version='2.0.0', ts, NULL)) first_v2, MAX(IF(intended_version='1.0.0',
+      ts, NULL)) last_v1 FROM `<warehouse-project>.novamart_analytics.rec_decision_log`
+    excerpt: Both boundaries fall on 2019-12-06 - a same-day hard cutover, no overlap period.
+  match:
+    must_include:
+    - The v2 rollout was a hard cutover (single switch date in early December), not an A/B test with a
+      concurrent control group.
+    must_not_include:
+    - The 1.0.0 traffic after the cutover was a deliberate control/holdback arm.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XM-02
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'The 5% random holdout works as designed: assignment is deterministic per user and holds
+    cleanly from the moment the version-dispatch deploy landed mid-day on Dec 6, reaching 4.49% of served
+    users (the small shortfall matches the Dec 17–19 logging gap). Naive whole-log queries suggest a leaky,
+    contaminated experiment — an artifact of the mid-day rollout: a holdout user''s serves from earlier
+    that day are logged arm=''none'', which looks like non-random exposure.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.rec_decision_log
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.rec_decision_log
+    columns:
+    - user_id
+    - arm
+    sql: WITH u AS (SELECT user_id, COUNTIF(arm='random') r, COUNTIF(arm!='random') o FROM `<warehouse-project>.novamart_analytics.rec_decision_log`
+      WHERE ts >= TIMESTAMP('2019-12-06') AND user_id IS NOT NULL GROUP BY user_id) SELECT COUNT(*) users_post,
+      COUNTIF(r>0) ever_random, COUNTIF(r>0 AND o>0) mixed_post FROM u
+    excerpt: users_post=20958, ever_random=942 (4.49%), mixed_post=42 - and all 42 are explained by pre-deploy
+      serves on Dec 6 itself (logged arm='none'; deploy landed 16:40-16:50). Whole-log naive query gives
+      2.8%/420 'mixed' - the rollout-boundary artifact.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/similar.py
+    span: null
+    uri: null
+    commit_hash: null
+    symbol: in_random_arm
+    table: null
+    columns: null
+    sql: null
+    excerpt: int(sha256(uid)[:8], 16) % 20 == 0
+  match:
+    must_include:
+    - The random-holdout assignment is deterministic per user and holds after the Dec 6 deploy (no user
+      received both arms post-deploy).
+    - Effective exposure is about 4.5% of served users vs the designed 5%, with the shortfall consistent
+      with the Dec 17-19 random-arm logging gap.
+    - Whole-log queries overstate leakage/contamination because of the mid-day Dec 6 rollout boundary
+      (pre-deploy serves that day are logged arm='none').
+    must_not_include:
+    - The experiment's exposure is contaminated, or users received both arms due to a design failure.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XM-03
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'The model''s training set froze during the logging blackout: training reads only random-arm
+    decision rows, so the Dec 18 and Dec 19 nightly fits trained on exactly the same 5,798 rows, with
+    growth resuming on Dec 20 once random-arm logging was restored.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.model_registry
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.model_registry
+    columns:
+    - trained_at
+    - train_rows
+    sql: SELECT DATE(trained_at) d, train_rows FROM `<warehouse-project>.novamart_analytics.model_registry`
+      WHERE DATE(trained_at) BETWEEN '2019-12-17' AND '2019-12-21' ORDER BY trained_at
+    excerpt: '2019-12-17: 5472, 2019-12-18: 5798, 2019-12-19: 5798, 2019-12-20: 6442, 2019-12-21: 7039.'
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/model_train.py
+    span: null
+    uri: null
+    commit_hash: null
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: WHERE d.arm = 'random'
+  match:
+    must_include:
+    - Training consumes only random-arm rows, so the mid-December logging gap froze the training set (consecutive
+      fits with identical row counts).
+    must_not_include:
+    - The training set grew every night without interruption.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: XM-04
+  claim_name: null
+  added_at: '2026-08-26'
+  claim_type: dynamic
+  claim_text: 'The v2 recommender was meant to improve the top recommendation, but it barely changes it:
+    of the 449 products scored by both the old and new models, the #1 recommendation changes for only
+    about 27 (6%) - for the other ~94%, the user sees the same top item as before.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.product_affinity_v2
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.product_affinity_v2
+    columns:
+    - base_pid
+    - rec_pid
+    - score
+    sql: WITH t1 AS (SELECT base_pid, ARRAY_AGG(rec_pid ORDER BY score DESC, rec_pid LIMIT 1)[OFFSET(0)]
+      top1 FROM `<warehouse-project>.novamart_analytics.product_affinity` WHERE score>=0 GROUP BY base_pid),
+      t2 AS (SELECT base_pid, ARRAY_AGG(rec_pid ORDER BY score DESC, rec_pid LIMIT 1)[OFFSET(0)] top1
+      FROM `<warehouse-project>.novamart_analytics.product_affinity_v2` WHERE score>=0 GROUP BY base_pid)
+      SELECT COUNT(*) both_scored, COUNTIF(t1.top1!=t2.top1) differs FROM t1 JOIN t2 USING(base_pid)
+    excerpt: 'Deterministic tiebreak (score DESC, rec_pid): differs=38 of both_scored=449. Tie-aware bounds:
+      necessarily differs=27 (disjoint argmax sets), at most 39 (non-identical sets). Accept 27-39.'
+  match:
+    must_include:
+    - Of the 449 base products scored by both generations, the top-1 recommendation differs for only about
+      27-39 (6-9%); accept any figure in that range.
+    - For the large majority of products the v2 upgrade does not change the top recommendation.
+    must_not_include: []
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

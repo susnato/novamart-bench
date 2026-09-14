@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NovaMart Benchmark</title>
+</head>
+<body>
+<style>
+  :root{
+    --bg:#FFFFFF; --card:#FFFFFF; --ink:#1C1E21; --muted:#5A6068; --line:#D9DCE0;
+    --link:#0B5AA5;
+    --code-bg:#F4F5F7; --code-ink:#24292F; --code-comment:#6E7781; --code-kw:#0550AE;
+    --note-line:#7EA6CB; --thead:#EDF3F9;
+    --navbar:#16324C; --navbar-ink:#F2F6FA; --navbar-muted:#A9C0D4;
+    --band:#2C5F8A; --band-ink:#FFFFFF; --band-muted:#C9DAE9;
+    --chip:#E8EBEE; --chip-ink:#4A5560;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141619; --card:#1B1E22; --ink:#E4E6E9; --muted:#9AA1A9; --line:#33383F;
+      --link:#6CA9E0;
+      --code-bg:#1F2327; --code-ink:#D5D9DE; --code-comment:#7E8790; --code-kw:#79A8DC;
+      --note-line:#4A6B8A; --thead:#1E2732;
+      --navbar:#101E2B; --navbar-ink:#E4EBF1; --navbar-muted:#8BA3B8;
+      --band:#1E3A52; --band-ink:#EDF2F7; --band-muted:#9FB6C9;
+      --chip:#2A3038; --chip-ink:#AEB8C2;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141619; --card:#1B1E22; --ink:#E4E6E9; --muted:#9AA1A9; --line:#33383F;
+    --link:#6CA9E0;
+    --code-bg:#1F2327; --code-ink:#D5D9DE; --code-comment:#7E8790; --code-kw:#79A8DC;
+    --note-line:#4A6B8A; --thead:#1E2732;
+    --navbar:#101E2B; --navbar-ink:#E4EBF1; --navbar-muted:#8BA3B8;
+    --band:#1E3A52; --band-ink:#EDF2F7; --band-muted:#9FB6C9;
+    --chip:#2A3038; --chip-ink:#AEB8C2;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15.5px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  code, pre, .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .num{font-variant-numeric:tabular-nums}
+  a{color:var(--link)}
+  h2{font-size:20px; font-weight:700; margin:0 0 10px}
+  p{margin:0 0 12px}
+
+  .topbar{
+    display:flex; align-items:baseline; gap:14px; padding:12px 24px;
+    background:var(--navbar); color:var(--navbar-ink);
+  }
+  .topbar .mark{font-weight:700; font-size:15px}
+  .topbar nav{margin-left:auto; display:flex; gap:16px; font-size:14px}
+  .topbar nav a{text-decoration:none; color:var(--navbar-muted)}
+  .topbar nav a:hover{color:var(--navbar-ink); text-decoration:underline}
+
+  .hero{padding:44px 24px 42px; text-align:center; background:var(--band); color:var(--band-ink)}
+  .hero h1{font-size:clamp(34px,5vw,46px); margin:0 0 8px; font-weight:700}
+  .hero .subtitle{max-width:740px; margin:0 auto 8px; font-size:clamp(16px,2vw,19px); color:var(--band-ink)}
+  .hero .oneliner{max-width:640px; margin:8px auto 22px; color:var(--band-muted); font-size:15px}
+  .cta{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
+  .btn{
+    display:inline-block; padding:7px 20px; border-radius:6px; text-decoration:none;
+    font-size:14px; font-weight:600; border:1px solid var(--link); color:var(--link); background:var(--card);
+  }
+  .btn:hover{text-decoration:underline}
+  .hero .btn{border-color:#FFFFFF; color:#FFFFFF; background:transparent}
+  .hero .btn:hover{background:rgba(255,255,255,0.12); text-decoration:none}
+
+  .wrap{max-width:1400px; margin:0 auto; padding:30px 28px 12px; display:grid; grid-template-columns:minmax(0,1fr) 560px; gap:28px; align-items:start}
+  @media (max-width:980px){ .wrap{grid-template-columns:minmax(0,1fr)} }
+  .card{background:var(--card); border:1px solid var(--line); border-radius:6px; padding:20px 22px; margin-bottom:22px}
+
+  .protocol{font-size:13px; color:var(--muted); border-left:3px solid var(--note-line); padding:2px 0 2px 12px; margin-bottom:14px}
+
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse; width:100%; font-size:14.5px}
+  th{
+    text-align:left; font-size:12px; color:var(--muted); font-weight:600;
+    padding:7px 8px; background:var(--thead); border-bottom:1px solid var(--line); white-space:nowrap;
+  }
+  td{padding:11px 8px; border-bottom:1px solid var(--line); vertical-align:top}
+  th.r, td.r{text-align:right}
+  .rankcell{text-align:center; white-space:nowrap}
+  .ranknum{font-size:17px; font-weight:700; color:var(--muted)}
+  .rankdate{
+    font-size:10px; color:var(--chip-ink); background:var(--chip);
+    display:inline-block; padding:1px 7px; border-radius:4px; margin-top:4px;
+  }
+  .sysname{font-weight:700; font-size:14.5px}
+  .sysver{font-size:12px; color:var(--muted); font-weight:400}
+  .sysmodel{font-size:12.5px; color:var(--muted); margin-top:1px}
+  .sysruns{font-size:11.5px; color:var(--muted); margin-top:3px; white-space:nowrap}
+  .meanbig{font-weight:700; font-size:16px}
+  .cicell{font-size:11.5px; color:var(--muted); margin-top:1px; white-space:nowrap}
+  .lb-note{font-size:12.5px; color:var(--muted); margin-top:12px}
+
+  .stats td{padding:7px 0; border-bottom:none; border-top:1px solid var(--line); white-space:normal}
+  .stats td:last-child{text-align:right; font-weight:600}
+  .stats tr:first-child td{border-top:none}
+
+  pre{
+    background:var(--code-bg); color:var(--code-ink); border:1px solid var(--line); border-radius:6px;
+    padding:14px 16px; font-size:13px; line-height:1.55; overflow-x:auto; margin:12px 0;
+  }
+  pre .c{color:var(--code-comment)}
+  pre .k{color:var(--code-kw)}
+  blockquote{
+    border-left:3px solid var(--note-line); margin:12px 0; padding:2px 0 2px 14px; font-size:14.5px;
+  }
+  .meta-line{font-size:13px; color:var(--muted); margin:8px 0 2px}
+  .rubric{font-size:14px; margin:8px 0 0; padding-left:22px}
+  .rubric li{margin:4px 0}
+  .quick{margin:0 0 4px; padding-left:22px; font-size:14.5px}
+  .quick li{margin:5px 0}
+
+  .footer{max-width:1400px; margin:0 auto; padding:6px 28px 40px; font-size:13px; color:var(--muted)}
+  .footer hr{border:none; border-top:1px solid var(--line); margin:0 0 14px}
+</style>
+
+<header class="topbar">
+  <span class="mark">NovaMart Benchmark</span>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#leaderboard">Leaderboard</a>
+    <a href="https://github.com/susnato/novamart-bench">Code</a>
+    <a href="#claim">Example</a>
+    <a href="#submit">Submit</a>
+    <a href="#cite">Citation</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>NovaMart</h1>
+  <p class="subtitle">A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction</p>
+  <p class="oneliner">How much of a company's undocumented knowledge can an AI agent excavate from the data estate alone: the code, the git history, the warehouse, the logs, the dashboards?</p>
+  <div class="cta">
+    <a class="btn" href="#cite">Paper</a>
+    <a class="btn" href="https://github.com/susnato/novamart-bench">Code</a>
+    <a class="btn" href="#submit">Submit</a>
+  </div>
+</section>
+
+<div class="wrap">
+  <main>
+    <section class="card" id="about">
+      <h2>About NovaMart</h2>
+      <p>AI agents are moving into the daily work of enterprise engineers and analysts. Doing that work well requires the company's <b>tribal knowledge</b>: which undocumented filters go into a metric, which of several views is canonical, which half-finished migration decided whose data moved. Agents that lack it fail silently, shipping numbers that look right while disagreeing with every existing report.</p>
+      <p>NovaMart is a simulated e-commerce retailer that is <b>executed rather than authored</b>. It is built from two inputs. The first is real shopper behavior: the public REES46 event stream, replayed hourly as ambient traffic through a live application and database. The second is the tape: an authored script of the company's story, written by engineers reproducing failure patterns seen in production (a payment provider that delivers every confirmation twice for three hours, a vendor whose weekly price uploads are silently discarded for a month, three teams that each invent their own definition of an active customer). LLM-powered engineers act out the tape against the running application on one clock; everything a company would accumulate builds up as a side effect, and after 3.5 simulated months the estate is frozen. Every row, log line, query, and dashboard follows from that one executed history.</p>
+      <p>Each system gets identical read-only access to the frozen estate and a single brief: write the company's missing knowledge book. <b>51 audited gold claims</b>, each with a recomputable evidence chain, decide how much it found. The claims split into <b>narrated</b> (20: the rubric can be satisfied from text surfaces alone, i.e. code, git history, docs) and <b>excavated</b> (31: requiring computation over the warehouse, logs, or query history). Systems differ most where knowledge must be computed, not read: what separates them is not reading ability but excavation ability.</p>
+    </section>
+
+    <section class="card">
+      <h2>What&#39;s inside</h2>
+      <table class="stats">
+        <tr><td>Application repo, full git history</td><td class="num">108 commits</td></tr>
+        <tr><td>Warehouse tables</td><td class="num">32</td></tr>
+        <tr><td>Warehouse rows</td><td class="num">878,918</td></tr>
+        <tr><td>Runtime + query log lines</td><td class="num">5,168,645</td></tr>
+        <tr><td>Redash dashboards</td><td>included (full export)</td></tr>
+        <tr><td>Simulated history</td><td class="num">3.5 months</td></tr>
+        <tr><td>Audited gold claims</td><td class="num">51</td></tr>
+        <tr><td>Released agent books (baselines)</td><td class="num">9</td></tr>
+      </table>
+      <p style="font-size:13px; color:var(--muted); margin:12px 0 0">Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator. The estate, the claims, and the scoring harness ship in one repo; the README walks through local (docker compose) and GCP setup.</p>
+      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench" id="runit">Set it up on GitHub &rarr;</a>
+    </section>
+
+    <section class="card">
+      <h2>How scoring works</h2>
+      <p style="font-size:14.5px; margin:0">Each agent's book is passed to a pinned LLM judge, which scores it against every claim's rubric: one verdict per claim. <b>Claim recall</b> is the fraction of the 51 claims the book satisfies. A system's headline score is <b>mean recall over its three runs</b>; <b>pass&sup3;</b> counts the claims it solved in all three. The judge protocol, its stability analysis, and the confidence-interval recipes are in the paper; every verdict is released, so every number on this page can be recomputed.</p>
+      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench#scoring-your-book">Score your book &rarr;</a>
+    </section>
+
+    <section class="card" id="claim">
+      <h2>A gold claim, verbatim</h2>
+      <p>Claim <b>FIN-04</b>, exactly as released. This is what "tribal knowledge" looks like: two official revenue numbers, and the reason for the difference is written down nowhere.</p>
+      <blockquote>"October 2019 has two official gross revenue numbers: the published statement says 1,230,332.43 while the restated view <code>analytics.statements_final</code> says 1,226,764.86. The difference is chargebacks, booked in a separate analytics table and subtracted by the view, never in the statements table."</blockquote>
+      <p class="meta-line mono">narration: excavated &middot; type: dynamic &middot; acquisition: hard-derive &middot; source: data warehouse</p>
+      <p style="margin-top:12px; font-size:14px">The evidence chain is recomputable against the shipped warehouse:</p>
+<pre><span class="k">SELECT</span> s.month, s.gross <span class="k">AS</span> published, f.gross <span class="k">AS</span> restated
+<span class="k">FROM</span> `&lt;warehouse&gt;.novamart.statements` s
+<span class="k">JOIN</span> `&lt;warehouse&gt;.novamart_analytics.statements_final` f <span class="k">USING</span> (month)
+<span class="k">WHERE</span> s.month = <span class="c">'2019-10'</span>
+<span class="c">-- returns published=1230332.43, restated=1226764.86 (delta 3567.57 = booked chargebacks)</span></pre>
+      <p style="font-size:14px; margin-bottom:2px">A book earns this claim only if it states all of the following:</p>
+      <ul class="rubric">
+        <li>The published October 2019 statement gross is 1,230,332.43.</li>
+        <li>The chargeback-restated October gross (statements_final) is 1,226,764.86.</li>
+        <li>Chargebacks are booked in an analytics table and are not part of the statements table.</li>
+      </ul>
+      <p style="font-size:14px; margin:8px 0 2px">and avoids the contradiction:</p>
+      <ul class="rubric">
+        <li>"There is only one official October gross figure."</li>
+      </ul>
+    </section>
+
+    <section class="card" id="cite">
+      <h2>Citation</h2>
+<pre>@article{novamart2026,
+  title   = {NovaMart: A Causally Consistent Simulated Enterprise
+             for Measuring Tribal Knowledge Extraction},
+  author  = {&lt;authors&gt;},
+  journal = {arXiv preprint arXiv:26XX.XXXXX},
+  year    = {2026}
+}</pre>
+      <p style="font-size:13px; color:var(--muted); margin:0">Questions: open an issue on the GitHub repo.</p>
+    </section>
+  </main>
+
+  <aside id="leaderboard">
+    <section class="card">
+      <h2>Leaderboard</h2>
+      <p class="protocol">Three runs per system, frozen brief, read-only estate. All numbers computed by the maintainer from the submitted books with the pinned judge (majority of five passes); listed after verification. Differences within roughly 10 points are inside the noise floor: entries 1 and 2 are statistically tied.</p>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="rankcell">#</th>
+              <th>System</th>
+              <th class="r">Mean recall ▾</th>
+              <th class="r">pass³</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rankcell"><div class="ranknum num">1</div><div class="rankdate">Aug 27, 2026</div></td>
+              <td>
+                <div><span class="sysname">Claude Code</span> <span class="sysver">v2.1.252</span></div>
+                <div class="sysmodel">Fable 5 (high effort)</div>
+                <div class="sysruns mono num">runs 70.6 / 58.8 / 58.8</div>
+              </td>
+              <td class="r"><div class="meanbig num">62.7%</div><div class="cicell mono num">[52.9, 72.5]</div></td>
+              <td class="r num">35.3%</td>
+            </tr>
+            <tr>
+              <td class="rankcell"><div class="ranknum num">2</div><div class="rankdate">Aug 27, 2026</div></td>
+              <td>
+                <div><span class="sysname">Cursor</span> <span class="sysver">v3.15.6</span></div>
+                <div class="sysmodel">Fable 5 (high effort)</div>
+                <div class="sysruns mono num">runs 62.7 / 56.9 / 56.9</div>
+              </td>
+              <td class="r"><div class="meanbig num">58.8%</div><div class="cicell mono num">[48.4, 69.3]</div></td>
+              <td class="r num">35.3%</td>
+            </tr>
+            <tr>
+              <td class="rankcell"><div class="ranknum num">3</div><div class="rankdate">Aug 27, 2026</div></td>
+              <td>
+                <div><span class="sysname">Codex CLI</span> <span class="sysver">v0.120.0</span></div>
+                <div class="sysmodel">GPT-5.6 Sol (high effort)</div>
+                <div class="sysruns mono num">runs 35.3 / 33.3 / 31.4</div>
+              </td>
+              <td class="r"><div class="meanbig num">33.3%</div><div class="cicell mono num">[22.2, 44.4]</div></td>
+              <td class="r num">19.6%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lb-note">Scores are claim recall over 51 gold claims, mean of three runs with claim-level bootstrap 95% CI. pass³ = solved in all three runs, the dependable core. Claude Code and Cursor run the same model; their gap is inside the judge spread. Per-entry details (any-run coverage, per-claim scorecards, released books) live in the repo.</p>
+    </section>
+
+    <section class="card" id="submit">
+      <h2 style="font-size:17px">Submit your agent</h2>
+      <p style="font-size:14px">Run the three-run protocol, then open a PR adding a folder under <code>submissions/</code> containing:</p>
+      <ul class="rubric" style="font-size:13.5px">
+        <li>the <b>three knowledge books</b>, one per run (frozen brief unchanged, read-only estate)</li>
+        <li>agent name and version, model and effort setting, run dates</li>
+      </ul>
+      <p style="font-size:13.5px; margin-top:10px">That's the whole submission: <b>you compute no statistics</b>. The maintainer re-scores the books with the pinned judge and computes every column (runs, mean recall, 95% CI, pass&sup3;) during verification. Self-scoring first with your own judge key is encouraged as a sanity check; listed numbers are always the verification run's.</p>
+      <a class="btn" href="https://github.com/susnato/novamart-bench/tree/main/submissions">Submission guide</a>
+    </section>
+  </aside>
+</div>
+
+<footer class="footer">
+  <hr>
+  <p><b>Data attribution.</b> Ambient shopper traffic is replayed from the <a href="https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store">REES46 eCommerce behavior dataset</a> (<a href="https://rees46.com">REES46 Marketing Platform</a>), used with attribution per the dataset's stated terms. NovaMart redistributes only derived artifacts; every order traces back to a real browsing session, but the raw event stream is obtained from Kaggle directly.</p>
+  <p>Code: Apache-2.0 &middot; Estate &amp; claims: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato">@susnato</a>.</p>
+</footer>
+</body>
+</html>

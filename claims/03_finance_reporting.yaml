@@ -1,0 +1,271 @@
+- claim_id: FIN-04
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: dynamic
+  claim_text: 'October 2019 has two official gross revenue numbers: the published statement says 1,230,332.43
+    while the restated view analytics.statements_final says 1,226,764.86. The difference is chargebacks
+    — booked in a separate analytics table and subtracted by the view, never in the statements table.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.statements_final
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.statements_final
+    columns:
+    - month
+    - gross
+    sql: SELECT s.month, s.gross AS published, f.gross AS restated FROM `<warehouse-project>.novamart.statements`
+      s JOIN `<warehouse-project>.novamart_analytics.statements_final` f USING (month) WHERE s.month = '2019-10'
+    excerpt: Returns published=1230332.43, restated=1226764.86 (delta 3567.57 = booked chargebacks).
+  match:
+    must_include:
+    - The published October 2019 statement gross is 1,230,332.43.
+    - The chargeback-restated October gross (statements_final) is 1,226,764.86.
+    - Chargebacks are booked in an analytics table/view and are not part of the statements table.
+    must_not_include:
+    - There is only one official October gross figure.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: HB-01
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'October 2019''s published gross revenue double-counts about $59.6k: gateway retries before
+    the mid-October idempotency fix created 154 surplus duplicate orders that were still "paid" when the
+    statement was published on Nov 1, and no restatement ever removed them. (Querying today''s statuses
+    slightly understates the surplus — a few of the duplicates were refunded later.)'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.orders
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.orders
+    columns:
+    - payment_ref
+    - price
+    - status
+    - created_at
+    sql: WITH dup AS (SELECT payment_ref, COUNT(*) c FROM `<warehouse-project>.novamart.orders` WHERE payment_ref
+      IS NOT NULL GROUP BY 1 HAVING c > 1), r AS (SELECT o.*, ROW_NUMBER() OVER (PARTITION BY o.payment_ref
+      ORDER BY o.created_at) rn FROM `<warehouse-project>.novamart.orders` o JOIN dup USING (payment_ref))
+      SELECT ROUND(SUM(price), 2) FROM r WHERE rn > 1 AND created_at >= '2019-10-01' AND created_at <
+      '2019-11-01' AND status = 1
+    excerpt: 'Publish-time membership (status=1 OR updated_at > ''2019-11-01 10:30:00''), NY-local October
+      window: n=154 surplus duplicate orders, amt=59,555.83. Today''s-state approximation (status=1 now,
+      UTC window): 151 / 58,828.24.'
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/orders.py
+    span: null
+    uri: git show b676969
+    commit_hash: b676969
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-10-15): "Make order callbacks idempotent by payment_ref" - ends the duplicate
+      creation; pre-existing duplicates were left in place.'
+  match:
+    must_include:
+    - October 2019's published gross double-counts roughly $59.6k across about 154 surplus duplicate orders
+      (accept roughly $58.8k / 151 if the today's-status caveat is noted).
+    - The duplicates come from payment-gateway callback replays before the 2019-10-15 idempotency fix.
+    - No cleanup or restatement ever removed them from the published number.
+    must_not_include: []
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: HB-02
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'The daily report for 2019-11-17 badly undercounts the day and was never restated: the report
+    job then scanned at most 500 order rows per day (cap removed Nov 19), so it published 487 units /
+    $148,857.07 — an uncapped run would have published 704 units / $223,853.03, about 50% more revenue.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Reporting
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.report_rows
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.report_rows
+    columns:
+    - report_date
+    - units
+    - revenue
+    sql: SELECT SUM(units), ROUND(SUM(revenue), 2) FROM `<warehouse-project>.novamart.report_rows` WHERE
+      CAST(report_date AS STRING) LIKE '2019-11-17%'
+    excerpt: Published Nov-17 row = 487 units / $148,857.07 (single snapshot). Unfiltered status-1 orders
+      for the NY-local day = 735.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/daily_report.py
+    span: null
+    uri: git show 1233af8
+    commit_hash: 1233af8
+    symbol: REPORT_SCAN_CAP
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-11-19): "Fix daily report undercount on busy days by scanning all matching
+      orders" - removes the 500-row scan cap.'
+  match:
+    must_include:
+    - The Nov 17 daily report undercounts the day because of a row-scan cap in the report job.
+    - The published figures are 487 units and about $148.9k revenue.
+    - The true day is substantially larger (roughly 50% more) and the published row was never restated.
+    must_not_include:
+    - The Nov 17 report row was later corrected or restated.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-03
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'Chargebacks are hand-booked: the table was created in an engineer SQL session on 2019-12-09
+    and its rows inserted in that same session. No application code path writes chargebacks (the warehouse
+    job merely copies the table), so the restated "final" revenue numbers depend on a table that only
+    updates from a human.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: true
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.db_queries
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.db_queries
+    columns:
+    - textPayload
+    sql: SELECT ts, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
+      '%chargebacks%' AND (textPayload LIKE '%INSERT%' OR textPayload LIKE '%CREATE%') ORDER BY ts
+    excerpt: '2019-12-09 [engineer-backfill:dev]: "CREATE TABLE IF NOT EXISTS analytics.chargebacks ..."
+      followed by "INSERT INTO analytics.chargebacks(order_id, amount, reported_at) SELECT o.id, o.price,
+      ...". No code path writes this table.'
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs
+    span: null
+    uri: git show cd559d3
+    commit_hash: cd559d3
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: Commit cd559d3 adds dashboards/statements_final.sql (a SELECT reading the view). The view
+      itself was created in the 2019-12-09 engineer DB session, not by this commit.
+  match:
+    must_include:
+    - Chargebacks are recorded by manual SQL in engineer sessions, not by any code path.
+    - The restated final revenue depends on this hand-maintained table.
+    must_not_include:
+    - Chargebacks arrive automatically via a webhook or scheduled job.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-21
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'The monthly statement audits itself: it cross-checks collected fees against the expected
+    schedule and logs a warning on mismatch. That warning has fired for every month ever published (September,
+    October, November) — no statement has ever passed its own fee check.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.app_events
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.app_events
+    columns: null
+    sql: SELECT COUNT(*), STRING_AGG(DISTINCT JSON_VALUE(jsonPayload.month)) FROM `<warehouse-project>.novamart_logs.app_events`
+      WHERE JSON_VALUE(jsonPayload.event) = 'statement_fee_mismatch'
+    excerpt: 'Exactly 3 statement_fee_mismatch warnings, months: 2019-09, 2019-10, 2019-11 - every published
+      month.'
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/monthly_statement.py
+    span: 48-50
+    uri: novamart/jobs/monthly_statement.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: The job computes expected_fee from the rate schedule and logs statement_fee_mismatch when
+      collected fees differ by more than a cent.
+  match:
+    must_include:
+    - The statement job cross-checks collected fees against expected fees and warns on mismatch.
+    - The warning fired for every published month (three times total).
+    must_not_include:
+    - The statement fee cross-check never found a discrepancy.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

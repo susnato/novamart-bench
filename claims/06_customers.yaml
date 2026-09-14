@@ -1,0 +1,218 @@
+- claim_id: CU-04
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'Accounts (introduced 2019-11-27) use a separate identifier namespace: accounts.account_id
+    is a UUID, unrelated to the numeric users.id, so a naive id-to-id join fails. The intended join path
+    is the account_map bridge table. (An email join also happens to work — addresses were copied verbatim
+    at creation — but the bridge is the only key-based path.)'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Customers
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/accounts.py
+    span: 1-20
+    uri: novamart/routers/accounts.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: from uuid import uuid4 ... account creation mints UUID ids; The commit (2019-11-27) "Add
+      accounts endpoint and bootstrap missing users from numeric uid".
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.account_map
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.account_map
+    columns: null
+    sql: SELECT COUNT(*) FROM `<warehouse-project>.novamart.account_map`
+    excerpt: The bridge table exists; user_id (numeric) <-> account_id (uuid).
+  match:
+    must_include:
+    - Accounts use UUID identifiers while users use numeric ids.
+    - A mapping/bridge table links the two namespaces.
+    - Joining users to account data requires going through the bridge (two hops).
+    must_not_include:
+    - users.id joins directly to accounts.account_id.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: CU-03A
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: dynamic
+  claim_text: The nightly kpi_daily job counts "active customers" as distinct buyers with a PAID (status
+    1) order in the trailing 30 days — refunded and fraud-held buyers do not count. On 2019-12-31 it reports
+    1,152.
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Customers
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.kpi_daily
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.kpi_daily
+    columns:
+    - day
+    - active_customers
+    sql: SELECT day, active_customers FROM `<warehouse-project>.novamart_analytics.kpi_daily` ORDER BY day
+      DESC LIMIT 1
+    excerpt: Returns 2019-12-31 = 1152.
+  match:
+    must_include:
+    - Active customers = distinct buyers with a paid (status 1) order in the trailing 30 days as of the
+      nightly run.
+    - The 2019-12-31 value is 1,152.
+    must_not_include:
+    - The definition is non-cancelled orders (any status other than cancelled).
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: HC-01
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: The registered-accounts beta is permanently frozen at exactly 30 accounts, all created in
+    one bulk enrollment on 2019-12-01. Four days later an unrelated webhook change accidentally dropped
+    the /accounts signup route from the app's routing (the commit does not mention accounts), and it was
+    never restored. Nobody appears to have noticed.
+  source_type: codebase+data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Customers
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.accounts
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.accounts
+    columns:
+    - account_id
+    - created_at
+    sql: SELECT COUNT(*), MIN(created_at), MAX(created_at) FROM `<warehouse-project>.novamart.accounts`
+    excerpt: Exactly 30 rows; MIN(created_at) = MAX(created_at) = 2019-12-01 16:30:00.
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/app.py
+    span: null
+    uri: git show c49a7bb
+    commit_hash: c49a7bb
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-12-05) "gateway refund webhook: gateway is source of truth for money" - its
+      diff rewrites the router imports and silently drops the accounts router; the message never mentions
+      it. No later commit restores the route.'
+  match:
+    must_include:
+    - The accounts table holds exactly 30 accounts and never grew after early December.
+    - The signup route was removed accidentally as a side effect of an unrelated change, not deliberately.
+    - The removal was never noticed or reverted afterwards.
+    must_not_include:
+    - The accounts endpoint remained reachable after early December.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-05
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'The contactable-customers view has returned zero rows for its entire existence: its email-hygiene
+    filters exclude every user, because every address in users.email is on an example domain. The view
+    was hand-created by an engineer on 2019-12-04 — the same day the dashboard change that displays it
+    shipped — so the KPI it feeds has never shown anything but zero.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: true
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Customers
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.contactable_users
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.contactable_users
+    columns: null
+    sql: SELECT COUNT(*) FROM `<warehouse-project>.novamart_analytics.contactable_users`
+    excerpt: 'Query log 2019-12-04 [engineer-backfill:maya]: "CREATE OR REPLACE VIEW analytics.contactable_users
+      AS SELECT u.id ...". Current row count: 0.'
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: dashboards/daily_kpis.sql
+    span: null
+    uri: git show e10cb0c
+    commit_hash: e10cb0c
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-12-04): "Add trusted contactable users view and report contactable customers
+      in daily KPIs".'
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.db_queries
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.db_queries
+    columns: null
+    sql: SELECT ts, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
+      '%CREATE OR REPLACE VIEW%contactable_users%' ORDER BY ts
+    excerpt: 2019-12-04 15:00 [engineer-backfill:maya] CREATE OR REPLACE VIEW analytics.contactable_users
+      ... (hand-created).
+  match:
+    must_include:
+    - The contactable-customers view was created manually by an engineer, not by a migration.
+    - The view returns zero rows because its email filters exclude every user.
+    must_not_include:
+    - The contactable-customers metric reports a positive number of users.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

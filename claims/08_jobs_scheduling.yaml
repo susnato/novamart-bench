@@ -1,0 +1,213 @@
+- claim_id: HD-02
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'The marketing email digest silently sent nothing for nearly three weeks after being switched
+    on: the job read its enable flag under the wrong name, never crashed, and never logged an error —
+    it simply concluded every day that it was disabled. After two flag-handling fixes, the send log''s
+    first row is 2019-12-17.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Marketing
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.digest_log
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.digest_log
+    columns:
+    - sent_at
+    sql: SELECT MIN(sent_at) FROM `<warehouse-project>.novamart_analytics.digest_log`
+    excerpt: First digest_log row is 2019-12-17 - nothing before, despite the job being enabled since
+      late November.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/email_digest.py
+    span: null
+    uri: git show 8dc520b
+    commit_hash: 8dc520b
+    symbol: ENABLE_DIGEST
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Two fixes bracket the silent window: "Fix email digest job to honor ENABLE_DIGEST cron flag"
+      (Dec 9) and "Make email digest read deploy/cron.env directly" (Dec 16, 0bd4eac).'
+  match:
+    must_include:
+    - The digest was silently non-functional for roughly three weeks after being enabled.
+    - The cause was a flag-name/flag-reading mismatch, not a crash or error.
+    - The send log's first entry is Dec 17.
+    must_not_include:
+    - The digest failed loudly or produced error alerts during the silent period.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-09
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'The crontab-to-Airflow migration silently dropped a scheduled run: the old crontab ran
+    the intraday report at 12:00 and 17:00, while the Airflow DAG that replaced it schedules only 12:00.
+    Nothing failed and nothing alerted — the 17:00 run simply does not exist in the new schedules.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Jobs
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: airflow/dags/intraday_report_dag.py
+    span: null
+    uri: git show 43e54a1
+    commit_hash: 43e54a1
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Pre-migration crontab.txt: "12:00 daily novamart.jobs.intraday_report" AND "17:00 daily
+      novamart.jobs.intraday_report". Post-migration DAG: schedule="0 12 * * *" only.'
+  match:
+    must_include:
+    - The intraday report used to run twice daily; after the Airflow migration it runs once.
+    - The 17:00 run was dropped silently by the migration, not deliberately removed.
+    must_not_include:
+    - The Airflow migration preserved all previous schedules.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-15
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'The reorder-hint formula has two constant eras: its hand-fit scale constant was 141.12
+    originally and was refit to 162.4 "for Q4 velocity" in late December — tuned by eye, validated in
+    neither era. Hints from before and after the refit are not comparable.'
+  source_type: codebase
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Operations
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/reorder_forecast.py
+    span: null
+    uri: git show f85cdd2
+    commit_hash: f85cdd2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Original (f5e3032): K = 141.12. Refit (f85cdd2, "refit reorder constant for Q4 velocity"):
+      K = 162.4. Both hand-fit; no validation either time.'
+  match:
+    must_include:
+    - The reorder-hint formula's constant was hand-refit mid-history (from about 141 to about 162).
+    - Hints from before and after the refit are not comparable, and neither era was validated.
+    must_not_include:
+    - The reorder formula's parameters have been constant for the whole history.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-18
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'How a user''s browsing session is counted changed meaning mid-December: the inactivity
+    gap that splits one session from the next was raised from 30 to 120 minutes on 2019-12-14, so daily
+    session counts before and after that date are different units. The funnel table itself carries no
+    marker of the change - only the job-run logs record the gap setting.'
+  source_type: codebase
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Analytics
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/funnel.py
+    span: null
+    uri: git show f915c1b
+    commit_hash: f915c1b
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-12-14): "Increase funnel session inactivity gap to 120 minutes" (from 30).'
+  match:
+    must_include:
+    - The funnel's session definition changed mid-December (inactivity gap 30 to 120 minutes).
+    - The daily_funnel analytics table carries no marker of the definition change; only the job-run logs
+      record the gap setting (books citing the logs' gap_min are correct).
+    must_not_include:
+    - The funnel sessionization rule has been constant for the whole history.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-30
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'The view-to-purchase funnel is steep: 843,085 product views funnel down to 36,925 cart
+    adds and 9,127 orders — a 1.1% view-to-order rate. These ratios are stored nowhere as a metric; they
+    exist only if you compute them from the raw event log against the orders table.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Analytics
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.app_events
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.app_events
+    columns: null
+    sql: SELECT COUNTIF(JSON_VALUE(jsonPayload.event)='product_viewed') views, COUNTIF(JSON_VALUE(jsonPayload.event)='cart_item_added')
+      carts, COUNTIF(JSON_VALUE(jsonPayload.event)='order_created') orders FROM `<warehouse-project>.novamart_logs.app_events`
+    excerpt: 843,085 product_viewed -> 36,925 cart_item_added -> 9,127 order_created (view-to-order 1.083%),
+      full log window 2019-09-25..2019-12-31.
+  match:
+    must_include:
+    - The overall view-to-purchase conversion is on the order of one percent.
+    - The funnel ratios are derived quantities, not stored metrics.
+    must_not_include:
+    - A stored table provides the complete funnel conversion rates.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

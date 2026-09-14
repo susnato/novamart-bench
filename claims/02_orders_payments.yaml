@@ -1,0 +1,343 @@
+- claim_id: OP-02
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'Since 2019-11-22 an order can contain multiple items: same-session callbacks are merged
+    into the most recent order, with per-item detail in order_lines. Order-level totals stay comparable
+    across that date, but orders.product_id only holds the first item — product-level queries that ignore
+    order_lines undercount everything after Nov 22.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Orders
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/orders.py
+    span: null
+    uri: git show 5d1300d
+    commit_hash: 5d1300d
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'The commit (2019-11-22): "Merge same-session order callbacks into recent orders" - introduces
+      order_lines and the same-session merge path.'
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.order_lines
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.order_lines
+    columns: null
+    sql: SELECT MIN(created_at) FROM `<warehouse-project>.novamart.order_lines`
+    excerpt: order_lines rows begin around 2019-11-22; per-item truth after the merge lives here.
+  match:
+    must_include:
+    - Same-session repeat purchases are merged into one order (from late November 2019).
+    - Item-level detail after the change lives in the order_lines table.
+    - Product-level attribution from the orders table alone is unreliable after the change.
+    must_not_include:
+    - Every purchased item always has its own orders row for the whole history.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: OP-03
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: dynamic
+  claim_text: 'payment_ref is not unique in the orders table: 130 refs appear on more than one order.
+    A nightly reconcile job exists specifically to flag these suspect duplicates — it only warns; it never
+    fixes anything.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Payments
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.orders
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.orders
+    columns:
+    - payment_ref
+    sql: SELECT COUNT(*) FROM (SELECT payment_ref FROM `<warehouse-project>.novamart.orders` GROUP BY 1 HAVING
+      COUNT(*) > 1)
+    excerpt: Returns 130 duplicate payment_refs.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/constants.py
+    span: 21-22
+    uri: novamart/constants.py
+    commit_hash: 2ae79e2
+    symbol: RECONCILE_BATCH
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'RECONCILE_BATCH = 200  # how many suspect refs reconcile flags per night'
+  match:
+    must_include:
+    - Payment references can be duplicated across orders (they are not unique).
+    - A nightly reconcile job flags suspect duplicate payment references.
+    must_not_include:
+    - payment_ref is a unique key of the orders table.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: OP-04
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'Payment fees changed once: from 2.9% of price to 2.9% + $0.30 per payment, on 2019-11-20.
+    The real cutover was the afternoon deploy, not the midnight boundary written into the statement job
+    — so that morning''s orders carry the old fee, and the job''s monthly fee check has never fully reconciled.'
+  source_type: codebase
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Payments
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/monthly_statement.py
+    span: 13-42
+    uri: novamart/jobs/monthly_statement.py
+    commit_hash: 2ae79e2
+    symbol: FEE_CHANGE_AT
+    table: null
+    columns: null
+    sql: null
+    excerpt: FEE_CHANGE_AT = datetime(2019, 11, 20, tzinfo=ZoneInfo(LOCAL_TZ)) ... CASE WHEN created_at
+      < %s THEN ROUND((price * %s)...) ELSE ROUND((price * %s + %s)...) END
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/constants.py
+    span: 3-4
+    uri: novamart/constants.py
+    commit_hash: 2ae79e2
+    symbol: FEE_FLAT
+    table: null
+    columns: null
+    sql: null
+    excerpt: FEE_RATE = 0.029 ... FEE_FLAT = 0.30
+  match:
+    must_include:
+    - 'Fees changed once, around 2019-11-20: from 2.9% of price to 2.9% plus a $0.30 flat component.'
+    - The effective boundary is the code deploy (afternoon of Nov 20), not the midnight FEE_CHANGE_AT
+      constant; orders in the gap carry the old fee.
+    - The statement job's fee cross-check does not reconcile with collected fees (monthly mismatch warnings).
+    must_not_include:
+    - After 2019-11-20 every order's fee is exactly price*0.029+0.30 (per-order absolutism).
+    rubric: 'Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions. Optional credit: the $0.30 flat component is charged per payment callback, not per
+      order, after 2019-11-22.'
+- claim_id: NB-10
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: static
+  claim_text: 'The nightly reconcile job filters out orders with status 5 — a status that does not exist.
+    No constant defines it, no code sets it, and no order has ever carried it (observed statuses: 1, 2,
+    3, 6). The filter is dead logic that looks meaningful.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Orders
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/reconcile.py
+    span: '16'
+    uri: novamart/jobs/reconcile.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: '"SELECT payment_ref, COUNT(*) AS n FROM orders WHERE status <> 5" - status 5 appears nowhere
+      else: not in constants.py, not in schema.sql, not in the data.'
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.orders
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.orders
+    columns:
+    - status
+    sql: SELECT status, COUNT(*) FROM `<warehouse-project>.novamart.orders` GROUP BY 1
+    excerpt: Warehouse statuses are 1, 2, 3, 6 only - no order has ever been status 5.
+  match:
+    must_include:
+    - The reconcile job excludes a status (5) that is undefined and never occurs in the data.
+    must_not_include:
+    - Status 5 is a documented order state that appears in the warehouse.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-11
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'Order status 0 never reaches the database: orders are inserted at status 0 and promoted
+    to 1 inside the same transaction, so the warehouse holds no status-0 rows. Any query looking for "pending"
+    orders returns nothing by construction.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Orders
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/orders.py
+    span: null
+    uri: novamart/routers/orders.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: The handler inserts at status 0 and updates to 1 within the same request path - the intermediate
+      state never survives to a committed row visible in exports.
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.orders
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.orders
+    columns:
+    - status
+    sql: SELECT COUNTIF(status = 0) FROM `<warehouse-project>.novamart.orders`
+    excerpt: 'Zero status-0 rows in the warehouse; observed statuses: 1 (9033), 2 (54), 3 (28), 6 (12).'
+  match:
+    must_include:
+    - Orders are created at status 0 in code but the warehouse contains no status-0 rows.
+    - The pending state is transient and invisible to data consumers.
+    must_not_include:
+    - Pending (status 0) orders can be found in the orders table.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-24
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: Gateway retries never stopped — idempotency just made them harmless. Since idempotent callback
+    handling shipped in mid-October, the app has logged 522 replayed callbacks that were recognized and
+    absorbed instead of creating duplicate orders. The October duplicate storm was not a one-off; the
+    same retry pressure continued for the rest of the history.
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Orders
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.app_events
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.app_events
+    columns: null
+    sql: SELECT COUNT(*) FROM `<warehouse-project>.novamart_logs.app_events` WHERE JSON_VALUE(jsonPayload.event)
+      = 'order_callback_replayed'
+    excerpt: 522 order_callback_replayed events after idempotency landed - ongoing retry pressure, absorbed.
+  match:
+    must_include:
+    - Callback retries continued after the idempotency fix (hundreds of replays logged).
+    - Idempotent replay absorbed them instead of creating duplicates.
+    must_not_include:
+    - Gateway retries stopped occurring after mid-October.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: NB-25
+  claim_name: null
+  added_at: '2026-08-21'
+  claim_type: dynamic
+  claim_text: 'The reconcile job warns, and nothing else ever happens: it has emitted 10,766 duplicate-payment-ref
+    warnings over the history, but only 130 distinct refs are actually duplicated. The same legacy duplicates
+    get re-flagged night after night because no cleanup ever happened.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Finance
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.app_events
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.app_events
+    columns: null
+    sql: SELECT COUNT(*) FROM `<warehouse-project>.novamart_logs.app_events` WHERE JSON_VALUE(jsonPayload.event)
+      = 'duplicate_payment_ref'
+    excerpt: 10,766 duplicate_payment_ref warnings against 130 distinct duplicated refs - the same refs
+      re-flagged nightly, never fixed.
+  match:
+    must_include:
+    - The reconcile warnings vastly outnumber the underlying problems (thousands of warnings for about
+      130 refs).
+    - The same duplicates are re-flagged nightly because the job only warns and no cleanup occurred.
+    must_not_include:
+    - Each reconcile warning corresponds to a newly discovered duplicate.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

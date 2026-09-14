@@ -1,0 +1,104 @@
+{
+ "id": 5,
+ "slug": "daily_kpis",
+ "name": "daily_kpis",
+ "user_id": 1,
+ "user": {
+  "id": 1,
+  "name": "novamart admin",
+  "email": "admin@novamart.sim",
+  "profile_image_url": "https://www.gravatar.com/avatar/71857feb565600fc48cbc2caa7b6220a?s=40&d=identicon"
+ },
+ "layout": [],
+ "dashboard_filters_enabled": false,
+ "widgets": [
+  {
+   "id": 5,
+   "width": 1,
+   "options": {
+    "position": {
+     "col": 0,
+     "row": 0,
+     "sizeX": 6,
+     "sizeY": 12
+    }
+   },
+   "dashboard_id": 5,
+   "text": "",
+   "updated_at": "2019-12-15T15:00:00Z",
+   "created_at": "2019-09-15T10:00:00Z",
+   "visualization": {
+    "id": 5,
+    "type": "TABLE",
+    "name": "Table",
+    "description": "",
+    "options": {},
+    "updated_at": "2019-12-15T15:00:00Z",
+    "created_at": "2019-09-15T10:00:00Z",
+    "query": {
+     "id": 5,
+     "latest_query_data_id": 4,
+     "name": "daily_kpis",
+     "description": "migrated from dashboards/daily_kpis.sql",
+     "query": "-- daily KPIs (exec dashboard): revenue, orders, active customers, contactable customers\nWITH bounds AS (\n  SELECT (now() AT TIME ZONE 'America/New_York')::date AS today\n),\nreport_days AS (\n  SELECT r.report_date AS day,\n         SUM(r.units) AS orders,\n         SUM(r.revenue) AS revenue\n  FROM report_rows r\n  JOIN products p ON p.id = r.product_id\n  JOIN (\n    SELECT rr.report_date, MAX(rr.created_at) AS created_at\n    FROM report_rows rr\n    CROSS JOIN bounds b\n    WHERE rr.report_date >= b.today - 13\n      AND rr.report_date < b.today\n    GROUP BY 1\n  ) latest ON latest.report_date = r.report_date AND latest.created_at = r.created_at\n  WHERE p.brand NOT IN ('lucente', 'jetem')\n  GROUP BY 1\n\n  UNION ALL\n\n  SELECT r.report_date AS day,\n         SUM(r.units) AS orders,\n         SUM(r.revenue) AS revenue\n  FROM report_rows_intraday r\n  JOIN products p ON p.id = r.product_id\n  JOIN (\n    SELECT rr.report_date, MAX(rr.created_at) AS created_at\n    FROM report_rows_intraday rr\n    CROSS JOIN bounds b\n    WHERE rr.report_date = b.today\n    GROUP BY 1\n  ) latest ON latest.report_date = r.report_date AND latest.created_at = r.created_at\n  WHERE p.brand NOT IN ('lucente', 'jetem')\n  GROUP BY 1\n),\ncustomer_days AS (\n  SELECT (o.created_at AT TIME ZONE 'America/New_York')::date AS day,\n         COUNT(DISTINCT o.user_id) AS active_customers,\n         COUNT(DISTINCT cu.user_id) AS contactable_customers\n  FROM orders o\n  JOIN products p ON p.id = o.product_id\n  LEFT JOIN analytics.contactable_users cu ON cu.user_id = o.user_id\n  CROSS JOIN bounds b\n  WHERE o.created_at >= ((b.today - 13)::timestamp AT TIME ZONE 'America/New_York')\n    AND o.user_id <> 424242\n    AND p.brand NOT IN ('lucente', 'jetem')\n  GROUP BY 1\n)\nSELECT rd.day,\n       rd.orders,\n       rd.revenue,\n       COALESCE(cd.active_customers, 0) AS active_customers,\n       COALESCE(cd.contactable_customers, 0) AS contactable_customers\nFROM report_days rd\nLEFT JOIN customer_days cd ON cd.day = rd.day\nORDER BY 1 DESC;\n",
+     "query_hash": "aa5d087929d18b4b390c5e4aadef25e7",
+     "schedule": null,
+     "is_archived": false,
+     "is_draft": false,
+     "updated_at": "2019-12-15T15:00:00Z",
+     "created_at": "2019-09-15T10:00:00Z",
+     "data_source_id": 1,
+     "options": {},
+     "version": 1,
+     "tags": [],
+     "is_safe": true,
+     "user": {
+      "id": 1,
+      "name": "novamart admin",
+      "email": "admin@novamart.sim",
+      "profile_image_url": "https://www.gravatar.com/avatar/71857feb565600fc48cbc2caa7b6220a?s=40&d=identicon",
+      "groups": [
+       1,
+       2
+      ],
+      "updated_at": "2026-08-14T11:48:52.868Z",
+      "created_at": "2026-08-14T11:29:03.477Z",
+      "disabled_at": null,
+      "is_disabled": false,
+      "active_at": null,
+      "is_invitation_pending": false,
+      "is_email_verified": true,
+      "auth_type": "password"
+     },
+     "last_modified_by": {
+      "id": 1,
+      "name": "novamart admin",
+      "email": "admin@novamart.sim",
+      "profile_image_url": "https://www.gravatar.com/avatar/71857feb565600fc48cbc2caa7b6220a?s=40&d=identicon",
+      "groups": [
+       1,
+       2
+      ],
+      "updated_at": "2026-08-14T11:48:52.868Z",
+      "created_at": "2026-08-14T11:29:03.477Z",
+      "disabled_at": null,
+      "is_disabled": false,
+      "active_at": null,
+      "is_invitation_pending": false,
+      "is_email_verified": true,
+      "auth_type": "password"
+     }
+    }
+   }
+  }
+ ],
+ "options": {},
+ "is_archived": false,
+ "is_draft": false,
+ "tags": [],
+ "updated_at": "2019-12-15T15:00:00Z",
+ "created_at": "2019-09-15T10:00:00Z",
+ "version": 2,
+ "is_favorite": false,
+ "can_edit": false
+}

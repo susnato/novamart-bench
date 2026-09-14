@@ -1,0 +1,41 @@
+id	title	category	brand	vendor	list_price	cost_price	stock	created_at
+1004856	Internal Test #4856	qa.test	internal	wayne-wholesale	9.99	6.99	289	2019-09-25 12:30:00+00
+4300400	Scarlett Item #400		scarlett	hooli-direct	25.71	15.17	200	2019-10-01 02:23:55+00
+17300355	Creed Item #355		creed	initech-goods	236.81	184.71	268	2019-10-01 01:40:33+00
+4000128	Philips Generator #128	construction.tools.generator	philips	stark-imports	84.92	46.71	426	2019-10-01 02:32:25+00
+12703498	Cordiant Item #3498		cordiant	pied-piper-co	38.35	27.23	385	2019-10-01 02:51:54+00
+1004246	Apple Smartphone #4246	electronics.smartphone	apple	initech-goods	735.01	485.11	122	2019-10-01 04:33:05+00
+45600242	Shagovita Shoes #242	apparel.shoes	shagovita	stark-imports	39.89	30.72	105	2019-10-01 04:11:23+00
+37800028	Carters Item #28		carters	globex-trading	31.02	21.71	254	2019-10-01 02:28:26+00
+3700737	Philips Vacuum #737	appliances.environment.vacuum	philips	globex-trading	180.16	138.72	92	2019-10-01 03:05:23+00
+10701101	Ea Item #1101		ea	wayne-wholesale	74.36	56.51	374	2019-10-01 02:47:51+00
+1200620	Samsung Tablet #620	electronics.tablet	samsung	wayne-wholesale	128.42	97.60	478	2019-10-01 03:20:55+00
+1004739	Xiaomi Smartphone #4739	electronics.smartphone	xiaomi	umbrella-retail	197.55	124.46	36	2019-10-01 02:37:39+00
+9002623	Basik Toys #2623	kids.toys	basik	stark-imports	17.89	10.20	439	2019-11-15 15:00:03+00
+3100927	Elenberg Blender #927	appliances.kitchen.blender	elenberg	umbrella-retail	25.71	17.74	484	2019-10-01 03:11:36+00
+6200315	Elenberg Air_Heater #315	appliances.environment.air_heater	elenberg	acme-supplies	33.44	21.07	21	2019-10-01 02:33:48+00
+1005115	Apple Smartphone #5115	electronics.smartphone	apple	wayne-wholesale	975.57	575.59	162	2019-10-01 02:36:07+00
+1005015	Samsung Smartphone #5015	electronics.smartphone	samsung	pied-piper-co	604.88	405.27	20	2019-10-01 02:41:52+00
+26400195	Unbranded Item #195			umbrella-retail	184.82	133.07	364	2019-10-01 05:33:31+00
+4804295	Xiaomi Headphone #4295	electronics.audio.headphone	xiaomi	hooli-direct	22.39	14.78	91	2019-10-01 05:34:43+00
+28101108	Unbranded Item #1108			stark-imports	183.27	139.29	416	2019-10-01 02:51:01+00
+1004948	Oneplus Smartphone #4948	electronics.smartphone	oneplus	wayne-wholesale	800.12	560.08	235	2019-10-01 05:28:09+00
+9002573	Abtoys Toys #2573	kids.toys	abtoys	stark-imports	9.76	6.34	325	2019-11-15 15:00:37+00
+12718922	Dunlop Item #8922		dunlop	pied-piper-co	72.59	40.65	244	2019-10-01 03:31:26+00
+49100001	Unbranded Item #1			acme-supplies	28.31	16.70	316	2019-10-01 03:33:36+00
+1004833	Samsung Smartphone #4833	electronics.smartphone	samsung	pied-piper-co	174.75	110.09	367	2019-10-01 03:37:56+00
+1004767	Samsung Smartphone #4767	electronics.smartphone	samsung	stark-imports	254.76	178.33	245	2019-10-01 03:24:51+00
+5100715	Aimoto Clocks #715	electronics.clocks	aimoto	hooli-direct	114.10	86.72	205	2019-10-01 03:56:23+00
+15100378	Lider Item #378		lider	umbrella-retail	433.96	277.73	83	2019-10-01 04:04:20+00
+3701388	Dauscher Vacuum #1388	appliances.environment.vacuum	dauscher	acme-supplies	33.21	25.57	162	2019-10-01 03:30:14+00
+28719071	Baden Keds #9071	apparel.shoes.keds	baden	stark-imports	102.71	71.90	45	2019-10-01 04:14:14+00
+4300429	Ibaby Item #429		ibaby	umbrella-retail	166.26	103.08	264	2019-10-01 02:27:00+00
+7005751	Unbranded Carriage #5751	kids.carriage		pied-piper-co	79.49	57.23	263	2019-10-01 02:30:27+00
+1005132	Apple Smartphone #5132	electronics.smartphone	apple	wayne-wholesale	1413.16	960.95	192	2019-10-01 03:34:08+00
+23000598	Eurol Item #598		eurol	acme-supplies	5.66	3.45	219	2019-11-29 03:53:50+00
+1004956	Xiaomi Smartphone #4956	electronics.smartphone	xiaomi	stark-imports	395.10	248.91	261	2019-10-01 04:27:24+00
+16600062	Wingo Item #62		wingo	wayne-wholesale	200.78	124.48	301	2019-10-01 04:09:45+00
+1004777	Xiaomi Smartphone #4777	electronics.smartphone	xiaomi	stark-imports	135.14	87.84	257	2019-10-01 04:31:07+00
+15100377	Unbranded Item #377			initech-goods	306.55	223.78	478	2019-10-01 04:33:44+00
+28600026	Unbranded Item #26			initech-goods	399.73	255.83	445	2019-10-01 04:41:30+00
+26500134	Lucente Item #134		lucente	acme-supplies	84.69	47.43	420	2019-10-01 04:54:08+00

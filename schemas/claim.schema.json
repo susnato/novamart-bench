@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tribal Knowledge Claim",
+  "type": "object",
+  "required": [
+    "claim_id",
+    "claim_name",
+    "added_at",
+    "claim_type",
+    "claim_text",
+    "scope",
+    "evidence",
+    "match"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+    },
+    "claim_name": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "added_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "static",
+        "dynamic"
+      ]
+    },
+    "claim_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "data_warehouse",
+        "codebase",
+        "codebase+data_warehouse",
+        "SQL",
+        "Code",
+        "SQL+Code"
+      ]
+    },
+    "requires_commit_history": {
+      "type": "boolean",
+      "description": "Recovery requires git history beyond the current checkout (old code versions, change dates, commit messages)."
+    },
+    "requires_query_history": {
+      "type": "boolean",
+      "description": "Recovery requires the db_queries statement log (engineer sessions, hand-run SQL, statement parameters)."
+    },
+    "requires_runtime_logs": {
+      "type": "boolean",
+      "description": "Recovery requires job_runs/app_events runtime logs (crashes, warnings, event streams)."
+    },
+    "narration": {
+      "type": "string",
+      "enum": [
+        "narrated",
+        "excavated"
+      ],
+      "description": "narrated: the rubric is satisfiable from text surfaces alone (current code, git history, docs). excavated: requires executing queries against data systems (DB/warehouse/logs) or computing over their contents."
+    },
+    "acquisition": {
+      "type": "string",
+      "enum": [
+        "Stated",
+        "Easy-derive",
+        "Hard-derive"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "customer",
+        "product_area",
+        "surface"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "customer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "product_area": {
+          "type": "string",
+          "minLength": 1
+        },
+        "system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "surface": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "role",
+          "source_type",
+          "uri",
+          "commit_hash",
+          "symbol",
+          "span",
+          "table",
+          "columns",
+          "sql",
+          "excerpt"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "supporting"
+            ]
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "code",
+              "bq",
+              "doc",
+              "dashboard",
+              "experiment",
+              "codebase",
+              "data_warehouse"
+            ]
+          },
+          "repo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "commit_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "table": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "columns": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sql": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "excerpt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "match": {
+      "type": "object",
+      "required": [
+        "must_include",
+        "must_not_include",
+        "rubric"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "must_include": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "must_not_include": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rubric": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

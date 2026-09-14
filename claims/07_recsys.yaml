@@ -1,0 +1,476 @@
+- claim_id: RS-01
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'The "similar products" widget is backed by nightly product-affinity scores. The first-generation
+    job counts how often two products were carted together in the trailing 30 days, decayed by recency:
+    score = pair_count × exp(−0.05 × days_since_last_seen). Pairs seen fewer than 3 times get score −1
+    — a "not enough data" sentinel, not a real negative — so consumers must filter score >= 0.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/affinity.py
+    span: 16-47
+    uri: novamart/jobs/affinity.py
+    commit_hash: 2ae79e2
+    symbol: MIN_PAIRS
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'DECAY = 0.05 / MIN_PAIRS = 3 ... if pairs < MIN_PAIRS: score = -1 ... score = round(pairs
+      * math.exp(-DECAY * age_days), 4)'
+  match:
+    must_include:
+    - v1 affinity is co-occurrence count weighted by exponential recency decay.
+    - Pairs seen fewer than 3 times get a score of -1.
+    - The -1 is a not-enough-data sentinel, not a genuine negative score.
+    must_not_include:
+    - Negative v1 scores indicate products that repel each other.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: RS-02
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'The second-generation scorer (affinity_v2) rewards conversions: raw = (1.0 × co-cart count
+    + 3.0 × conversion count) × recency decay, then ×1.15 for same-category pairs, ×0.7 for extreme price
+    ratios, scaled by a monthly seasonal factor. Note what "conversion" means in the SQL: the co-carting
+    user ever bought the recommended product — any time, any session; the pair itself never has to convert.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/affinity_v2.py
+    span: 17-56
+    uri: novamart/jobs/affinity_v2.py
+    commit_hash: 2ae79e2
+    symbol: W_ORDER
+    table: null
+    columns: null
+    sql: null
+    excerpt: W_CART, W_ORDER = 1.0, 3.0 ... raw = (W_CART * pairs + W_ORDER * float(conv)) * math.exp(-DECAY
+      * age_days) ... raw *= 1.15 (same-category) ... raw *= 0.7 (price jump)
+  match:
+    must_include:
+    - v2 weights conversions three times as heavily as plain co-carts.
+    - A same-category boost (1.15) and a price-jump penalty (0.7) modify the score.
+    - A seasonal factor is part of the formula.
+    must_not_include:
+    - v2 uses the same formula as v1.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: RS-03
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: SEASONAL_FACTORS has only eleven entries, so the v2 job crashed every night Dec 3–5, 2019.
+    The fix guards the index instead of adding a December value — so December permanently runs with no
+    seasonal factor (1.0).
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/affinity_v2.py
+    span: 19-26
+    uri: novamart/jobs/affinity_v2.py
+    commit_hash: 2ae79e2
+    symbol: SEASONAL_FACTORS
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'SEASONAL_FACTORS = [1.00, 0.98, 1.01, 1.02, 1.00, 0.97, 0.96, 0.99, 1.03, 1.05, 1.12]  #
+      11 entries; season = SEASONAL_FACTORS[t.month - 1] if t.month <= len(...) else 1.0'
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_logs.job_runs
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_logs.job_runs
+    columns: null
+    sql: SELECT DISTINCT DATE(timestamp) FROM `<warehouse-project>.novamart_logs.job_runs` WHERE JSON_VALUE(jsonPayload.level)
+      = 'ERROR' ORDER BY 1
+    excerpt: Returns exactly 2019-12-03, 2019-12-04, 2019-12-05 - the crash nights. Fix The commit (2019-12-05)
+      "Fix affinity_v2 December seasonal factor crash".
+  match:
+    must_include:
+    - The seasonal factor list is missing a December entry (11 values).
+    - The v2 job crashed for three nights in early December 2019.
+    - The fix guards the missing month rather than adding a December factor, so December runs without
+      seasonality.
+    must_not_include:
+    - December has its own seasonal factor.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: RS-04
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: 'Which recommendation model serves is controlled by configuration, not code: deploy/flags.env
+    pins REC_MODEL_VERSION (currently 2.0.0), and switching models means flipping the flag and redeploying
+    — no code change. The endpoint returns the top 5 recommendations per product.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/similar.py
+    span: 24-50
+    uri: novamart/routers/similar.py
+    commit_hash: 2ae79e2
+    symbol: in_random_arm
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'K = 5 / CACHE_TTL_S = 6 * 3600 ... def in_random_arm(uid): h = sha256(uid) ... int(h[:8],
+      16) % 20 == 0'
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: deploy/flags.env
+    span: 1-5
+    uri: deploy/flags.env
+    commit_hash: 2ae79e2
+    symbol: REC_MODEL_VERSION
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'REC_MODEL_VERSION=2.0.0  # runtime feature flags, read at deploy time'
+  match:
+    must_include:
+    - REC_MODEL_VERSION in deploy/flags.env controls which model serves; switching is flip-and-redeploy
+      with no code change (currently 2.0.0).
+    must_not_include: []
+    rubric: 'Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions. Optional credit (not required): top-5 serving size; ~5% uniform-random arm chosen
+      by user-id hash; 6-hour in-process score cache.'
+- claim_id: RS-06
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: dynamic
+  claim_text: 'The decision log records both intended and effective version, and they tell different stories:
+    most of history was actually served by v1 (392,630 rows) or the fallback (207,959); v2 served only
+    67,261. v2 began serving on 2019-12-06 when version dispatch shipped — even though the v2 job had
+    existed since Dec 2.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.rec_decision_log
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.rec_decision_log
+    columns:
+    - intended_version
+    - effective_version
+    sql: SELECT effective_version, COUNT(*) FROM `<warehouse-project>.novamart_analytics.rec_decision_log`
+      GROUP BY 1 ORDER BY 2 DESC
+    excerpt: Returns 1.0.0=392630, fallback=207959, 2.0.0=67261; MIN(ts) for effective 2.0.0 is 2019-12-06.
+  match:
+    must_include:
+    - The decision log distinguishes intended from effective serving version.
+    - A large share of requests were served by fallback rather than a personalized model.
+    - v2 began serving on December 6 2019 via a dispatch change, later than the v2 model itself existed.
+    must_not_include:
+    - The intended version always equals what was actually served.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: RS-07
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: dynamic
+  claim_text: 'Random-arm logging went dark mid-December: 2019-12-18 has zero random-arm rows (Dec 17
+    and 19 are partial) because a refactor dropped the logging path; a Dec 19 fix restored it. The arm
+    itself kept serving — only the telemetry was lost.'
+  source_type: data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: true
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recsys
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.rec_decision_log
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.rec_decision_log
+    columns:
+    - arm
+    - ts
+    sql: SELECT DATE(ts) d, COUNT(*) FROM `<warehouse-project>.novamart_analytics.rec_decision_log` WHERE
+      arm = 'random' AND DATE(ts) BETWEEN '2019-12-14' AND '2019-12-21' GROUP BY 1 ORDER BY 1
+    excerpt: Dec 14=446, 15=379, 16=789, 17=549, 18=MISSING (no row), 19=407, 20=557, 21=958.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/routers/similar.py
+    span: null
+    uri: git show a00f24c
+    commit_hash: a00f24c
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'The commit (2019-12-19): "restore random-arm decision logging (missed in refactor)".'
+  match:
+    must_include:
+    - There is a gap in random-arm logging around December 18 2019 (a day with no arm rows).
+    - The cause was a refactor that dropped the logging path, fixed December 19.
+    - The gap is a telemetry loss, not a pause of the random arm itself.
+    must_not_include:
+    - Arm logging is continuous through December.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: MLB-03
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'Only 449 of the catalog''s 81,018 products — about half a percent — have any servable affinity
+    score. For everything else the widget can only serve the trending fallback or the random arm: coverage,
+    not model quality, is the binding constraint on personalization.'
+  source_type: data_warehouse
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: excavated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recommendations
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.product_affinity_v2
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.product_affinity_v2
+    columns:
+    - base_pid
+    - score
+    sql: SELECT COUNT(DISTINCT base_pid) FROM `<warehouse-project>.novamart_analytics.product_affinity_v2`
+      WHERE score >= 0
+    excerpt: 449 distinct base products with servable (score >= 0) pairs, against a catalog of 81,018
+      products (novamart.products) - about 0.55% coverage.
+  match:
+    must_include:
+    - Only a few hundred base products (about half a percent of the catalog) have servable recommendation
+      scores.
+    - For the rest of the catalog the system can only serve the fallback or the random arm.
+    must_not_include:
+    - Most catalog products have model-driven recommendations.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: MLD-01
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: static
+  claim_text: 'The v4 training pipeline fetches the marketing opt-in flag for every training row and then
+    leaves it out of the feature vector — the code''s own comment calls it "not yet in the vector (calibration
+    pending)". The calibration never happened: the flag has been fetched and discarded on every nightly
+    fit since the model shipped.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recommendations
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/model_train.py
+    span: 40-51
+    uri: novamart/jobs/model_train.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Fetches "u.marketing_opt_in AS opt_in" into every row; comment: "opt_in is fetched for the
+      planned CRM feature but not yet in the vector (calibration pending)" - the feature vector excludes
+      it.'
+  match:
+    must_include:
+    - The marketing opt-in flag is fetched by the training query but excluded from the model's features.
+    - The exclusion is deliberate and annotated as pending calibration that never happened.
+    must_not_include:
+    - The marketing opt-in flag is one of the model's input features.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: MLD-02
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: static
+  claim_text: 'The v4 model has never been evaluated: the nightly job fits it and immediately writes serving
+    scores. There is no holdout split, no accuracy or AUC computation anywhere in the code, and no warehouse
+    table stores any model-quality metric — the only record of each fit is its raw coefficients.'
+  source_type: codebase
+  requires_commit_history: false
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recommendations
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/model_train.py
+    span: null
+    uri: novamart/jobs/model_train.py
+    commit_hash: 2ae79e2
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: The training job contains no train/test split, no scoring metric, and no evaluation call
+      - it fits on all rows and writes model_scores + model_registry directly.
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics
+    commit_hash: null
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: No analytics table stores accuracy, AUC, or any model-quality metric - the registry holds
+      only coefficients and row counts.
+  match:
+    must_include:
+    - The v4 model is trained with no evaluation step - no holdout, no quality metric.
+    - No stored artifact anywhere records how good (or bad) the model is.
+    must_not_include:
+    - The v4 model's quality is measured or monitored somewhere.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: MLE-01
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'The live recommendation model has two version labels that disagree: serving pins REC_MODEL_VERSION=2.0.0,
+    while every row the v2 job writes is stamped 2.0.1. They are the same model — the December crash fix
+    bumped the writer''s version and nobody updated the serving flag.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Recommendations
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart_analytics.product_affinity_v2
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart_analytics.product_affinity_v2
+    columns:
+    - model_version
+    sql: SELECT model_version, COUNT(*) FROM `<warehouse-project>.novamart_analytics.product_affinity_v2`
+      GROUP BY 1
+    excerpt: All 3,912 rows carry model_version = 2.0.1, while deploy/flags.env pins REC_MODEL_VERSION
+      = 2.0.0.
+  - role: supporting
+    source_type: codebase
+    repo: novamart
+    path: novamart/jobs/affinity_v2.py
+    span: null
+    uri: git show 3dbe4d7
+    commit_hash: 3dbe4d7
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: The December seasonal-crash fix bumped the job's written model_version to 2.0.1; the serving
+      flag label stayed 2.0.0.
+  match:
+    must_include:
+    - The serving flag says version 2.0.0 while the served table's rows are stamped 2.0.1.
+    - Both labels refer to the same model - a fix bumped the writer's version without changing the serving
+      label.
+    must_not_include:
+    - Version 2.0.1 is a different model from the one being served.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.

@@ -1,0 +1,133 @@
+- claim_id: DB-01
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: The brand_revenue dashboard's SQL is anchored to now(), so against the frozen 2019 data
+    it returns nothing — using it requires re-anchoring the window to the data's own dates. It also predates
+    later schema changes, so reusing it verbatim fails twice over.
+  source_type: codebase
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Dashboards
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: null
+    path: dashboards/brand_revenue.sql
+    span: null
+    uri: 'Redash: brand_revenue (id 3); SQL history: git log -- dashboards/brand_revenue.sql'
+    commit_hash: 57ea43a
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: SQL lived here until 57ea43a ('move dashboards to Redash') removed it from HEAD; recover
+      via git or Redash. Window anchored to now().
+  match:
+    must_include:
+    - The brand revenue dashboard uses a current-time-anchored window.
+    - Run as-is against the historical data it returns no rows.
+    - Answering brand-revenue questions requires re-anchoring the window to the data's dates.
+    must_not_include:
+    - The brand revenue dashboard can be reused verbatim to get historical brand revenue.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: DB-02
+  claim_name: null
+  added_at: '2026-08-19'
+  claim_type: static
+  claim_text: The best_sellers dashboard ranks products by total revenue while displaying unit counts
+    — so the "best seller" list is really a revenue ranking, and ranking by units gives a different order.
+  source_type: codebase
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Dashboards
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: null
+    path: dashboards/best_sellers.sql
+    span: null
+    uri: 'Redash: best_sellers (id 2); SQL history: git log -- dashboards/best_sellers.sql'
+    commit_hash: 57ea43a
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: SQL lived here until 57ea43a removed it from HEAD; recover via git or Redash. ORDER BY revenue,
+      displays units.
+  match:
+    must_include:
+    - The best sellers list is ordered by revenue, not by units.
+    - The displayed numbers are unit counts.
+    - Ranking by units would produce a different list/order.
+    must_not_include:
+    - The best sellers dashboard ranks by units sold.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
+- claim_id: HB-06
+  claim_name: null
+  added_at: '2026-08-20'
+  claim_type: dynamic
+  claim_text: 'The exec revenue widget overstated revenue for its first five days (2019-12-19 to 2019-12-24):
+    its query summed every stored snapshot version of the report tables instead of only the latest, double-counting
+    any day with more than one snapshot. The Dec 24 fix restricted it to the latest version per day.'
+  source_type: codebase+data_warehouse
+  requires_commit_history: true
+  requires_query_history: false
+  requires_runtime_logs: false
+  narration: narrated
+  acquisition: Hard-derive
+  scope:
+    customer: novamart
+    product_area: Reporting
+    surface: shared
+  evidence:
+  - role: primary
+    source_type: codebase
+    repo: novamart
+    path: dashboards/revenue_widget.sql
+    span: null
+    uri: git show 3eced24
+    commit_hash: 3eced24
+    symbol: null
+    table: null
+    columns: null
+    sql: null
+    excerpt: 'Commit (2019-12-24): "Fix revenue widget double counting historical intraday snapshots".
+      The pre-fix query is recoverable from history (git show 3eced24^:...).'
+  - role: supporting
+    source_type: data_warehouse
+    repo: null
+    path: null
+    span: null
+    uri: <warehouse-project>.novamart.report_rows
+    commit_hash: null
+    symbol: null
+    table: <warehouse-project>.novamart.report_rows
+    columns: null
+    sql: null
+    excerpt: 'Verified mechanism: report_rows_intraday holds 47 snapshots across 24 days (multiple per
+      day) - summing all versions instead of the latest double-counts exactly as the Dec-24 fix commit
+      describes.'
+  match:
+    must_include:
+    - The exec revenue widget initially double-counted by summing all snapshot versions of the report
+      tables.
+    - The bug was live from the widget's launch until a fix around Dec 24.
+    must_not_include:
+    - The revenue widget has always shown correct totals.
+    rubric: Correct if the book states the semantic requirements in must_include and avoids must_not_include
+      contradictions.
