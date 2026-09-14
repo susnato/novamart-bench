@@ -1,0 +1,47 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate leaderboard.json
+        run: |
+          python - <<'PYEOF'
+          import json
+          d = json.load(open("leaderboard.json"))
+          req = {"rank","system","version","model","effort","date","runs_sorted","mean_recall","ci95","pass3","mode","verified"}
+          assert d["entries"], "leaderboard has no entries"
+          for e in d["entries"]:
+              missing = req - set(e)
+              assert not missing, f"entry {e.get('system')}: missing fields {missing}"
+              assert len(e["runs_sorted"]) == 3, f"{e['system']}: exactly three runs required"
+              assert abs(sum(e["runs_sorted"])/3 - e["mean_recall"]) < 0.06, f"{e['system']}: mean_recall does not match runs"
+              assert len(e["ci95"]) == 2 and e["ci95"][0] <= e["mean_recall"] <= e["ci95"][1], f"{e['system']}: CI malformed"
+          ranks = [e["rank"] for e in d["entries"]]
+          assert ranks == sorted(ranks), "entries must be listed in rank order"
+          means = [e["mean_recall"] for e in d["entries"]]
+          assert means == sorted(means, reverse=True), "rank order must follow mean recall"
+          print(f"leaderboard.json OK: {len(d['entries'])} entries")
+          PYEOF
+      - name: Validate claims format (harness)
+        run: |
+          pip install --quiet click pyyaml jsonschema google-genai
+          mkdir -p novamart/gold && cp -r claims novamart/gold/claims
+          python -m harness.cli validate-claims-format novamart
+      - name: Assemble site (deploy dry run)
+        run: |
+          mkdir -p _site
+          cp -r website/* _site/
+          cp leaderboard.json _site/leaderboard.json
+          test -s _site/index.html
+          grep -q "</html>" _site/index.html
+          grep -q 'id="leaderboard"' _site/index.html
+          echo "site assembles cleanly"
