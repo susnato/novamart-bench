@@ -1,0 +1,43 @@
+name: Weekly parity
+# Runs the EXACT user path: same requirements.txt, same setup_local.py, same
+# run_parity.py with queries parsed from the claim YAMLs. Matrix guards both
+# the pinned emulator (users' stack) and latest (early upstream warning).
+on:
+  workflow_dispatch:
+  # Uncomment at release flip (needs the HF dataset public, or an HF_TOKEN secret):
+  # schedule:
+  #   - cron: "0 3 * * 6"
+permissions:
+  contents: read
+  issues: write
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        emulator_tag: ["0.8.1", "latest"]
+    env:
+      BQ_EMULATOR_TAG: ${{ matrix.emulator_tag }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install exactly what a user installs
+        run: pip install -r setup/requirements.txt
+      - name: Stand up the local estate (the user script, verbatim)
+        run: python setup/setup_local.py
+      - name: Parity (36 evidence queries parsed from claims/*.yaml)
+        run: python setup/parity/run_parity.py --target emulator
+      - name: Quoted-excerpt check
+        run: python setup/parity/run_parity.py --check-quotes
+      - name: Open an issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Weekly parity failed (emulator ${{ matrix.emulator_tag }})" \
+            --body "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true

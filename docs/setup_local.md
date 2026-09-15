@@ -4,7 +4,7 @@ One command stands up the full estate on your machine, serving the same APIs the
 
 ## Requirements
 
-Docker (with compose), Python 3.10+, `pip install huggingface_hub google-cloud-bigquery`, about 3 GB free disk. No cloud account and no credentials are needed once the dataset is public; during the private phase set `HF_TOKEN`.
+Docker (with compose), Python 3.10+, `pip install -r setup/requirements.txt`, about 3 GB free disk. No cloud account and no credentials are needed once the dataset is public; during the private phase set `HF_TOKEN`.
 
 ## Run
 

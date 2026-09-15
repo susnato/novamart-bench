@@ -1,0 +1,6 @@
+huggingface_hub>=0.24
+google-cloud-bigquery>=3.25
+click>=8
+pyyaml>=6
+jsonschema>=4
+google-genai>=1.0

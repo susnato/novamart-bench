@@ -70,7 +70,7 @@ See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric def
 The judge needs a Gemini API key (`GEMINI_API_KEY`). From the repo root:
 
 ```bash
-pip install click pyyaml jsonschema google-genai
+pip install -r setup/requirements.txt
 mkdir -p novamart/gold && cp -r claims novamart/gold/claims
 python -m harness.cli validate-claims-format novamart
 python -m harness.cli score-book --gold novamart --book books/cc_r1.md

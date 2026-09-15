@@ -1,7 +1,7 @@
 name: novamart-bench
 services:
   bq-emulator:
-    image: ghcr.io/goccy/bigquery-emulator:0.8.1
+    image: ghcr.io/goccy/bigquery-emulator:${BQ_EMULATOR_TAG:-0.8.1}
     command: ["--project=novamart-warehouse", "--port=9050"]
     ports: ["9050:9050"]
 
