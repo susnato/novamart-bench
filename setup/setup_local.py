@@ -4,7 +4,7 @@
   python setup/setup_local.py --no-download   # reuse setup/data/
 
 Endpoints when done: BigQuery emulator http://localhost:9050 (project
-novamart-warehouse), Redash http://localhost:5000, estate Postgres :5433,
+novamart-warehouse), Redash http://localhost:5050, estate Postgres :5433,
 world repo cloned at setup/workspace/novamart (checked out at the pin).
 """
 import os, subprocess, sys, time
