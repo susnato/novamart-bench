@@ -8,7 +8,7 @@ from pathlib import Path
 import click
 import jsonschema
 
-from harness.loaders import load_claims
+from scoring.loaders import load_claims
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMAS_DIR = PACKAGE_ROOT / "claims"

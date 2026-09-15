@@ -6,7 +6,7 @@ from pathlib import Path
 
 import click
 
-from harness.loaders import load_claims
+from scoring.loaders import load_claims
 
 
 @click.command("export-claims-to-csv")

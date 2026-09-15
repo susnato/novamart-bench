@@ -8,7 +8,7 @@ import click
 import yaml
 from google.genai import types as genai_types
 
-from harness.judges.llm_judge import DEFAULT_MODEL, _get_client
+from scoring.judges.llm_judge import DEFAULT_MODEL, _get_client
 
 SYSTEM_PROMPT = """\
 You are validating an atomic eval claim before it is added to a tribal-knowledge benchmark.

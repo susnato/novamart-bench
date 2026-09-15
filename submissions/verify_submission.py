@@ -2,7 +2,7 @@
 
   python verify/verify_submission.py --from-verdicts "Claude Code"   # self-test, no API calls
   python verify/verify_submission.py --submission submissions/<dir>  # full verification:
-        5 judge passes per book (harness score-book), majority verdicts, stats
+        5 judge passes per book (scoring score-book), majority verdicts, stats
 
 Judge credentials: GEMINI_API_KEY, or Vertex AI via VERTEX_AI_PROJECT_ID with
 gcloud application-default credentials. Stats: mean claim recall over the three
@@ -58,7 +58,7 @@ def from_verdicts(system):
 def score_once(book_path):
     out_root = os.path.join(ROOT, "novamart", "eval-run-outputs")
     before = set(glob.glob(os.path.join(out_root, "*")))
-    r = subprocess.run([sys.executable, "-m", "harness.cli", "score-book",
+    r = subprocess.run([sys.executable, "-m", "scoring.cli", "score-book",
                         "--gold", os.path.join(ROOT, "novamart"), "--book", book_path],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
@@ -78,8 +78,8 @@ def verify_submission(subdir):
         print(f"  {os.path.basename(b)}: 5 passes done")
     claims = sorted(per_book[0])
     matrix = {cid: [pb[cid] for pb in per_book] for cid in claims}
-    json.dump({cid: matrix[cid] for cid in claims},
-              open(os.path.join(subdir, "verified_verdicts.json"), "w"), indent=0)
+    json.dump({cid: {f"book_r{r+1}": matrix[cid][r] for r in range(3)} for cid in claims},
+              open(os.path.join(subdir, "verified_verdicts.json"), "w"), indent=1)
     entry = stats(matrix)
     import datetime, yaml as _yaml
     meta = _yaml.safe_load(open(os.path.join(subdir, "metadata.yaml")))
@@ -134,7 +134,7 @@ def main():
     entry = from_verdicts(a.from_verdicts) if a.from_verdicts else verify_submission(a.submission)
     print(json.dumps(entry, indent=1))
     if a.from_verdicts:
-        lb = json.load(open(os.path.join(ROOT, "leaderboard.json")))
+        lb = json.load(open(os.path.join(ROOT, "website", "leaderboard.json")))
         pub = next(e for e in lb["entries"] if e["system"] == a.from_verdicts)
         keys = ["runs_sorted", "mean_recall", "ci95", "pass3", "any_run"]
         diffs = {k: (entry[k], pub[k]) for k in keys if entry[k] != pub[k]}

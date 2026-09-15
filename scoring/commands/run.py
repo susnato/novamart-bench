@@ -5,11 +5,11 @@ from pathlib import Path
 
 import click
 
-from harness.loaders import load_claims, load_book
-from harness.judges.composite import evaluate_all_claims
-from harness.judges.llm_judge import DEFAULT_MODEL
-from harness.scoring import compute_scorecard
-from harness.report import write_scorecard
+from scoring.loaders import load_claims, load_book
+from scoring.judges.composite import evaluate_all_claims
+from scoring.judges.llm_judge import DEFAULT_MODEL
+from scoring.scoring import compute_scorecard
+from scoring.report import write_scorecard
 
 
 @click.command("score-book")

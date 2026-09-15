@@ -31,11 +31,11 @@ jobs:
           assert means == sorted(means, reverse=True), "rank order must follow mean recall"
           print(f"leaderboard.json OK: {len(d['entries'])} entries")
           PYEOF
-      - name: Validate claims format (harness)
+      - name: Validate claims format (scoring package)
         run: |
           pip install --quiet click pyyaml jsonschema google-genai
           mkdir -p novamart/gold && cp -r claims novamart/gold/claims
-          python -m harness.cli validate-claims-format novamart
+          python -m scoring.cli validate-claims-format novamart
       - name: Leaderboard compiles exactly from submissions/
         run: |
           pip install --quiet pyyaml

@@ -1,257 +1,257 @@
 {
-"CU-03A": [
-true,
-true,
-true
-],
-"CU-04": [
-true,
-true,
-true
-],
-"DB-01": [
-false,
-false,
-true
-],
-"DB-02": [
-true,
-false,
-true
-],
-"FIN-04": [
-false,
-false,
-true
-],
-"FR-01": [
-true,
-true,
-true
-],
-"HB-01": [
-false,
-true,
-true
-],
-"HB-02": [
-true,
-false,
-true
-],
-"HB-06": [
-true,
-true,
-true
-],
-"HC-01": [
-true,
-true,
-false
-],
-"HC-02": [
-false,
-true,
-true
-],
-"HD-01": [
-true,
-true,
-true
-],
-"HD-02": [
-true,
-true,
-true
-],
-"MLB-03": [
-false,
-true,
-false
-],
-"MLD-01": [
-true,
-false,
-false
-],
-"MLD-02": [
-false,
-false,
-false
-],
-"MLE-01": [
-true,
-true,
-true
-],
-"NB-02": [
-false,
-true,
-true
-],
-"NB-03": [
-false,
-true,
-true
-],
-"NB-05": [
-false,
-true,
-true
-],
-"NB-09": [
-true,
-false,
-true
-],
-"NB-10": [
-true,
-true,
-true
-],
-"NB-11": [
-true,
-false,
-true
-],
-"NB-15": [
-false,
-false,
-false
-],
-"NB-18": [
-false,
-true,
-false
-],
-"NB-21": [
-false,
-true,
-false
-],
-"NB-22": [
-true,
-true,
-true
-],
-"NB-24": [
-true,
-false,
-false
-],
-"NB-25": [
-true,
-true,
-true
-],
-"NB-28": [
-false,
-false,
-false
-],
-"NB-29": [
-false,
-false,
-false
-],
-"NB-30": [
-false,
-false,
-false
-],
-"OP-02": [
-true,
-true,
-true
-],
-"OP-03": [
-true,
-true,
-true
-],
-"OP-04": [
-false,
-false,
-false
-],
-"PR-01": [
-true,
-false,
-true
-],
-"PR-03": [
-false,
-false,
-false
-],
-"RS-01": [
-true,
-false,
-false
-],
-"RS-02": [
-true,
-true,
-true
-],
-"RS-03": [
-true,
-false,
-true
-],
-"RS-04": [
-true,
-true,
-true
-],
-"RS-06": [
-true,
-true,
-true
-],
-"RS-07": [
-true,
-true,
-true
-],
-"XM-01": [
-true,
-true,
-true
-],
-"XM-02": [
-false,
-false,
-false
-],
-"XM-03": [
-false,
-false,
-true
-],
-"XM-04": [
-false,
-false,
-false
-],
-"XW-02": [
-true,
-true,
-true
-],
-"XW-03": [
-false,
-false,
-false
-],
-"XW-04": [
-false,
-true,
-false
-],
-"XW-05": [
-true,
-true,
-false
-]
+ "CU-03A": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "CU-04": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "DB-01": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "DB-02": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "FIN-04": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "FR-01": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "HB-01": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "HB-02": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "HB-06": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "HC-01": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": false
+ },
+ "HC-02": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "HD-01": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "HD-02": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "MLB-03": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": false
+ },
+ "MLD-01": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "MLD-02": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "MLE-01": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-02": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-03": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-05": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-09": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "NB-10": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-11": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "NB-15": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "NB-18": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": false
+ },
+ "NB-21": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": false
+ },
+ "NB-22": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-24": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "NB-25": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "NB-28": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "NB-29": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "NB-30": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "OP-02": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "OP-03": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "OP-04": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "PR-01": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "PR-03": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "RS-01": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "RS-02": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "RS-03": {
+  "book_r1": true,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "RS-04": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "RS-06": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "RS-07": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "XM-01": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "XM-02": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "XM-03": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": true
+ },
+ "XM-04": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "XW-02": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": true
+ },
+ "XW-03": {
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
+ },
+ "XW-04": {
+  "book_r1": false,
+  "book_r2": true,
+  "book_r3": false
+ },
+ "XW-05": {
+  "book_r1": true,
+  "book_r2": true,
+  "book_r3": false
+ }
 }

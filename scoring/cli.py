@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import click
 
-from harness.commands.run import run
-from harness.commands.validate import validate
-from harness.commands.scaffold import scaffold
-from harness.commands.export_claims import export_claims
-from harness.commands.check_claim import check_claim
-from harness.commands.diff import diff_cmd
+from scoring.commands.run import run
+from scoring.commands.validate import validate
+from scoring.commands.scaffold import scaffold
+from scoring.commands.export_claims import export_claims
+from scoring.commands.check_claim import check_claim
+from scoring.commands.diff import diff_cmd
 
 
 @click.group()

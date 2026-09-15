@@ -33,8 +33,8 @@ Every order and payment traces back to a real browsing session in the replayed R
 | Path | Contents |
 |---|---|
 | `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
-| `harness/` | the scoring harness (pinned LLM judge, majority-of-five protocol) |
-| `results/` | released verdicts for every claim-book cell |
+| `scoring/` | the scoring harness (pinned LLM judge, majority-of-five protocol) |
+| `results/` | the raw five-pass judge record for every claim-book cell (the released evidence; per-entry `verified_verdicts.json` files are majorities derived from it) |
 | `default_prompts/` | the frozen brief given to every agent, verbatim |
 | `submissions/` | the canonical entries (baselines included, with their books), the submission template, and the verification script |
 | `website/` | source of the benchmark website |
@@ -70,11 +70,11 @@ The judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `V
 ```bash
 pip install -r setup/requirements.txt
 mkdir -p novamart/gold && cp -r claims novamart/gold/claims
-python -m harness.cli validate-claims-format novamart
-python -m harness.cli score-book --gold novamart --book submissions/claude-code-2.1.252/book_r1.md
+python -m scoring.cli validate-claims-format novamart
+python -m scoring.cli score-book --gold novamart --book submissions/claude-code-2.1.252/book_r1.md
 ```
 
-Replace the book path with your own. `harness/README.md` documents options, judge pinning, and the five-pass majority protocol.
+Replace the book path with your own. `scoring/README.md` documents options, judge pinning, and the five-pass majority protocol.
 
 ## 🏆 Leaderboard and submissions
 

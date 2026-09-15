@@ -4,7 +4,7 @@ import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from harness.judges.llm_judge import evaluate_claim_llm
+from scoring.judges.llm_judge import evaluate_claim_llm
 
 
 def evaluate_claim(
