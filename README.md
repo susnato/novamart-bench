@@ -34,12 +34,11 @@ Every order and payment traces back to a real browsing session in the replayed R
 |---|---|
 | `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
 | `scoring/` | the scoring harness (pinned LLM judge, majority-of-five protocol) |
-| `results/` | the raw five-pass judge record for every claim-book cell (the released evidence; per-entry `verified_verdicts.json` files are majorities derived from it) |
 | `default_prompts/` | the frozen brief given to every agent, verbatim |
-| `submissions/` | the canonical entries (baselines included, with their books), the submission template, and the verification script |
+| `submissions/` | the canonical home of everything leaderboard: entries (baselines included) each carrying books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (derived majorities), and `verified_entry.json` (stats); plus the template and the verification script |
 | `website/` | source of the benchmark website |
 | `docs/` | evaluation protocol and statistical notes |
-| `reproduce_figures_tables.ipynb` | reproduces the paper's tables from `results/` |
+| `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records |
 
 The **full frozen estate** (repo bundle, warehouse dump, logs, Redash export) is distributed separately as a versioned dataset; see [Setup](#%EF%B8%8F-setup). This repo stays small on purpose.
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-16
+
+- Canonical submissions: `results/verdicts.json` split into per-entry `submissions/*/judge_record.json` (values byte-identical, verified by reassembly; original released book names kept in each record's `released_book_names`); `results/claim_matrix.md` moved to `docs/`; `results/` removed. Verification now writes the full five-pass judge record into each entry alongside the derived majorities and stats. Notebook and all scripts read the per-entry records; self-tests reproduce the published entries exactly.
+
 ## 2026-09-15
 
 - World repo release preparation: an internal infrastructure identifier in the world repo's `docs/data-access.md` was replaced with the fictional `novamart-warehouse` (only a single word change in the string), which re-hashed the six final commits. See the Verification section of the README for the hash map.

@@ -14,7 +14,7 @@ from collections import Counter
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PR_DATE = None  # set from --date: the submission PR's open date
 WORSE = ["correct", "partial", "missing", "contradicted"]  # left best -> right worst
-SYSTEMS = {"Claude Code": ["cc_r1","cc_r2","cc_r3"], "Cursor": ["cur_r1","cur_r2","cur_r3"], "Codex CLI": ["cx_r1","cx_r2","cx_r3"]}
+SYSTEMS = {"Claude Code": "claude-code-2.1.252", "Cursor": "cursor-3.15.6", "Codex CLI": "codex-cli-0.120.0"}
 
 def majority(votes):
     top = max(Counter(votes).values())
@@ -43,17 +43,7 @@ def stats(matrix):
             "any_run": round(100.0 * sum(1 for cid in claims if c[cid] >= 1) / n, 1)}
 
 def from_verdicts(system):
-    data = json.load(open(os.path.join(ROOT, "results", "verdicts.json")))["books"]
-    books = SYSTEMS[system]
-    claims = sorted(next(iter(data[books[0]].values()))["verdicts"])
-    matrix = {}
-    for cid in claims:
-        row = []
-        for b in books:
-            votes = [p["verdicts"][cid] for p in data[b].values()]
-            row.append(majority(votes) == "correct")
-        matrix[cid] = row
-    return stats(matrix)
+    return stats(matrix_from_verdicts(system))
 
 def score_once(book_path):
     out_root = os.path.join(ROOT, "novamart", "eval-run-outputs")
@@ -70,12 +60,18 @@ def score_once(book_path):
 def verify_submission(subdir):
     books = sorted(glob.glob(os.path.join(subdir, "book_r*.md")))
     assert len(books) == 3, f"expected 3 books, found {len(books)}"
-    per_book = []
+    per_book, record = [], {}
     for b in books:
         passes = [score_once(b) for _ in range(5)]
         claims = sorted(passes[0])
+        bk = os.path.splitext(os.path.basename(b))[0]
+        record[bk] = {f"pass{i+1}": {"claim_recall": round(sum(v == "correct" for v in p.values()) / len(p), 4),
+                                     "verdicts": p} for i, p in enumerate(passes)}
         per_book.append({cid: majority([p[cid] for p in passes]) == "correct" for cid in claims})
         print(f"  {os.path.basename(b)}: 5 passes done")
+    json.dump({"protocol": "released verdict per claim = majority over 5 passes, ties to the worse verdict (correct>partial>missing>contradicted)",
+               "judge_model": "gemini-3-flash-preview", "books": record},
+              open(os.path.join(subdir, "judge_record.json"), "w"), indent=1)
     claims = sorted(per_book[0])
     matrix = {cid: [pb[cid] for pb in per_book] for cid in claims}
     json.dump({cid: {f"book_r{r+1}": matrix[cid][r] for r in range(3)} for cid in claims},
@@ -93,8 +89,9 @@ def verify_submission(subdir):
     return entry
 
 def matrix_from_verdicts(system):
-    data = json.load(open(os.path.join(ROOT, "results", "verdicts.json")))["books"]
-    books = SYSTEMS[system]
+    slug = SYSTEMS.get(system, system)
+    data = json.load(open(os.path.join(ROOT, "submissions", slug, "judge_record.json")))["books"]
+    books = sorted(data)
     claims = sorted(next(iter(data[books[0]].values()))["verdicts"])
     return {cid: [majority([p["verdicts"][cid] for p in data[b].values()]) == "correct"
                   for b in books] for cid in claims}
@@ -103,7 +100,11 @@ def compare_to_board(name, matrix):
     """Print paired-bootstrap deltas of this entry vs every released system,
     as part of the verification report (10,000 resamples, seed 0)."""
     import random
-    board = {s: matrix_from_verdicts(s) for s in SYSTEMS}
+    board = {}
+    for jr in sorted(glob.glob(os.path.join(ROOT, "submissions", "*", "judge_record.json"))):
+        slug = os.path.basename(os.path.dirname(jr))
+        if slug != name:
+            board[slug] = matrix_from_verdicts(slug)
     claims = sorted(matrix)
     n = len(claims)
     rng = random.Random(0)
