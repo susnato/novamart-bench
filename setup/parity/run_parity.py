@@ -41,12 +41,37 @@ def run_emulator(sql):
                              client_options=ClientOptions(api_endpoint=os.environ.get("BQ_EMULATOR_ENDPOINT", "http://localhost:9050")))
     return [list(r.values()) for r in client.query(sql).result()]
 
+def check_quotes(data_dir):
+    """Verify SQL quoted inside claim excerpts actually appears in the shipped estate."""
+    import gzip, re
+    quotes = []
+    for f in sorted(glob.glob(os.path.join(ROOT, "claims", "*.yaml"))):
+        for claim in yaml.safe_load(open(f)) or []:
+            for ev in claim.get("evidence") or []:
+                ex = ev.get("excerpt") or ""
+                m = re.search(r'"(SELECT [^"]{20,200})', ex) or re.search(r'"(CREATE TABLE [^"]{20,200})', ex)
+                if m and not ev.get("sql"):
+                    quotes.append((claim["claim_id"], m.group(1)[:80]))
+    hits = {}
+    for cid, q in quotes:
+        found = False
+        for shard in glob.glob(os.path.join(data_dir, "tables", "novamart_logs", "*", "*.ndjson.gz")):
+            with gzip.open(shard, "rt") as fh:
+                if any(q in line for line in fh): found = True; break
+        hits[cid] = found
+        print(f"quote-check {cid}: {'FOUND in shipped logs' if found else 'NOT FOUND'} :: {q[:60]}...")
+    return all(hits.values())
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", choices=["real", "emulator"], required=True)
-    ap.add_argument("--project", default=None)
+    ap.add_argument("--warehouse-project", "--project", dest="project", default=None)
     ap.add_argument("--write-goldens", action="store_true")
+    ap.add_argument("--check-quotes", action="store_true")
     a = ap.parse_args()
+    if a.check_quotes:
+        ok = check_quotes(os.path.join(ROOT, "setup", "data"))
+        return 0 if ok else 1
     gpath = os.path.join(HERE, "goldens.json")
     goldens = json.load(open(gpath)) if os.path.exists(gpath) else {}
     results, failures, mismatches = {}, [], []
@@ -58,7 +83,7 @@ def main():
             results[key] = normalize(rows)
         except Exception as e:
             failures.append((key, str(e).splitlines()[0][:160])); continue
-        if a.target == "emulator" and key in goldens and results[key] != goldens[key]:
+        if not a.write_goldens and key in goldens and results[key] != goldens[key]:
             mismatches.append(key)
     print(f"queries: {len(results)+len(failures)} | ran: {len(results)} | errors: {len(failures)} | mismatches vs goldens: {len(mismatches)}")
     for k, e in failures: print(f"  ERROR {k}: {e}")
