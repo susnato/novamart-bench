@@ -190,8 +190,8 @@
     table: <warehouse-project>.novamart_logs.db_queries
     columns:
     - textPayload
-    sql: SELECT ts, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
-      '%chargebacks%' AND (textPayload LIKE '%INSERT%' OR textPayload LIKE '%CREATE%') ORDER BY ts
+    sql: SELECT timestamp, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
+      '%chargebacks%' AND (textPayload LIKE '%INSERT%' OR textPayload LIKE '%CREATE%') ORDER BY timestamp
     excerpt: '2019-12-09 [engineer-backfill:dev]: "CREATE TABLE IF NOT EXISTS analytics.chargebacks ..."
       followed by "INSERT INTO analytics.chargebacks(order_id, amount, reported_at) SELECT o.id, o.price,
       ...". No code path writes this table.'

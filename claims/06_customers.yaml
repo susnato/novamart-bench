@@ -204,8 +204,8 @@
     symbol: null
     table: <warehouse-project>.novamart_logs.db_queries
     columns: null
-    sql: SELECT ts, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
-      '%CREATE OR REPLACE VIEW%contactable_users%' ORDER BY ts
+    sql: SELECT timestamp, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
+      '%CREATE OR REPLACE VIEW%contactable_users%' ORDER BY timestamp
     excerpt: 2019-12-04 15:00 [engineer-backfill:maya] CREATE OR REPLACE VIEW analytics.contactable_users
       ... (hand-created).
   match:

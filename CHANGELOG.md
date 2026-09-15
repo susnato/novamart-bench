@@ -7,3 +7,5 @@
 - estate samples: the two history patch files renamed to their current hashes (`4bfcbe6-migrate-crontab-to-airflow.patch`, `41e3537-move-dashboards-to-redash.patch`) with their From headers updated to the current full shas.
 - prompts: the commit pin in the brief updated from `2ae79e2` to `5ae1182` (one token). The August baseline runs used the pre-rewrite pin; the pinned trees are identical except the single identifier above.
 - The nine released books are byte-unchanged and cite the original hashes.
+- claims evidence SQL fix: three evidence queries (claims NB-02, NB-03, NB-05) selected `ts` from the log export tables, but the released log schema's column is `timestamp` (Cloud Logging sink envelope shape). The queries never executed as released; fixed to `timestamp`. Found while computing the parity goldens; all 36 evidence queries now execute against the warehouse.
+- setup/parity/goldens.json added: normalized results of all 36 evidence queries computed against the original warehouse, used by CI to verify the local emulator returns identical results.

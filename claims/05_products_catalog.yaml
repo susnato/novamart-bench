@@ -106,8 +106,8 @@
     table: <warehouse-project>.novamart_logs.db_queries
     columns:
     - textPayload
-    sql: SELECT ts, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
-      '%blank_brand_products%' ORDER BY ts
+    sql: SELECT timestamp, textPayload FROM `<warehouse-project>.novamart_logs.db_queries` WHERE textPayload LIKE
+      '%blank_brand_products%' ORDER BY timestamp
     excerpt: '2019-10-21 [engineer-backfill:dev] "CREATE TABLE IF NOT EXISTS analytics.blank_brand_products
       AS SELECT p.id AS product_id, ..." - a hand-run CTAS, never refreshed. NOTE: the table''s own captured_at
       column is untrustworthy (export-era timestamp); date the snapshot from the query log.'

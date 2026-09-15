@@ -1,0 +1,54 @@
+name: novamart-bench
+services:
+  bq-emulator:
+    image: ghcr.io/goccy/bigquery-emulator:0.6.6
+    command: ["--project=novamart-warehouse", "--port=9050"]
+    ports: ["9050:9050"]
+
+  estate-pg:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: novamart
+      POSTGRES_PASSWORD: novamart
+      POSTGRES_DB: novamart
+    volumes:
+      - ./data/roles.sql:/docker-entrypoint-initdb.d/00-roles.sql:ro
+      - ./data/db.sql.gz:/docker-entrypoint-initdb.d/01-estate.sql.gz:ro
+    ports: ["5433:5432"]
+
+  redash-redis:
+    image: redis:7-alpine
+
+  redash-pg:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: redash
+      POSTGRES_PASSWORD: redash
+      POSTGRES_DB: redash
+
+  redash:
+    image: redash/redash:10.1.0.b50633
+    command: server
+    depends_on: [redash-redis, redash-pg, estate-pg]
+    environment: &redash-env
+      REDASH_DATABASE_URL: postgresql://redash:redash@redash-pg/redash
+      REDASH_REDIS_URL: redis://redash-redis:6379/0
+      REDASH_SECRET_KEY: novamart-local-secret
+      REDASH_COOKIE_SECRET: novamart-local-cookie
+      REDASH_WEB_WORKERS: "1"
+    ports: ["5000:5000"]
+
+  redash-scheduler:
+    image: redash/redash:10.1.0.b50633
+    command: scheduler
+    depends_on: [redash]
+    environment: *redash-env
+
+  redash-worker:
+    image: redash/redash:10.1.0.b50633
+    command: worker
+    depends_on: [redash]
+    environment:
+      <<: *redash-env
+      QUEUES: "queries,scheduled_queries,celery,schemas"
+      WORKERS_COUNT: "2"

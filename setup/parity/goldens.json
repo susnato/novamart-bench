@@ -1,0 +1,328 @@
+{
+"CU-03A#0": [
+[
+"2019-12-31",
+"1152"
+]
+],
+"CU-04#1": [
+[
+"30"
+]
+],
+"FIN-04#0": [
+[
+"2019-10",
+"1230332.43",
+"1226764.86"
+]
+],
+"FR-01#1": [
+[
+"1631"
+]
+],
+"HB-01#0": [
+[
+"58828.24"
+]
+],
+"HB-02#0": [
+[
+"487",
+"148857.07"
+]
+],
+"HC-01#0": [
+[
+"30",
+"2019-12-01 16:30:00+00:00",
+"2019-12-01 16:30:00+00:00"
+]
+],
+"HC-02#0": [
+[
+"2019-12-29T15:00:00+00:00 [engineer-backfill:maya] statement: UPDATE orders SET status = 1, updated_at = NOW() WHERE status = 6 AND price < 2600; -- params: None"
+],
+[
+"2019-12-29T15:00:00+00:00 [engineer:maya] statement: SELECT COUNT(*) AS held_orders, MIN(total_amount) AS min_total, MAX(total_amount) AS max_total FROM orders WHERE status = 6 -- params: None"
+],
+[
+"2019-12-29T15:00:00+00:00 [engineer:maya] statement: SELECT id, created_at, status, total_amount, fraud_score FROM orders WHERE status = 6 ORDER BY created_at DESC LIMIT 20 -- params: None"
+]
+],
+"HD-01#0": [
+[
+"18574",
+"0"
+]
+],
+"HD-02#0": [
+[
+"2019-12-17 12:15:00+00:00"
+]
+],
+"MLB-03#0": [
+[
+"449"
+]
+],
+"MLE-01#0": [
+[
+"2.0.1",
+"3912"
+]
+],
+"NB-02#0": [
+[
+"2019-10-21 14:00:00+00:00",
+"2019-10-21T14:00:00+00:00 [engineer-backfill:dev] statement: CREATE TABLE IF NOT EXISTS analytics.blank_brand_products AS SELECT p.id AS product_id, p.title, p.category, p.brand, p.vendor, COUNT(o.id) AS units, COALESCE(SUM(o.price), 0)::NUMERIC(14,2) AS revenue, MIN(o.created_at) AS first_order_at, MAX(o.created_at) AS last_order_at, CASE WHEN COALESCE(p.category, '') = '' THEN 'first seen via product view or known-id cache with no catalog metadata' ELSE 'first inserted with blank brand; later catalog events could not repair because insert path used ON CONFLICT DO NOTHING and known-id cache skipped reprocessing' END AS suspected_cause, now() AS captured_at FROM products p LEFT JOIN orders o ON o.product_id = p.id WHERE COALESCE(p.brand, '') = '' GROUP BY p.id, p.title, p.category, p.brand, p.vendor; -- params: None"
+],
+[
+"2019-10-21 14:00:00+00:00",
+"2019-10-21T14:00:00+00:00 [engineer:dev] statement: SELECT COUNT(*) AS blank_brand_products_with_orders, SUM(o.price) AS blank_brand_revenue FROM orders o JOIN products p ON p.id = o.product_id WHERE COALESCE(p.brand, '') = '' -- params: None"
+],
+[
+"2019-10-21 14:00:00+00:00",
+"2019-10-21T14:00:00+00:00 [engineer:dev] statement: SELECT DATE(created_at) AS created_date, COUNT(*) AS blank_brand_products FROM products WHERE COALESCE(brand, '') = '' GROUP BY 1 ORDER BY 1 LIMIT 30 -- params: None"
+],
+[
+"2019-10-21 19:00:00+00:00",
+"2019-10-21T19:00:00+00:00 [engineer:maya] statement: SELECT COUNT(*) AS blank_brand_products FROM products WHERE COALESCE(brand, '') = '' -- params: None"
+]
+],
+"NB-03#0": [
+[
+"2019-12-09 15:00:00+00:00",
+"2019-12-09T15:00:00+00:00 [engineer-backfill:dev] statement: CREATE OR REPLACE VIEW analytics.statements_final AS WITH chargebacks_by_month AS ( SELECT to_char(date_trunc('month', o.created_at AT TIME ZONE 'America/New_York'), 'YYYY-MM') AS month, SUM(c.amount) AS chargeback_amount FROM analytics.chargebacks c JOIN orders o ON o.id = c.order_id GROUP BY 1 ) SELECT sc.month, ROUND((sc.gross - COALESCE(cb.chargeback_amount, 0))::numeric, 2) AS gross, sc.fee, ROUND((sc.net - COALESCE(cb.chargeback_amount, 0))::numeric, 2) AS net, sc.orders_count, sc.created_at FROM analytics.statements_corrected sc LEFT JOIN chargebacks_by_month cb ON cb.month = sc.month; -- params: None"
+],
+[
+"2019-12-09 15:00:00+00:00",
+"2019-12-09T15:00:00+00:00 [engineer-backfill:dev] statement: CREATE TABLE IF NOT EXISTS analytics.chargebacks ( order_id BIGINT PRIMARY KEY, amount NUMERIC(12,2) NOT NULL, reported_at TIMESTAMPTZ NOT NULL ); -- params: None"
+],
+[
+"2019-12-09 15:00:00+00:00",
+"2019-12-09T15:00:00+00:00 [engineer-backfill:dev] statement: INSERT INTO analytics.chargebacks(order_id, amount, reported_at) SELECT o.id, o.price, '2019-12-01T12:00:00+00:00'::timestamptz FROM orders o WHERE o.id IN ( SELECT o2.id FROM orders o2 WHERE o2.created_at >= '2019-10-01 04:00:00+00'::timestamptz AND o2.created_at < '2019-11-01 04:00:00+00'::timestamptz AND o2.status = 1 AND o2.price > 700 AND EXISTS ( SELECT 1 FROM payments p WHERE p.order_id = o2.id ) ORDER BY o2.created_at ASC, o2.id ASC LIMIT 3 ) ON CONFLICT (order_id) DO NOTHING; -- params: None"
+]
+],
+"NB-05#0": [
+[
+"0"
+]
+],
+"NB-05#2": [
+[
+"2019-12-04 15:00:00+00:00",
+"2019-12-04T15:00:00+00:00 [engineer-backfill:maya] statement: CREATE OR REPLACE VIEW analytics.contactable_users AS SELECT u.id AS user_id, u.email, u.created_at FROM users u WHERE u.marketing_opt_in AND u.email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$' AND lower(split_part(u.email, '@', 2)) NOT IN ('example.com', 'example.net', 'example.org') AND lower(split_part(u.email, '@', 2)) NOT LIKE '%.example'; -- params: None"
+]
+],
+"NB-10#1": [
+[
+"1",
+"9033"
+],
+[
+"2",
+"54"
+],
+[
+"3",
+"28"
+],
+[
+"6",
+"12"
+]
+],
+"NB-11#1": [
+[
+"0"
+]
+],
+"NB-21#0": [
+[
+"3",
+"2019-11,2019-10,2019-09"
+]
+],
+"NB-22#0": [
+[
+"1631",
+"13"
+]
+],
+"NB-24#0": [
+[
+"522"
+]
+],
+"NB-25#0": [
+[
+"10766"
+]
+],
+"NB-30#0": [
+[
+"843085",
+"36925",
+"9127"
+]
+],
+"OP-02#1": [
+[
+"2019-11-22 15:18:05+00:00"
+]
+],
+"OP-03#0": [
+[
+"130"
+]
+],
+"RS-03#1": [
+[
+"2019-12-03"
+],
+[
+"2019-12-04"
+],
+[
+"2019-12-05"
+]
+],
+"RS-06#0": [
+[
+"1.0.0",
+"392630"
+],
+[
+"2.0.0",
+"67261"
+],
+[
+"fallback",
+"207959"
+]
+],
+"RS-07#0": [
+[
+"2019-12-14",
+"446"
+],
+[
+"2019-12-15",
+"379"
+],
+[
+"2019-12-16",
+"789"
+],
+[
+"2019-12-17",
+"549"
+],
+[
+"2019-12-19",
+"407"
+],
+[
+"2019-12-20",
+"557"
+],
+[
+"2019-12-21",
+"958"
+]
+],
+"XM-01#0": [
+[
+"2019-12-06 16:40:11+00:00",
+"2019-12-06 16:39:58+00:00"
+]
+],
+"XM-02#0": [
+[
+"20958",
+"942",
+"42"
+]
+],
+"XM-03#0": [
+[
+"2019-12-17",
+"5472"
+],
+[
+"2019-12-18",
+"5798"
+],
+[
+"2019-12-19",
+"5798"
+],
+[
+"2019-12-20",
+"6442"
+],
+[
+"2019-12-21",
+"7039"
+]
+],
+"XM-04#0": [
+[
+"449",
+"33"
+]
+],
+"XW-02#0": [
+[
+"0",
+"0"
+]
+],
+"XW-03#0": [
+[
+"2019-12-11",
+"-32"
+],
+[
+"2019-12-17",
+"109"
+],
+[
+"2019-12-18",
+"848"
+],
+[
+"2019-12-19",
+"415"
+]
+],
+"XW-04#1": [
+[
+"13",
+"2019-10-02 12:30:00+00:00",
+"2019-12-25 12:30:00+00:00"
+]
+],
+"XW-05#0": [
+[
+"46",
+"2",
+"940.82",
+"0"
+],
+[
+"49",
+"3",
+"1891.94",
+"0"
+],
+[
+"55",
+"2",
+"734.81",
+"0"
+]
+]
+}
