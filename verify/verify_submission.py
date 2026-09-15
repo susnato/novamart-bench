@@ -64,7 +64,7 @@ def score_once(book_path):
         sys.exit(f"score-book failed: {r.stderr[-500:]}")
     new = sorted(set(glob.glob(os.path.join(out_root, "*"))) - before)
     card = json.load(open(os.path.join(new[-1], "scorecard.json")))
-    return {c["claim_id"]: c["verdict"] for c in card["claims"]}
+    return {c["claim_id"]: c["verdict"] for c in card["claim_results"]}
 
 def verify_submission(subdir):
     books = sorted(glob.glob(os.path.join(subdir, "book_r*.md")))
