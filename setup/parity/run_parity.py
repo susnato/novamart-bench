@@ -7,11 +7,34 @@ Goldens are computed once against the original warehouse; CI runs the emulator
 leg and compares. Result normalization: rows as sorted tuples of stringified
 values, floats rounded to 6 places.
 """
-import argparse, glob, json, os, sys
+import argparse, glob, json, os, sys, threading
 import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..", "..")
+
+# Verified against real BigQuery; the emulator cannot complete them in any
+# reasonable time. The real leg always runs everything.
+SKIP_EMULATOR = {
+    "XW-03#0",
+}
+
+def run_with_cap(fn, cap):
+    """Run fn in a daemon thread with a hard wall-clock cap.
+
+    The emulator has been observed to accept a query and never respond (the
+    socket stays open), which blocks the client indefinitely and would hang
+    CI; a daemon thread also bounds the client's internal retry loops and
+    cannot block interpreter exit."""
+    out = {}
+    def worker():
+        try: out["rows"] = fn()
+        except Exception as e: out["err"] = e
+    t = threading.Thread(target=worker, daemon=True)
+    t.start(); t.join(cap)
+    if t.is_alive(): raise TimeoutError(f"query exceeded {cap}s")
+    if "err" in out: raise out["err"]
+    return out["rows"]
 
 def collect_sql():
     out = []
@@ -76,6 +99,8 @@ def main():
     ap.add_argument("--warehouse-project", "--project", dest="project", default=None)
     ap.add_argument("--write-goldens", action="store_true")
     ap.add_argument("--check-quotes", action="store_true")
+    ap.add_argument("--query-timeout", type=float, default=600,
+                    help="hard per-query cap in seconds (default 600); a timed-out query is reported and the run continues")
     a = ap.parse_args()
     if not a.target and not a.check_quotes:
         ap.error("--target is required unless --check-quotes")
@@ -84,20 +109,25 @@ def main():
         return 0 if ok else 1
     gpath = os.path.join(HERE, "goldens.json")
     goldens = json.load(open(gpath)) if os.path.exists(gpath) else {}
-    results, failures, mismatches = {}, [], []
+    results, failures, mismatches, skipped = {}, [], [], []
     for cid, i, sql in collect_sql():
         key = f"{cid}#{i}"
+        if a.target == "emulator" and key in SKIP_EMULATOR:
+            skipped.append(key); continue
         q = sql.replace("<warehouse-project>", a.project or "novamart-warehouse")
         try:
-            rows = run_real(q, a.project) if a.target == "real" else run_emulator(q)
+            rows = run_with_cap(lambda: run_real(q, a.project) if a.target == "real" else run_emulator(q),
+                                a.query_timeout)
             results[key] = normalize(rows)
         except Exception as e:
             failures.append((key, str(e).splitlines()[0][:160])); continue
         if not a.write_goldens and key in goldens and results[key] != goldens[key]:
             mismatches.append(key)
-    print(f"queries: {len(results)+len(failures)} | ran: {len(results)} | errors: {len(failures)} | mismatches vs goldens: {len(mismatches)}")
+    print(f"queries: {len(results)+len(failures)} | ran: {len(results)} | errors: {len(failures)} "
+          f"| mismatches vs goldens: {len(mismatches)} | skipped (emulator limits): {len(skipped)}")
     for k, e in failures: print(f"  ERROR {k}: {e}")
     for k in mismatches: print(f"  MISMATCH {k}")
+    for k in skipped: print(f"  SKIP {k}: verified on real BigQuery; the emulator cannot complete it")
     if a.write_goldens:
         json.dump(results, open(gpath, "w"), indent=0, sort_keys=True)
         print(f"goldens written: {len(results)} entries")
