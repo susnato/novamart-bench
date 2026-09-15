@@ -71,10 +71,18 @@ The judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `V
 pip install -r setup/requirements.txt
 mkdir -p novamart/gold && cp -r claims novamart/gold/claims
 python -m scoring.cli validate-claims-format novamart
-python -m scoring.cli score-book --gold novamart --book submissions/claude-code-2.1.252/book_r1.md
+
+# one book: per-claim scorecard, recall, 95% CI
+python -m scoring.cli score-book --gold novamart --book book_r1.md
+
+# your three runs: mean recall, 95% CI, pass^3, pass@3 (repeat --book per book)
+python -m scoring.cli score-book --gold novamart --book book_r1.md --book book_r2.md --book book_r3.md
+
+# optional: majority verdicts over multiple judge passes per book
+python -m scoring.cli score-book --gold novamart --book book_r1.md --judge-passes 3
 ```
 
-Replace the book path with your own. `scoring/README.md` documents options, judge pinning, and the five-pass majority protocol.
+The summary uses the exact statistics code the maintainer's verifier runs, so your self-scored numbers and the verified listing are the same math; they are still unofficial until verification. `scoring/README.md` documents options, judge pinning, and the five-pass majority protocol.
 
 ## 🏆 Leaderboard and submissions
 

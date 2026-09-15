@@ -6,7 +6,7 @@ Each system is evaluated as shipped, zero-shot, **three times** under the same f
 
 ## Scoring
 
-Every book is scored per claim by a pinned LLM judge (Gemini 3 Flash preview) against the claim's rubric, with verdicts correct, partial, missing, or contradicted. The released verdict for a claim-book cell is the **majority over five independent judge passes**; ties resolve to the worse verdict. Claim recall is the fraction of the 51 claims whose rubric the book satisfies (verdict: correct).
+Every book is scored per claim by a pinned LLM judge (Gemini 3 Flash preview) against the claim's rubric, with verdicts correct, partial, missing, or contradicted. The three released baseline entries were scored with `gemini-3-flash-preview`, recorded per entry in `judge_record.json`; that judge is fixed as the benchmark's judge. The released verdict for a claim-book cell is the **majority over five independent judge passes**; ties resolve to the worse verdict. Claim recall is the fraction of the 51 claims whose rubric the book satisfies (verdict: correct).
 
 ## Metrics
 

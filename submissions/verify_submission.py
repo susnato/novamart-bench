@@ -9,38 +9,23 @@ gcloud application-default credentials. Stats: mean claim recall over the three
 runs, claim-level bootstrap 95% CI (10,000 resamples, seed 0), pass^3, any-run.
 """
 import argparse, glob, json, os, subprocess, sys
-from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)  # so the scoring package imports from any cwd
+from scoring.stats import majority, stats as shared_stats
+
 PR_DATE = None  # set from --date: the submission PR's open date
-WORSE = ["correct", "partial", "missing", "contradicted"]  # left best -> right worst
 SYSTEMS = {"Claude Code": "claude-code-2.1.252", "Cursor": "cursor-3.15.6", "Codex CLI": "codex-cli-0.120.0"}
 
-def majority(votes):
-    top = max(Counter(votes).values())
-    tied = [v for v, c in Counter(votes).items() if c == top]
-    return max(tied, key=WORSE.index)
-
 def stats(matrix):
-    """matrix: {claim_id: [bool solved per run]} with 3 runs."""
-    import random
-    claims = sorted(matrix)
-    n = len(claims)
-    c = {cid: sum(matrix[cid]) for cid in claims}
-    runs = sorted((100.0 * sum(matrix[cid][r] for cid in claims) / n for r in range(3)), reverse=True)
-    scores = [c[cid] / 3.0 for cid in claims]
-    mean = 100.0 * sum(scores) / n
-    rng = random.Random(0)
-    boots = []
-    for _ in range(10_000):
-        s = [scores[rng.randrange(n)] for _ in range(n)]
-        boots.append(100.0 * sum(s) / n)
-    boots.sort()
-    ci = [boots[int(0.025 * len(boots))], boots[int(0.975 * len(boots)) - 1]]
-    return {"runs_sorted": [round(r, 1) for r in runs], "mean_recall": round(mean, 1),
-            "ci95": [round(ci[0], 1), round(ci[1], 1)],
-            "pass3": round(100.0 * sum(1 for cid in claims if c[cid] == 3) / n, 1),
-            "any_run": round(100.0 * sum(1 for cid in claims if c[cid] >= 1) / n, 1)}
+    """matrix: {claim_id: [bool solved per run]} with 3 runs.
+
+    The math lives in scoring/stats.py, shared with score-book so self-scored
+    and verified numbers are identical by construction; this wrapper only maps
+    the generic pass_all/pass_any names to the released entry field names."""
+    s = shared_stats(matrix, runs=3)
+    return {"runs_sorted": s["runs_sorted"], "mean_recall": s["mean_recall"],
+            "ci95": s["ci95"], "pass3": s["pass_all"], "any_run": s["pass_any"]}
 
 def from_verdicts(system):
     return stats(matrix_from_verdicts(system))
