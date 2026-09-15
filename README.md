@@ -83,7 +83,7 @@ The leaderboard at https://novamart-bench.github.io is generated from [`website/
 
 Every number in this repo is recomputable: books are scored against the released claims, verdicts are released per claim-book cell, and evidence SQL runs against the shipped estate.
 
-Release note: during release preparation, an internal infrastructure identifier in the world repo's `docs/data-access.md` was replaced with the fictional `novamart-warehouse` (only a single word change in the string). This re-hashed the six final commits of the world repo. The claims' `commit_hash` fields and the brief's commit pin were updated to the current hashes; the nine released books are the verbatim outputs of the original runs and cite the original hashes, as does the paper's printed brief. The mapped commits are content-identical except for that one identifier. The same identifier also appeared in the distributed log fixtures' envelope metadata (logName and resource labels) and was replaced there identically, and three job_runs rows carried a generation-machine file path inside a traceback, replaced with the in-world path; log payload content is byte-unchanged (see CHANGELOG.md).
+Release note: during release preparation, an internal infrastructure identifier in the world repo's `docs/data-access.md` was replaced with the fictional `novamart-warehouse` (only a single word change in the string). This re-hashed the six final commits of the world repo. The claims' `commit_hash` fields and the brief's commit pin were updated to the current hashes; the nine released books are the verbatim outputs of the original runs and cite the original hashes, as does the paper's printed brief. The mapped commits are content-identical except for that one identifier. The same identifier also appeared in the distributed log fixtures' envelope metadata (logName and resource labels) and was replaced there identically, and three job_runs rows carried a generation-machine file path inside a traceback, replaced with the in-world path; log payload content is byte-unchanged.
 
 | Original hash (cited in released books and the paper) | Current hash | Commit |
 |---|---|---|
@@ -94,7 +94,9 @@ Release note: during release preparation, an internal infrastructure identifier 
 | `2239d10` | `99003c3` | docs: warehouse analytics dataset is novamart_analytics |
 | `2d57fa9` | `20e066f` | fix: backfill loads analytics tables into novamart_analytics |
 
-See `CHANGELOG.md` for the exact fields updated.
+The update touched 23 hash references across 8 claim files (`commit_hash` fields, one `git show` URI, and two prose excerpts), the two history patch files in the estate samples (renamed to their current hashes, From headers updated), and the brief's commit pin (`2ae79e2` to `5ae1182`); claim text semantics, rubrics, and evidence chains are unchanged.
+
+Separately, three evidence queries (claims NB-02, NB-03, NB-05) selected `ts` from the log export tables, but the released log schema's column is `timestamp` (Cloud Logging sink envelope shape); the queries never executed as released and were fixed during release preparation. All 36 evidence queries now execute against the warehouse, and their normalized results are pinned in `setup/parity/goldens.json`, which CI uses to verify the local emulator returns identical results.
 
 ## 📄 Licenses and attribution
 
