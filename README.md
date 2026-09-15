@@ -35,9 +35,10 @@ Every order and payment traces back to a real browsing session in the replayed R
 | `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
 | `scoring/` | the scoring harness (pinned LLM judge, majority-of-five protocol) |
 | `default_prompts/` | the frozen brief given to every agent, verbatim |
+| `setup/` | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the GCP loader, plus the emulator parity harness (`setup/parity/`) |
 | `submissions/` | the canonical home of everything leaderboard: entries (baselines included) each carrying books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (derived majorities), and `verified_entry.json` (stats); plus the template and the verification script |
 | `website/` | source of the benchmark website |
-| `docs/` | evaluation protocol and statistical notes |
+| `docs/` | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix |
 | `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records |
 
 The **full frozen estate** (repo bundle, warehouse dump, logs, Redash export) is distributed separately as a versioned dataset; see [Setup](#%EF%B8%8F-setup). This repo stays small on purpose.
@@ -77,7 +78,7 @@ Replace the book path with your own. `scoring/README.md` documents options, judg
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamart-bench.github.io is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`; **you compute no statistics**. The maintainer re-scores every submission with the pinned judge and computes all listed numbers during verification. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at https://novamart-bench.github.io is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`. Please don't worry about computing any statistics: the verifier (the maintainer of this repo) re-runs the pinned judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
 
 ## 🔎 Verification and provenance
 

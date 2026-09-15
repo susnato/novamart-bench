@@ -30,4 +30,4 @@ With 51 claims, one claim is worth about 2 points of recall, and the 95% confide
 
 ## Verification of submissions
 
-Submitters send books only and compute no statistics. The maintainer re-scores every submission with the pinned judge (five passes per cell, majority verdict) and computes all listed numbers. Self-scored results are a useful sanity check but the listed numbers are always the verification run's. Submissions disclose the environment mode (cloud BigQuery or local emulator stack).
+Submitters send books only; no statistics are required from them. The verifier (the maintainer of this repo) re-scores every submission with the pinned judge (five passes per cell, majority verdict) and computes all listed numbers, so every entry is scored identically. Self-scored results are a useful sanity check but the listed numbers are always the verification run's. Submissions disclose the environment mode (cloud BigQuery or local emulator stack).

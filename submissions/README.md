@@ -7,7 +7,7 @@ One pull request adds one folder named `<system>-<version>-<YYYYMMDD>` (lowercas
 3. **Prompts**: if you used the released brief unmodified (`default_prompts/`), include nothing; submitting under these rules attests to that, and verification checks it. If you used a custom prompt or scaffold, include the complete text (`prompt.md`, or `prompt_r1.md`..`prompt_r3.md` if it varied); entries containing prompt files are listed as custom-scaffold, with a marker, outside the headline ranking.
 4. **Trajectories (optional, encouraged)**: `trajectories/` with the agent transcript and tool calls per run.
 
-That is the whole submission: **you compute no statistics.**
+That is the whole submission. You are not asked to compute any statistics: the verifier (the maintainer of this repo) runs the pinned judge on your books and computes every published number on your behalf, so all entries are scored identically.
 
 ## What happens after you open the PR
 
