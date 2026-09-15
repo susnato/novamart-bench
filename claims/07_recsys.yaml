@@ -23,7 +23,7 @@
     path: novamart/jobs/affinity.py
     span: 16-47
     uri: novamart/jobs/affinity.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: MIN_PAIRS
     table: null
     columns: null
@@ -64,7 +64,7 @@
     path: novamart/jobs/affinity_v2.py
     span: 17-56
     uri: novamart/jobs/affinity_v2.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: W_ORDER
     table: null
     columns: null
@@ -104,7 +104,7 @@
     path: novamart/jobs/affinity_v2.py
     span: 19-26
     uri: novamart/jobs/affinity_v2.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: SEASONAL_FACTORS
     table: null
     columns: null
@@ -159,7 +159,7 @@
     path: novamart/routers/similar.py
     span: 24-50
     uri: novamart/routers/similar.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: in_random_arm
     table: null
     columns: null
@@ -172,7 +172,7 @@
     path: deploy/flags.env
     span: 1-5
     uri: deploy/flags.env
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: REC_MODEL_VERSION
     table: null
     columns: null
@@ -351,7 +351,7 @@
     path: novamart/jobs/model_train.py
     span: 40-51
     uri: novamart/jobs/model_train.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: null
     table: null
     columns: null
@@ -391,7 +391,7 @@
     path: novamart/jobs/model_train.py
     span: null
     uri: novamart/jobs/model_train.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: null
     table: null
     columns: null

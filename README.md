@@ -82,6 +82,23 @@ Replace `books/cc_r1.md` with your own book. `harness/README.md` documents optio
 
 The leaderboard at https://novamart-bench.github.io is generated from [`leaderboard.json`](leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`; **you compute no statistics**. The maintainer re-scores every submission with the pinned judge and computes all listed numbers during verification. See [`submissions/README.md`](submissions/README.md).
 
+## 🔎 Verification and provenance
+
+Every number in this repo is recomputable: books are scored against the released claims, verdicts are released per claim-book cell, and evidence SQL runs against the shipped estate.
+
+Release note: during release preparation, an internal infrastructure identifier in the world repo's `docs/data-access.md` was replaced with the fictional `novamart-warehouse` (only a single word change in the string). This re-hashed the six final commits of the world repo. The claims' `commit_hash` fields and the brief's commit pin were updated to the current hashes; the nine released books are the verbatim outputs of the original runs and cite the original hashes, as does the paper's printed brief. The mapped commits are content-identical except for that one identifier.
+
+| Original hash (cited in released books and the paper) | Current hash | Commit |
+|---|---|---|
+| `1179287` | `d398b0d` | docs: data access after the platform migration |
+| `57ea43a` | `41e3537` | chore: move dashboards to Redash |
+| `43e54a1` | `4bfcbe6` | chore: migrate schedules from crontab to Airflow |
+| `2ae79e2` (full: `2ae79e23690f7ef09a2e9231fdfa3a2cdb84be00`) | `5ae1182` (full: `5ae11821806a396aac10115e03863b8c68c1bfcc`) | feat: warehouse backfill job (serving Postgres -> BigQuery) |
+| `2239d10` | `99003c3` | docs: warehouse analytics dataset is novamart_analytics |
+| `2d57fa9` | `20e066f` | fix: backfill loads analytics tables into novamart_analytics |
+
+See `CHANGELOG.md` for the exact fields updated.
+
 ## 📄 Licenses and attribution
 
 Code is Apache-2.0 (`LICENSE`). The estate, claims, books, and results are CC BY 4.0 (`LICENSE-DATA`). Ambient shopper traffic is replayed from the REES46 eCommerce behavior dataset; see [`ATTRIBUTION.md`](ATTRIBUTION.md).

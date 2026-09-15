@@ -6,7 +6,7 @@
 
 ## Data Sources
 
-- Codebase: GitHub, repo cloned and checked out at `<workspace>/novamart` (pinned at commit `2ae79e2`); you must only use this repo. A read-only GitHub token (org `<github-org>`) is stored at `<access-pack>/agent-github-pat` if you need remote git operations.
+- Codebase: GitHub, repo cloned and checked out at `<workspace>/novamart` (pinned at commit `5ae1182`); you must only use this repo. A read-only GitHub token (org `<github-org>`) is stored at `<access-pack>/agent-github-pat` if you need remote git operations.
 - Data Warehouse: BigQuery, GCP project `<warehouse-project>`, read-only service-account credentials at `<access-pack>/sa-key.json`. Datasets: `novamart` (app tables), `novamart_analytics` (analytics tables + views), `novamart_logs` (log exports, including the historical query log `db_queries`).
 - Dashboards: Redash, available at `<redash-url>` (read-only). Credentials and API key are stored at `<access-pack>/redash-agent-creds`.
 
