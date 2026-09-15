@@ -6,7 +6,7 @@ Prints the read-only API key for the access pack.
 import json, os, subprocess, sys, time
 import urllib.request
 
-BASE = os.environ.get("REDASH_URL", "http://localhost:5000")
+BASE = os.environ.get("REDASH_URL", "http://localhost:5050")
 
 def compose(*args, capture=False):
     cmd = ["docker", "compose", "-f", os.path.join(os.path.dirname(__file__), "..", "docker-compose.yml")] + list(args)

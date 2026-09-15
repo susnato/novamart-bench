@@ -55,9 +55,9 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## ⚙️ Setup
 
-**Local (docker compose)**: three containers, all API-faithful: the [BigQuery emulator](https://github.com/goccy/bigquery-emulator) preloaded with the three datasets, a seeded Redash instance, and the application repo mounted read-only. Your agent uses the standard `google-cloud-bigquery` client with an endpoint override; the SQL dialect is identical to the cloud setup. *Status: tooling lands in an upcoming commit.*
+**Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: the [BigQuery emulator](https://github.com/goccy/bigquery-emulator) loaded with all 36 tables (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack. See [`docs/setup_local.md`](docs/setup_local.md).
 
-**GCP (official mode, matches the released baselines)**: the three datasets hosted as public BigQuery datasets; queries bill to your own GCP project (requester pays, pennies at this scale). This is the reference environment for leaderboard entries. *Status: public datasets go live with the full release.*
+**GCP**: `python setup/setup_gcp.py --project your-project-id` loads the three datasets into your own BigQuery project (permission preflight first, nothing created on failure; `roles/bigquery.user` suffices). Agents then use the real BigQuery API at your own scale and cost. Submissions disclose which mode produced the runs. See [`docs/setup_gcp.md`](docs/setup_gcp.md).
 
 ## 🧪 Evaluation
 

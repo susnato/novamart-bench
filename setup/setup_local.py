@@ -37,7 +37,7 @@ def main():
     if out.returncode != 0: print(out.stderr[-2000:]); sys.exit("redash seed failed")
     key = [l for l in out.stdout.splitlines() if l.startswith("REDASH_ADMIN_API_KEY=")][-1].split("=",1)[1]
     sh([sys.executable, os.path.join(HERE, "loaders", "access_pack.py"),
-        "novamart-warehouse", "http://localhost:5000", key, repo])
+        "novamart-warehouse", "http://localhost:5050", key, repo])
     print("\nlocal estate is up. See setup/access-pack/ for the values the brief's placeholders refer to.")
 
 if __name__ == "__main__":

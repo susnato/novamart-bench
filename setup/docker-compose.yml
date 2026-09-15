@@ -1,7 +1,7 @@
 name: novamart-bench
 services:
   bq-emulator:
-    image: ghcr.io/goccy/bigquery-emulator:0.6.6
+    image: ghcr.io/goccy/bigquery-emulator:0.8.1
     command: ["--project=novamart-warehouse", "--port=9050"]
     ports: ["9050:9050"]
 
@@ -28,6 +28,7 @@ services:
 
   redash:
     image: redash/redash:10.1.0.b50633
+    platform: linux/amd64
     command: server
     depends_on: [redash-redis, redash-pg, estate-pg]
     environment: &redash-env
@@ -36,16 +37,18 @@ services:
       REDASH_SECRET_KEY: novamart-local-secret
       REDASH_COOKIE_SECRET: novamart-local-cookie
       REDASH_WEB_WORKERS: "1"
-    ports: ["5000:5000"]
+    ports: ["5050:5000"]  # host 5050: macOS AirPlay squats 5000
 
   redash-scheduler:
     image: redash/redash:10.1.0.b50633
+    platform: linux/amd64
     command: scheduler
     depends_on: [redash]
     environment: *redash-env
 
   redash-worker:
     image: redash/redash:10.1.0.b50633
+    platform: linux/amd64
     command: worker
     depends_on: [redash]
     environment:
