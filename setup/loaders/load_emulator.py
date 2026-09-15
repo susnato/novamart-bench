@@ -30,7 +30,7 @@ def main():
         client.create_dataset(bigquery.Dataset(f"{PROJECT}.{ds}"), exists_ok=True)
         for t_dir in sorted(glob.glob(os.path.join(ds_dir, "*"))):
             t = os.path.basename(t_dir)
-            schema = schema_from_json(os.path.join(base, "schemas", ds, f"{t}.json"))
+            schema = schema_from_json(os.path.join(t_dir, "schema.json"))
             table = bigquery.Table(f"{PROJECT}.{ds}.{t}", schema=schema)
             client.create_table(table, exists_ok=True)
             rows, n, t0 = [], 0, time.time()

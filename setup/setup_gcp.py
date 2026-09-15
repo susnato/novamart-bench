@@ -53,13 +53,23 @@ def main():
     if not a.no_download:
         subprocess.run([sys.executable, os.path.join(HERE, "loaders", "download_data.py")], check=True)
     base = os.path.join(HERE, "data")
+    counts = json.load(open(os.path.join(base, "counts.json")))
     for ds in DATASETS:
         tgt = ds + a.dataset_suffix
         subprocess.run(["bq", "--project_id", a.project, "mk", "--force", "--dataset", tgt],
                        check=True, capture_output=True)
         for t_dir in sorted(glob.glob(os.path.join(base, "fixtures", ds, "*"))):
             t = os.path.basename(t_dir)
-            schema = os.path.join(base, "schemas", ds, f"{t}.json")
+            expected = counts.get(f"{ds}.{t}")
+            r = subprocess.run(["bq", "--project_id", a.project, "show", "--format=json", f"{tgt}.{t}"],
+                               capture_output=True, text=True)
+            if r.returncode == 0 and expected is not None:
+                have = int(json.loads(r.stdout).get("numRows", -1))
+                if have == expected:
+                    print(f"[skip] {a.project}:{tgt}.{t} already complete ({have} rows)")
+                    continue
+                print(f"[redo] {a.project}:{tgt}.{t} has {have} rows, expected {expected}")
+            schema = os.path.join(t_dir, "schema.json")
             shards = sorted(glob.glob(os.path.join(t_dir, "*.ndjson.gz")))
             print(f"[load] {a.project}:{tgt}.{t} ({len(shards)} shard(s))")
             for i, shard in enumerate(shards):

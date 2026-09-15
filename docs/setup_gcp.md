@@ -14,4 +14,8 @@ python setup/setup_gcp.py --project your-project-id
 
 Phase 0 checks your permissions via `testIamPermissions` and creates nothing on failure; each missing permission is reported with the exact grant command to ask your admin for. On success it creates the three datasets (`novamart`, `novamart_analytics`, `novamart_logs`; the names are fixed by the benchmark, only the project varies) and loads every table from the downloaded fixtures. Your project id becomes the `<warehouse-project>` value in your access pack.
 
+## Interruptions and re-runs
+
+The script converges: re-running it skips every table whose row count already matches `counts.json` and reloads (with replace) any table that is absent or partial. If your terminal dies mid-load, just run the same command again; completed tables are not re-transferred.
+
 If you cannot get the role, local mode needs no cloud at all: `python setup/setup_local.py`.
