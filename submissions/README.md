@@ -15,4 +15,4 @@ The maintainer re-scores your books with the pinned judge (five passes per claim
 
 Ground rules: the estate is read-only, books must be the direct outputs of the submitted runs, and no gold-claim content may appear in prompts or scaffolds. Custom prompts are reviewed for gold-claim leakage. Entries within roughly 10 points of each other are statistically tied and the board reports them as ties (see `docs/evaluation.md`).
 
-The three baseline entries (`claude-code-2.1.252/`, `cursor-3.15.6/`, `codex-cli-0.120.0/`) follow this same format; their books sit inside their folders like any other entry (`book_r1..3.md`; the original release names cc_r1.., cur_r1.., cx_r1.. remain the keys in `results/verdicts.json`, noted in each metadata).
+The three baseline entries (`claude-code-2.1.252/`, `cursor-3.15.6/`, `codex-cli-0.120.0/`) follow this same format; their books sit inside their folders like any other entry (`book_r1..3.md`; the original release names cc_r1.., cur_r1.., cx_r1.. are preserved in each entry's `judge_record.json` under `released_book_names`).

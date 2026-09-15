@@ -7,4 +7,4 @@ prompt_files: []
 trajectories_included: false
 submitted_by: "maintainers"
 contact: ""
-notes: "maintainer-run baseline; book_r1..3.md are the released cx_r1..3 books (the keys in results/verdicts.json)"
+notes: "maintainer-run baseline; book_r1..3.md are the released cx_r1..3 books (mapping preserved in judge_record.json released_book_names)"

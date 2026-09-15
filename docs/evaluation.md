@@ -17,7 +17,7 @@ Every book is scored per claim by a pinned LLM judge (Gemini 3 Flash preview) ag
 | Any-run | fraction of claims solved in at least one run (capability ceiling) |
 | 95% CI | claim-level bootstrap over the 51 claims, 10,000 resamples, percentile interval, reported on mean recall |
 
-All numbers are recomputable from `results/verdicts.json`.
+All numbers are recomputable from the per-entry judge records (`submissions/*/judge_record.json`, the full five-pass verdicts).
 
 ## Statistical notes: what this benchmark can and cannot resolve
 
