@@ -1,4 +1,4 @@
-"""Load the NDJSON fixtures into the local BigQuery emulator.
+"""Load the NDJSON tables into the local BigQuery emulator.
 
 The emulator serves project `novamart-warehouse` on localhost:9050, so the
 in-world docs, the brief, and the loaded warehouse all agree.
@@ -25,7 +25,7 @@ def main():
     client = bigquery.Client(project=PROJECT, credentials=AnonymousCredentials(),
                              client_options=ClientOptions(api_endpoint=ENDPOINT))
     total = 0
-    for ds_dir in sorted(glob.glob(os.path.join(base, "fixtures", "*"))):
+    for ds_dir in sorted(glob.glob(os.path.join(base, "tables", "*"))):
         ds = os.path.basename(ds_dir)
         client.create_dataset(bigquery.Dataset(f"{PROJECT}.{ds}"), exists_ok=True)
         for t_dir in sorted(glob.glob(os.path.join(ds_dir, "*"))):

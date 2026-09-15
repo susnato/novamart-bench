@@ -12,7 +12,7 @@ Loads the estate into your own BigQuery project, so agents use the real BigQuery
 python setup/setup_gcp.py --project your-project-id
 ```
 
-Phase 0 checks your permissions via `testIamPermissions` and creates nothing on failure; each missing permission is reported with the exact grant command to ask your admin for. On success it creates the three datasets (`novamart`, `novamart_analytics`, `novamart_logs`; the names are fixed by the benchmark, only the project varies) and loads every table from the downloaded fixtures. Your project id becomes the `<warehouse-project>` value in your access pack.
+Phase 0 checks your permissions via `testIamPermissions` and creates nothing on failure; each missing permission is reported with the exact grant command to ask your admin for. On success it creates the three datasets (`novamart`, `novamart_analytics`, `novamart_logs`; the names are fixed by the benchmark, only the project varies) and loads every table from the downloaded data. Your project id becomes the `<warehouse-project>` value in your access pack.
 
 ## Interruptions and re-runs
 

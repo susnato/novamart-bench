@@ -58,7 +58,7 @@ def main():
         tgt = ds + a.dataset_suffix
         subprocess.run(["bq", "--project_id", a.project, "mk", "--force", "--dataset", tgt],
                        check=True, capture_output=True)
-        for t_dir in sorted(glob.glob(os.path.join(base, "fixtures", ds, "*"))):
+        for t_dir in sorted(glob.glob(os.path.join(base, "tables", ds, "*"))):
             t = os.path.basename(t_dir)
             expected = counts.get(f"{ds}.{t}")
             r = subprocess.run(["bq", "--project_id", a.project, "show", "--format=json", f"{tgt}.{t}"],
