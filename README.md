@@ -102,4 +102,4 @@ Code is Apache-2.0 (`LICENSE`). The estate, claims, books, and results are CC BY
 }
 ```
 
-Maintained by [@susnato](https://github.com/susnato). Questions: open an issue.
+Maintained by [@susnato](https://github.com/susnato). Questions: please open an issue; or email [susnatodhar10@gmail.com](mailto:susnatodhar10@gmail.com).
