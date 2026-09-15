@@ -1,0 +1,11 @@
+system_name: "Codex CLI"
+version: "0.120.0"
+model: "GPT-5.6 Sol"
+effort: "high"
+environment_mode: "cloud-bigquery"
+prompt_files: []
+trajectories_included: false
+submitted_by: "maintainers"
+contact: ""
+notes: "maintainer-run baseline; books live in books/"
+books: ["books/cx_r1.md", "books/cx_r2.md", "books/cx_r3.md"]

@@ -1,0 +1,257 @@
+{
+"CU-03A": [
+true,
+true,
+true
+],
+"CU-04": [
+true,
+false,
+true
+],
+"DB-01": [
+true,
+false,
+false
+],
+"DB-02": [
+false,
+true,
+false
+],
+"FIN-04": [
+false,
+true,
+true
+],
+"FR-01": [
+false,
+true,
+true
+],
+"HB-01": [
+false,
+false,
+false
+],
+"HB-02": [
+false,
+false,
+false
+],
+"HB-06": [
+true,
+true,
+true
+],
+"HC-01": [
+true,
+false,
+false
+],
+"HC-02": [
+false,
+false,
+false
+],
+"HD-01": [
+true,
+true,
+true
+],
+"HD-02": [
+false,
+false,
+false
+],
+"MLB-03": [
+false,
+false,
+true
+],
+"MLD-01": [
+true,
+false,
+false
+],
+"MLD-02": [
+true,
+false,
+false
+],
+"MLE-01": [
+true,
+true,
+true
+],
+"NB-02": [
+false,
+false,
+false
+],
+"NB-03": [
+false,
+false,
+false
+],
+"NB-05": [
+false,
+false,
+false
+],
+"NB-09": [
+true,
+true,
+true
+],
+"NB-10": [
+true,
+true,
+true
+],
+"NB-11": [
+false,
+true,
+true
+],
+"NB-15": [
+false,
+false,
+false
+],
+"NB-18": [
+false,
+false,
+false
+],
+"NB-21": [
+false,
+false,
+false
+],
+"NB-22": [
+false,
+false,
+false
+],
+"NB-24": [
+false,
+false,
+false
+],
+"NB-25": [
+false,
+false,
+false
+],
+"NB-28": [
+false,
+false,
+false
+],
+"NB-29": [
+false,
+false,
+false
+],
+"NB-30": [
+false,
+false,
+false
+],
+"OP-02": [
+true,
+true,
+true
+],
+"OP-03": [
+true,
+true,
+true
+],
+"OP-04": [
+false,
+false,
+false
+],
+"PR-01": [
+false,
+true,
+false
+],
+"PR-03": [
+false,
+false,
+false
+],
+"RS-01": [
+false,
+false,
+true
+],
+"RS-02": [
+false,
+false,
+false
+],
+"RS-03": [
+false,
+true,
+false
+],
+"RS-04": [
+true,
+true,
+true
+],
+"RS-06": [
+true,
+true,
+true
+],
+"RS-07": [
+false,
+false,
+false
+],
+"XM-01": [
+true,
+false,
+true
+],
+"XM-02": [
+false,
+false,
+false
+],
+"XM-03": [
+false,
+false,
+false
+],
+"XM-04": [
+false,
+false,
+false
+],
+"XW-02": [
+true,
+false,
+false
+],
+"XW-03": [
+false,
+false,
+false
+],
+"XW-04": [
+false,
+false,
+true
+],
+"XW-05": [
+false,
+false,
+false
+]
+}

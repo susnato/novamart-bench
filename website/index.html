@@ -225,37 +225,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="rankcell"><div class="ranknum num">1</div><div class="rankdate">Aug 27, 2026</div></td>
-              <td>
-                <div><span class="sysname">Claude Code</span> <span class="sysver">v2.1.252</span></div>
-                <div class="sysmodel">Fable 5 (high effort)</div>
-                <div class="sysruns mono num">runs 70.6 / 58.8 / 58.8</div>
-              </td>
-              <td class="r"><div class="meanbig num">62.7%</div><div class="cicell mono num">[52.9, 72.5]</div></td>
-              <td class="r num">35.3%</td>
-            </tr>
-            <tr>
-              <td class="rankcell"><div class="ranknum num">2</div><div class="rankdate">Aug 27, 2026</div></td>
-              <td>
-                <div><span class="sysname">Cursor</span> <span class="sysver">v3.15.6</span></div>
-                <div class="sysmodel">Fable 5 (high effort)</div>
-                <div class="sysruns mono num">runs 62.7 / 56.9 / 56.9</div>
-              </td>
-              <td class="r"><div class="meanbig num">58.8%</div><div class="cicell mono num">[48.4, 69.3]</div></td>
-              <td class="r num">35.3%</td>
-            </tr>
-            <tr>
-              <td class="rankcell"><div class="ranknum num">3</div><div class="rankdate">Aug 27, 2026</div></td>
-              <td>
-                <div><span class="sysname">Codex CLI</span> <span class="sysver">v0.120.0</span></div>
-                <div class="sysmodel">GPT-5.6 Sol (high effort)</div>
-                <div class="sysruns mono num">runs 35.3 / 33.3 / 31.4</div>
-              </td>
-              <td class="r"><div class="meanbig num">33.3%</div><div class="cicell mono num">[22.2, 44.4]</div></td>
-              <td class="r num">19.6%</td>
-            </tr>
-          </tbody>
+          <!-- LEADERBOARD_ROWS_START -->
+          <tr><td colspan="4" style="padding:16px; color:var(--muted)">Rows are baked in at deploy from leaderboard.json (python website/render.py).</td></tr>
+          <!-- LEADERBOARD_ROWS_END -->
+        </tbody>
         </table>
       </div>
       <p class="lb-note">Scores are claim recall over 51 gold claims, mean of three runs with claim-level bootstrap 95% CI. pass³ = solved in all three runs, the dependable core. Claude Code and Cursor run the same model; their gap is inside the judge spread. Per-entry details (any-run coverage, per-claim scorecards, released books) live in the repo.</p>
@@ -281,42 +254,6 @@
   <p><b>Data attribution.</b> Ambient shopper traffic is replayed from the <a href="https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store">REES46 eCommerce behavior dataset</a> (<a href="https://rees46.com">REES46 Marketing Platform</a>), used with attribution per the dataset's stated terms. NovaMart redistributes only derived artifacts; every order traces back to a real browsing session, but the raw event stream is obtained from Kaggle directly.</p>
   <p>Code: Apache-2.0 &middot; Estate &amp; claims: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato">@susnato</a>.</p>
 </footer>
-<script>
-(function () {
-  var sources = [
-    "leaderboard.json",
-    "https://raw.githubusercontent.com/susnato/novamart-bench/main/leaderboard.json"
-  ];
-  function fmtDate(iso) {
-    var m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    var p = iso.split("-");
-    return p.length === 3 ? m[+p[1]-1] + " " + (+p[2]) + ", " + p[0] : iso;
-  }
-  function render(data) {
-    var tbody = document.querySelector("#leaderboard tbody");
-    if (!tbody || !data.entries) return;
-    tbody.innerHTML = data.entries.map(function (e) {
-      return '<tr>' +
-        '<td class="rankcell"><div class="ranknum num">' + e.rank + '</div>' +
-        '<div class="rankdate">' + fmtDate(e.date) + '</div></td>' +
-        '<td><div><span class="sysname">' + e.system + '</span> <span class="sysver">v' + e.version + '</span></div>' +
-        '<div class="sysmodel">' + e.model + ' (' + e.effort + ' effort)</div>' +
-        '<div class="sysruns mono num">runs ' + e.runs_sorted.join(" / ") + '</div></td>' +
-        '<td class="r"><div class="meanbig num">' + e.mean_recall.toFixed(1) + '%</div>' +
-        '<div class="cicell mono num">[' + e.ci95[0].toFixed(1) + ', ' + e.ci95[1].toFixed(1) + ']</div></td>' +
-        '<td class="r num">' + e.pass3.toFixed(1) + '%</td>' +
-      '</tr>';
-    }).join("");
-  }
-  function tryFetch(i) {
-    if (i >= sources.length) return; // static fallback rows remain
-    fetch(sources[i]).then(function (r) {
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    }).then(render).catch(function () { tryFetch(i + 1); });
-  }
-  tryFetch(0);
-})();
-</script>
+
 </body>
 </html>

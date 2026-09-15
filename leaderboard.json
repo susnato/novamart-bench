@@ -10,7 +10,6 @@
   },
   "entries": [
     {
-      "rank": 1,
       "system": "Claude Code",
       "version": "2.1.252",
       "model": "Fable 5",
@@ -30,11 +29,11 @@
       "any_run": 84.3,
       "mode": "cloud-bigquery",
       "verified": true,
+      "track": "frozen-brief",
       "submitted_by": "maintainers",
-      "track": "frozen-brief"
+      "rank": 1
     },
     {
-      "rank": 2,
       "system": "Cursor",
       "version": "3.15.6",
       "model": "Fable 5",
@@ -54,11 +53,11 @@
       "any_run": 80.4,
       "mode": "cloud-bigquery",
       "verified": true,
+      "track": "frozen-brief",
       "submitted_by": "maintainers",
-      "track": "frozen-brief"
+      "rank": 2
     },
     {
-      "rank": 3,
       "system": "Codex CLI",
       "version": "0.120.0",
       "model": "GPT-5.6 Sol",
@@ -78,8 +77,9 @@
       "any_run": 51.0,
       "mode": "cloud-bigquery",
       "verified": true,
+      "track": "frozen-brief",
       "submitted_by": "maintainers",
-      "track": "frozen-brief"
+      "rank": 3
     }
   ],
   "notes": "Entries 1 and 2 run the same model; their gap is inside the judge spread and they are statistically tied. Differences within roughly 10 points are inside the noise floor."

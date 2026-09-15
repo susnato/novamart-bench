@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble site
-        run: |
-          mkdir -p _site
-          cp -r website/* _site/
-          cp leaderboard.json _site/leaderboard.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Render site from leaderboard.json
+        run: python website/render.py --out _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

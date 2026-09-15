@@ -36,12 +36,22 @@ jobs:
           pip install --quiet click pyyaml jsonschema google-genai
           mkdir -p novamart/gold && cp -r claims novamart/gold/claims
           python -m harness.cli validate-claims-format novamart
+      - name: Leaderboard compiles exactly from submissions/
+        run: |
+          pip install --quiet pyyaml
+          python verify/compile_leaderboard.py --check
+      - name: Verified files only ever come from the maintainer
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'susnato'
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^submissions/.*verified_(entry|verdicts)\.json$'; then
+            echo "Submission PRs must not contain verified_* files; verification adds them."; exit 1
+          fi
       - name: Assemble site (deploy dry run)
         run: |
-          mkdir -p _site
-          cp -r website/* _site/
-          cp leaderboard.json _site/leaderboard.json
+          python website/render.py --out _site
           test -s _site/index.html
           grep -q "</html>" _site/index.html
           grep -q 'id="leaderboard"' _site/index.html
-          echo "site assembles cleanly"
+          grep -q 'class="sysname"' _site/index.html
+          echo "site renders cleanly"

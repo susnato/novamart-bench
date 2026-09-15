@@ -12,6 +12,7 @@ import argparse, glob, json, os, subprocess, sys
 from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PR_DATE = None  # set from --date: the submission PR's open date
 WORSE = ["correct", "partial", "missing", "contradicted"]  # left best -> right worst
 SYSTEMS = {"Claude Code": ["cc_r1","cc_r2","cc_r3"], "Cursor": ["cur_r1","cur_r2","cur_r3"], "Codex CLI": ["cx_r1","cx_r2","cx_r3"]}
 
@@ -79,8 +80,17 @@ def verify_submission(subdir):
     matrix = {cid: [pb[cid] for pb in per_book] for cid in claims}
     json.dump({cid: matrix[cid] for cid in claims},
               open(os.path.join(subdir, "verified_verdicts.json"), "w"), indent=0)
-    compare_to_board(os.path.basename(subdir.rstrip("/")), matrix)
-    return stats(matrix)
+    entry = stats(matrix)
+    import datetime, yaml as _yaml
+    meta = _yaml.safe_load(open(os.path.join(subdir, "metadata.yaml")))
+    entry.update({"verified": True,
+                  "date": PR_DATE or datetime.date.today().isoformat(),
+                  "verified_at": datetime.date.today().isoformat()})
+    json.dump(entry, open(os.path.join(subdir, "verified_entry.json"), "w"), indent=1)
+    print(f"wrote {subdir}/verified_entry.json and verified_verdicts.json")
+    print("next: python verify/compile_leaderboard.py && python website/render.py")
+    compare_to_board(meta.get("system_name") or os.path.basename(subdir.rstrip("/")), matrix)
+    return entry
 
 def matrix_from_verdicts(system):
     data = json.load(open(os.path.join(ROOT, "results", "verdicts.json")))["books"]
@@ -117,7 +127,10 @@ def main():
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--from-verdicts", metavar="SYSTEM")
     g.add_argument("--submission", metavar="DIR")
+    ap.add_argument("--date", metavar="YYYY-MM-DD", default=None,
+                    help="the submission PR's open date (shown on the leaderboard); default: today")
     a = ap.parse_args()
+    global PR_DATE; PR_DATE = a.date
     entry = from_verdicts(a.from_verdicts) if a.from_verdicts else verify_submission(a.submission)
     print(json.dumps(entry, indent=1))
     if a.from_verdicts:

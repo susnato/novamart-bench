@@ -1,0 +1,17 @@
+{
+ "runs_sorted": [
+  70.6,
+  58.8,
+  58.8
+ ],
+ "mean_recall": 62.7,
+ "ci95": [
+  52.9,
+  72.5
+ ],
+ "pass3": 35.3,
+ "any_run": 84.3,
+ "track": "frozen-brief",
+ "verified": true,
+ "date": "2026-08-27"
+}
