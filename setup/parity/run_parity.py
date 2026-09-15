@@ -51,24 +51,34 @@ def check_quotes(data_dir):
                 ex = ev.get("excerpt") or ""
                 m = re.search(r'"(SELECT [^"]{20,200})', ex) or re.search(r'"(CREATE TABLE [^"]{20,200})', ex)
                 if m and not ev.get("sql"):
-                    quotes.append((claim["claim_id"], m.group(1)[:80]))
-    hits = {}
+                    quotes.append((claim["claim_id"], re.sub(r"\s+", " ", m.group(1)[:60])))
+    # BigQuery's JSON export escapes < > & as \uXXXX, so search decoded payloads, not raw bytes.
+    import json as _json
+    hits = {cid: False for cid, _ in quotes}
+    for shard in glob.glob(os.path.join(data_dir, "tables", "novamart_logs", "*", "*.ndjson.gz")):
+        if all(hits.values()): break
+        with gzip.open(shard, "rt") as fh:
+            for line in fh:
+                if all(hits.values()): break
+                try: payload = _json.loads(line).get("textPayload") or ""
+                except Exception: continue
+                norm = re.sub(r"\s*([(),])\s*", r"\1", re.sub(r"\s+", " ", payload))
+                for cid, q in quotes:
+                    qn = re.sub(r"\s*([(),])\s*", r"\1", q)
+                    if not hits[cid] and qn in norm: hits[cid] = True
     for cid, q in quotes:
-        found = False
-        for shard in glob.glob(os.path.join(data_dir, "tables", "novamart_logs", "*", "*.ndjson.gz")):
-            with gzip.open(shard, "rt") as fh:
-                if any(q in line for line in fh): found = True; break
-        hits[cid] = found
-        print(f"quote-check {cid}: {'FOUND in shipped logs' if found else 'NOT FOUND'} :: {q[:60]}...")
+        print(f"quote-check {cid}: {'FOUND in shipped logs' if hits[cid] else 'NOT FOUND'} :: {q[:60]}...")
     return all(hits.values())
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--target", choices=["real", "emulator"], required=True)
+    ap.add_argument("--target", choices=["real", "emulator"])
     ap.add_argument("--warehouse-project", "--project", dest="project", default=None)
     ap.add_argument("--write-goldens", action="store_true")
     ap.add_argument("--check-quotes", action="store_true")
     a = ap.parse_args()
+    if not a.target and not a.check_quotes:
+        ap.error("--target is required unless --check-quotes")
     if a.check_quotes:
         ok = check_quotes(os.path.join(ROOT, "setup", "data"))
         return 0 if ok else 1
