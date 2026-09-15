@@ -77,14 +77,61 @@ def verify_submission(subdir):
         print(f"  {os.path.basename(b)}: 5 passes done")
     claims = sorted(per_book[0])
     matrix = {cid: [pb[cid] for pb in per_book] for cid in claims}
+    json.dump({cid: matrix[cid] for cid in claims},
+              open(os.path.join(subdir, "verified_verdicts.json"), "w"), indent=0)
     return stats(matrix)
+
+def matrix_from_verdicts(system):
+    data = json.load(open(os.path.join(ROOT, "results", "verdicts.json")))["books"]
+    books = SYSTEMS[system]
+    claims = sorted(next(iter(data[books[0]].values()))["verdicts"])
+    return {cid: [majority([p["verdicts"][cid] for p in data[b].values()]) == "correct"
+                  for b in books] for cid in claims}
+
+def paired_deltas():
+    """Regenerate results/paired_deltas.md from verdicts: pairwise paired-bootstrap
+    deltas on mean recall and pass^3 for every system pair (10,000 resamples, seed 0)."""
+    import random
+    systems = {name: matrix_from_verdicts(name) for name in SYSTEMS}
+    for sub in sorted(glob.glob(os.path.join(ROOT, "submissions", "*", "verified_verdicts.json"))):
+        name = os.path.basename(os.path.dirname(sub))
+        systems[name] = json.load(open(sub))
+    names = list(systems)
+    claims = sorted(next(iter(systems.values())))
+    n = len(claims)
+    score = {s: [sum(systems[s][c]) / 3.0 for c in claims] for s in names}
+    p3 = {s: [1.0 if sum(systems[s][c]) == 3 else 0.0 for c in claims] for s in names}
+    rng = random.Random(0)
+    draws = [[rng.randrange(n) for _ in range(n)] for _ in range(10_000)]
+    lines = ["# Paired system deltas",
+             "",
+             "Pairwise differences with claim-level PAIRED bootstrap 95% CIs (10,000 resamples, seed 0): both systems are evaluated on the same drawn claims in every resample, so shared claim difficulty cancels. A CI excluding zero marks a statistically resolved gap; overlapping MARGINAL CIs do not imply a tie (see docs/evaluation.md). Regenerate with `python verify/verify_submission.py --paired-deltas` whenever the leaderboard changes.",
+             "",
+             "| Pair | Metric | Delta (pts) | 95% CI | Resolved? |",
+             "|---|---|---|---|---|"]
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            a, b = names[i], names[j]
+            for metric, vals in (("mean recall", score), ("pass^3", p3)):
+                pt = 100.0 * (sum(vals[a]) - sum(vals[b])) / n
+                boots = sorted(100.0 * sum(vals[a][k] - vals[b][k] for k in d) / n for d in draws)
+                lo, hi = boots[int(0.025 * len(boots))], boots[int(0.975 * len(boots)) - 1]
+                resolved = "yes" if (lo > 0 or hi < 0) else "no (tie)"
+                lines.append(f"| {a} - {b} | {metric} | {pt:+.1f} | [{lo:+.1f}, {hi:+.1f}] | {resolved} |")
+    out = os.path.join(ROOT, "results", "paired_deltas.md")
+    open(out, "w").write("\n".join(lines) + "\n")
+    print("\n".join(lines[4:]))
+    print(f"\nwritten: {out}")
 
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--from-verdicts", metavar="SYSTEM")
     g.add_argument("--submission", metavar="DIR")
+    g.add_argument("--paired-deltas", action="store_true")
     a = ap.parse_args()
+    if a.paired_deltas:
+        paired_deltas(); return 0
     entry = from_verdicts(a.from_verdicts) if a.from_verdicts else verify_submission(a.submission)
     print(json.dumps(entry, indent=1))
     if a.from_verdicts:
