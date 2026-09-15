@@ -26,7 +26,7 @@ def normalize(rows):
     def cell(v):
         if isinstance(v, float): return f"{v:.6f}"
         return str(v)
-    return sorted(tuple(cell(v) for v in row) for row in rows)
+    return sorted([cell(v) for v in row] for row in rows)  # lists, not tuples: goldens round-trip through JSON
 
 def run_real(sql, project):
     from google.cloud import bigquery
