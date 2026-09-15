@@ -128,8 +128,10 @@ def main():
     g.add_argument("--from-verdicts", metavar="SYSTEM")
     g.add_argument("--submission", metavar="DIR")
     ap.add_argument("--date", metavar="YYYY-MM-DD", default=None,
-                    help="the submission PR's open date (shown on the leaderboard); default: today")
+                    help="REQUIRED with --submission: the submission PR's open date, which becomes the canonical date on the leaderboard")
     a = ap.parse_args()
+    if a.submission and not a.date:
+        ap.error("--date is required with --submission: pass the submission PR's open date (canonical on the leaderboard)")
     global PR_DATE; PR_DATE = a.date
     entry = from_verdicts(a.from_verdicts) if a.from_verdicts else verify_submission(a.submission)
     print(json.dumps(entry, indent=1))
