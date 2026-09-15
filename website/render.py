@@ -26,7 +26,7 @@ def fmt_date(iso):
 
 def main():
     out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else os.path.join(ROOT, "_site")
-    lb = json.load(open(os.path.join(ROOT, "leaderboard.json")))
+    lb = json.load(open(os.path.join(HERE, "leaderboard.json")))
     rows, any_custom = [], False
     for e in lb["entries"]:
         custom = e.get("track") == "custom"
@@ -43,7 +43,7 @@ def main():
         html = html.replace("Per-entry details", "Entries marked * use a custom prompt or scaffold and sit outside the headline ranking. Per-entry details")
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, "index.html"), "w").write(html)
-    shutil.copy(os.path.join(ROOT, "leaderboard.json"), os.path.join(out, "leaderboard.json"))
+    shutil.copy(os.path.join(HERE, "leaderboard.json"), os.path.join(out, "leaderboard.json"))
     print(f"rendered {len(rows)} rows -> {out}/index.html")
 
 if __name__ == "__main__":

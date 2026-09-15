@@ -16,7 +16,7 @@ jobs:
         run: |
           python - <<'PYEOF'
           import json
-          d = json.load(open("leaderboard.json"))
+          d = json.load(open("website/leaderboard.json"))
           req = {"rank","system","version","model","effort","date","runs_sorted","mean_recall","ci95","pass3","mode","verified","track"}
           assert d["entries"], "leaderboard has no entries"
           for e in d["entries"]:
@@ -39,7 +39,7 @@ jobs:
       - name: Leaderboard compiles exactly from submissions/
         run: |
           pip install --quiet pyyaml
-          python verify/compile_leaderboard.py --check
+          python website/compile_leaderboard.py --check
       - name: Verified files only ever come from the maintainer
         if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'susnato'
         run: |

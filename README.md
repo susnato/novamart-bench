@@ -9,7 +9,7 @@
 
 ## 👋 Overview
 
-![The NovaMart pipeline](./assets/pipeline.png)
+![The NovaMart pipeline](./website/pipeline.png)
 
 How much of a company's undocumented knowledge can an AI agent excavate from the data estate alone: the code, the git history, the warehouse, the logs, the dashboards?
 
@@ -34,11 +34,9 @@ Every order and payment traces back to a real browsing session in the replayed R
 |---|---|
 | `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
 | `harness/` | the scoring harness (pinned LLM judge, majority-of-five protocol) |
-| `books/` | the 9 released baseline knowledge books |
 | `results/` | released verdicts for every claim-book cell |
-| `prompts/` | the frozen brief given to every agent, verbatim |
-| `novamart_estate_samples/` | small head samples of every estate surface |
-| `submissions/` | leaderboard submission format and template |
+| `default_prompts/` | the frozen brief given to every agent, verbatim |
+| `submissions/` | the canonical entries (baselines included, with their books), the submission template, and the verification script |
 | `website/` | source of the benchmark website |
 | `docs/` | evaluation protocol and statistical notes |
 | `reproduce_figures_tables.ipynb` | reproduces the paper's tables from `results/` |
@@ -61,7 +59,7 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## 🧪 Evaluation
 
-Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by a pinned LLM judge against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs.
+Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by a pinned LLM judge against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs.
 
 See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric definitions, and the statistical notes: what score differences this benchmark can and cannot resolve.
 
@@ -73,14 +71,14 @@ The judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `V
 pip install -r setup/requirements.txt
 mkdir -p novamart/gold && cp -r claims novamart/gold/claims
 python -m harness.cli validate-claims-format novamart
-python -m harness.cli score-book --gold novamart --book books/cc_r1.md
+python -m harness.cli score-book --gold novamart --book submissions/claude-code-2.1.252/book_r1.md
 ```
 
-Replace `books/cc_r1.md` with your own book. `harness/README.md` documents options, judge pinning, and the five-pass majority protocol.
+Replace the book path with your own. `harness/README.md` documents options, judge pinning, and the five-pass majority protocol.
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamart-bench.github.io is generated from [`leaderboard.json`](leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`; **you compute no statistics**. The maintainer re-scores every submission with the pinned judge and computes all listed numbers during verification. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at https://novamart-bench.github.io is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`; **you compute no statistics**. The maintainer re-scores every submission with the pinned judge and computes all listed numbers during verification. See [`submissions/README.md`](submissions/README.md).
 
 ## 🔎 Verification and provenance
 

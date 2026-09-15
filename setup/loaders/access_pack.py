@@ -15,7 +15,7 @@ def main(warehouse_project, redash_url, redash_key, workspace):
             "<workspace>": workspace, "<github-org>": "novamart-sim",
             "<access-pack>": out}
     for name in ("novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
-        s = open(os.path.join(root, "prompts", name)).read()
+        s = open(os.path.join(root, "default_prompts", name)).read()
         for k, v in subs.items(): s = s.replace(k, v)
         open(os.path.join(out, "rendered_" + name), "w").write(s)
     print(f"access pack written to {out}")

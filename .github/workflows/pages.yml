@@ -2,7 +2,7 @@ name: Deploy website
 on:
   push:
     branches: [main]
-    paths: ["website/**", "leaderboard.json"]
+    paths: ["website/**"]
   workflow_dispatch:
 permissions:
   contents: read

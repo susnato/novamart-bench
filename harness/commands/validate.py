@@ -11,7 +11,7 @@ import jsonschema
 from harness.loaders import load_claims
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
-SCHEMAS_DIR = PACKAGE_ROOT / "schemas"
+SCHEMAS_DIR = PACKAGE_ROOT / "claims"
 
 VALID_EVIDENCE_SOURCE_TYPES = {
     "code",

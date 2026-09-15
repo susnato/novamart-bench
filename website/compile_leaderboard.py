@@ -35,7 +35,7 @@ def compile_entries():
     return entries
 
 def main():
-    path = os.path.join(ROOT, "leaderboard.json")
+    path = os.path.join(ROOT, "website", "leaderboard.json")
     lb = json.load(open(path))
     fresh = compile_entries()
     if "--check" in sys.argv:

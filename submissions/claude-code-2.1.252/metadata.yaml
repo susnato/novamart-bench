@@ -7,5 +7,4 @@ prompt_files: []
 trajectories_included: false
 submitted_by: "maintainers"
 contact: ""
-notes: "maintainer-run baseline; books live in books/"
-books: ["books/cc_r1.md", "books/cc_r2.md", "books/cc_r3.md"]
+notes: "maintainer-run baseline; book_r1..3.md are the released cc_r1..3 books (the keys in results/verdicts.json)"

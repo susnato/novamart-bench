@@ -2,7 +2,7 @@
 
 ## Protocol
 
-Each system is evaluated as shipped, zero-shot, **three times** under the same frozen brief (`prompts/`), with identical read-only access to the full estate. Because whole products are evaluated, score differences reflect model and scaffolding together. Each run produces one knowledge book.
+Each system is evaluated as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with identical read-only access to the full estate. Because whole products are evaluated, score differences reflect model and scaffolding together. Each run produces one knowledge book.
 
 ## Scoring
 

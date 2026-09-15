@@ -88,7 +88,7 @@ def verify_submission(subdir):
                   "verified_at": datetime.date.today().isoformat()})
     json.dump(entry, open(os.path.join(subdir, "verified_entry.json"), "w"), indent=1)
     print(f"wrote {subdir}/verified_entry.json and verified_verdicts.json")
-    print("next: python verify/compile_leaderboard.py && python website/render.py")
+    print("next: python website/compile_leaderboard.py && python website/render.py")
     compare_to_board(meta.get("system_name") or os.path.basename(subdir.rstrip("/")), matrix)
     return entry
 
