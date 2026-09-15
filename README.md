@@ -67,7 +67,7 @@ See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric def
 
 ## Scoring your book
 
-The judge needs a Gemini API key (`GEMINI_API_KEY`). From the repo root:
+The judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `VERTEX_AI_PROJECT_ID` with gcloud application-default credentials. From the repo root:
 
 ```bash
 pip install -r setup/requirements.txt
