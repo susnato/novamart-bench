@@ -78,6 +78,11 @@ def main():
                 cmd += [f"{tgt}.{t}", shard, schema]
                 r = subprocess.run(cmd, capture_output=True, text=True)
                 if r.returncode != 0: sys.exit(f"load failed for {tgt}.{t}: {r.stderr[-500:]}")
+    print("creating the estate views")
+    r = subprocess.run([sys.executable, os.path.join(HERE, "loaders", "create_views.py"),
+                        "--project", a.project, "--dataset-suffix", a.dataset_suffix])
+    if r.returncode != 0:
+        sys.exit("view creation failed")
     print(f"\ndone. Your <warehouse-project> is: {a.project}")
     print("Redash and the world repo run locally either way: python setup/setup_local.py "
           "(it skips nothing you did here; the warehouse in your access pack will be this project).")

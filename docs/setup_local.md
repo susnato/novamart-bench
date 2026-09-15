@@ -12,7 +12,7 @@ Docker (with compose), Python 3.10+, `pip install -r setup/requirements.txt`, ab
 python setup/setup_local.py
 ```
 
-This downloads the estate from Hugging Face into `setup/data/`, starts the containers (BigQuery emulator on :9050, Redash on :5050, estate Postgres on :5433), loads all 36 tables into the emulator (the 3.6M row query log takes the longest), restores the Postgres dump that Redash queries, seeds the 9 dashboards and their queries, clones `novamart-sim/novamart` into `setup/workspace/novamart` at the pinned commit, and writes `setup/access-pack/` with the values the brief's placeholders refer to (warehouse project, Redash URL and API key, workspace path) plus rendered convenience copies of the brief.
+This downloads the estate from Hugging Face into `setup/data/`, starts the containers (BigQuery emulator on :9050, Redash on :5050, estate Postgres on :5433), loads all 35 tables into the emulator (the 3.6M row query log takes the longest), creates the 5 estate views (4 in `novamart_analytics`, 1 in `novamart_logs`), restores the Postgres dump that Redash queries, seeds the 9 dashboards and their queries, clones `novamart-sim/novamart` into `setup/workspace/novamart` at the pinned commit, and writes `setup/access-pack/` with the values the brief's placeholders refer to (warehouse project, Redash URL and API key, workspace path) plus rendered convenience copies of the brief.
 
 Re-run with `--no-download` to reuse `setup/data/`. `docker compose -f setup/docker-compose.yml down -v` resets everything.
 

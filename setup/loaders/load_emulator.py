@@ -48,6 +48,8 @@ def main():
                 n += len(rows)
             total += n
             print(f"  {ds}.{t}: {n} rows in {time.time()-t0:.1f}s")
+    import create_views
+    create_views.create_on_emulator(client, PROJECT)
     print(f"emulator loaded: {total} rows")
     return 0
 

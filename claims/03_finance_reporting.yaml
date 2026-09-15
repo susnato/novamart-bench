@@ -244,8 +244,8 @@
     symbol: null
     table: <warehouse-project>.novamart_logs.app_events
     columns: null
-    sql: SELECT COUNT(*), STRING_AGG(DISTINCT JSON_VALUE(jsonPayload.month)) FROM `<warehouse-project>.novamart_logs.app_events`
-      WHERE JSON_VALUE(jsonPayload.event) = 'statement_fee_mismatch'
+    sql: SELECT COUNT(*), STRING_AGG(DISTINCT JSON_VALUE(jsonPayload.month) ORDER BY JSON_VALUE(jsonPayload.month))
+      FROM `<warehouse-project>.novamart_logs.app_events` WHERE JSON_VALUE(jsonPayload.event) = 'statement_fee_mismatch'
     excerpt: 'Exactly 3 statement_fee_mismatch warnings, months: 2019-09, 2019-10, 2019-11 - every published
       month.'
   - role: supporting
