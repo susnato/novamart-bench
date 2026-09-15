@@ -254,7 +254,7 @@
     path: novamart/jobs/monthly_statement.py
     span: 48-50
     uri: novamart/jobs/monthly_statement.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: null
     table: null
     columns: null

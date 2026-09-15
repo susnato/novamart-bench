@@ -23,7 +23,7 @@
     path: novamart/jobs/fraud_score.py
     span: 4-40
     uri: novamart/jobs/fraud_score.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: null
     table: null
     columns: null

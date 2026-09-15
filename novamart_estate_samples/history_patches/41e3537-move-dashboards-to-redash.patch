@@ -1,4 +1,4 @@
-From 57ea43a7ce777f4eab0c2a8fc6632d2adfd28e30 Mon Sep 17 00:00:00 2001
+From 41e3537203926339a07e18b85adc1d9d8c9d6227 Mon Sep 17 00:00:00 2001
 From: Novamart Platform <platform@novamart.sim>
 Date: Fri, 3 Jan 2020 11:30:00 +0000
 Subject: [PATCH] chore: move dashboards to Redash

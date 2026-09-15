@@ -22,7 +22,7 @@
     path: novamart/routers/catalog.py
     span: 58-66
     uri: novamart/routers/catalog.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: ensure_entities
     table: null
     columns: null
@@ -62,7 +62,7 @@
     path: novamart/routers/catalog.py
     span: 50-80
     uri: novamart/routers/catalog.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: _repair_product_brand
     table: null
     columns: null

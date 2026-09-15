@@ -76,8 +76,8 @@
     repo: novamart
     path: airflow/dags/intraday_report_dag.py
     span: null
-    uri: git show 43e54a1
-    commit_hash: 43e54a1
+    uri: git show 4bfcbe6
+    commit_hash: 4bfcbe6
     symbol: null
     table: null
     columns: null

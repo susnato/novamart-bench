@@ -23,7 +23,7 @@
     path: novamart/routers/accounts.py
     span: 1-20
     uri: novamart/routers/accounts.py
-    commit_hash: 2ae79e2
+    commit_hash: 5ae1182
     symbol: null
     table: null
     columns: null

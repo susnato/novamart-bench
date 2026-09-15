@@ -1,4 +1,4 @@
-From 43e54a1f46f9de0716145da3f3ee0cb03b421bf8 Mon Sep 17 00:00:00 2001
+From 4bfcbe610cb359c91d564a7744c7eae7c2503332 Mon Sep 17 00:00:00 2001
 From: Novamart Platform <platform@novamart.sim>
 Date: Sat, 4 Jan 2020 09:45:00 +0000
 Subject: [PATCH] chore: migrate schedules from crontab to Airflow

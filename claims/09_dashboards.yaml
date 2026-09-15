@@ -22,12 +22,12 @@
     path: dashboards/brand_revenue.sql
     span: null
     uri: 'Redash: brand_revenue (id 3); SQL history: git log -- dashboards/brand_revenue.sql'
-    commit_hash: 57ea43a
+    commit_hash: 41e3537
     symbol: null
     table: null
     columns: null
     sql: null
-    excerpt: SQL lived here until 57ea43a ('move dashboards to Redash') removed it from HEAD; recover
+    excerpt: SQL lived here until 41e3537 ('move dashboards to Redash') removed it from HEAD; recover
       via git or Redash. Window anchored to now().
   match:
     must_include:
@@ -61,12 +61,12 @@
     path: dashboards/best_sellers.sql
     span: null
     uri: 'Redash: best_sellers (id 2); SQL history: git log -- dashboards/best_sellers.sql'
-    commit_hash: 57ea43a
+    commit_hash: 41e3537
     symbol: null
     table: null
     columns: null
     sql: null
-    excerpt: SQL lived here until 57ea43a removed it from HEAD; recover via git or Redash. ORDER BY revenue,
+    excerpt: SQL lived here until 41e3537 removed it from HEAD; recover via git or Redash. ORDER BY revenue,
       displays units.
   match:
     must_include:
