@@ -13,10 +13,12 @@ import yaml
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..", "..")
 
-# Verified against real BigQuery; the emulator cannot complete them in any
-# reasonable time. The real leg always runs everything.
-SKIP_EMULATOR = {
-    "XW-03#0",
+# Per-engine skip sets. bqemulator (the shipped default) completes everything;
+# goccy (the fallback compose profile) cannot finish XW-03's heavy JSON
+# aggregation in any reasonable time. The real leg always runs everything.
+SKIP_BY_ENGINE = {
+    "bqemulator": set(),
+    "goccy": {"XW-03#0"},
 }
 
 def run_with_cap(fn, cap):
@@ -46,8 +48,13 @@ def collect_sql():
     return out
 
 def normalize(rows):
+    from decimal import Decimal
     def cell(v):
         if isinstance(v, float): return f"{v:.6f}"
+        if isinstance(v, Decimal):
+            # engines disagree on NUMERIC wire format (940.82 vs 940.820000000);
+            # normalize() alone can emit exponents (1000 -> 1E+3), so format plain
+            return format(v.normalize(), "f")
         return str(v)
     return sorted([cell(v) for v in row] for row in rows)  # lists, not tuples: goldens round-trip through JSON
 
@@ -101,18 +108,33 @@ def main():
     ap.add_argument("--check-quotes", action="store_true")
     ap.add_argument("--query-timeout", type=float, default=600,
                     help="hard per-query cap in seconds (default 600); a timed-out query is reported and the run continues")
+    ap.add_argument("--engine", choices=sorted(SKIP_BY_ENGINE), default="bqemulator",
+                    help="which local emulator is serving --target emulator (selects its skip set)")
     a = ap.parse_args()
     if not a.target and not a.check_quotes:
         ap.error("--target is required unless --check-quotes")
     if a.check_quotes:
         ok = check_quotes(os.path.join(ROOT, "setup", "data"))
         return 0 if ok else 1
+    if a.target == "emulator":
+        # fail fast on a refused connection: the Google client otherwise retries
+        # with backoff for ten minutes, which looks exactly like a hung server
+        import urllib.request, urllib.error
+        endpoint = os.environ.get("BQ_EMULATOR_ENDPOINT", "http://localhost:9050")
+        try:
+            urllib.request.urlopen(endpoint + "/", timeout=3)
+        except urllib.error.HTTPError:
+            pass  # any HTTP response means the server is up
+        except Exception:
+            sys.exit(f"emulator not reachable at {endpoint}; start it with: "
+                     "docker compose -f setup/docker-compose.yml up -d bq-emulator")
     gpath = os.path.join(HERE, "goldens.json")
     goldens = json.load(open(gpath)) if os.path.exists(gpath) else {}
+    skip = SKIP_BY_ENGINE[a.engine]
     results, failures, mismatches, skipped = {}, [], [], []
     for cid, i, sql in collect_sql():
         key = f"{cid}#{i}"
-        if a.target == "emulator" and key in SKIP_EMULATOR:
+        if a.target == "emulator" and key in skip:
             skipped.append(key); continue
         q = sql.replace("<warehouse-project>", a.project or "novamart-warehouse")
         try:

@@ -1,9 +1,13 @@
-"""Load the NDJSON tables into the local BigQuery emulator.
+"""Load the NDJSON tables into the local BigQuery emulator (bqemulator).
 
 The emulator serves project `novamart-warehouse` on localhost:9050, so the
-in-world docs, the brief, and the loaded warehouse all agree.
+in-world docs, the brief, and the loaded warehouse all agree. Tables load as
+one NDJSON load job per shard, raw bytes passed through: the shipped shards
+already carry JSON columns as objects, which is exactly what a load job
+expects (pre-stringifying them would store JSON string scalars and break
+JSON_VALUE paths).
 """
-import glob, gzip, json, os, sys, time
+import glob, gzip, json, os, sys, time, urllib.request
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
@@ -11,7 +15,6 @@ from google.cloud import bigquery
 
 PROJECT = "novamart-warehouse"
 ENDPOINT = os.environ.get("BQ_EMULATOR_ENDPOINT", "http://localhost:9050")
-BATCH = 2000
 
 def schema_from_json(path):
     def field(f):
@@ -20,10 +23,27 @@ def schema_from_json(path):
             fields=[field(x) for x in f.get("fields", [])])
     return [field(f) for f in json.load(open(path))]
 
+def wait_ready(timeout=60):
+    """Fail fast instead of letting the Google client retry a refused
+    connection with backoff for ten minutes, which looks like a hang."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            urllib.request.urlopen(ENDPOINT + "/", timeout=2)
+            return
+        except urllib.error.HTTPError:
+            return  # any HTTP response means the server is up
+        except Exception:
+            time.sleep(1)
+    sys.exit(f"emulator not reachable at {ENDPOINT} after {timeout}s; "
+             "is the bq-emulator container up? (docker compose -f setup/docker-compose.yml up -d bq-emulator)")
+
 def main():
     base = os.path.join(os.path.dirname(__file__), "..", "data")
+    wait_ready()
     client = bigquery.Client(project=PROJECT, credentials=AnonymousCredentials(),
                              client_options=ClientOptions(api_endpoint=ENDPOINT))
+    counts = json.load(open(os.path.join(base, "counts.json")))
     total = 0
     for ds_dir in sorted(glob.glob(os.path.join(base, "tables", "*"))):
         ds = os.path.basename(ds_dir)
@@ -31,21 +51,22 @@ def main():
         for t_dir in sorted(glob.glob(os.path.join(ds_dir, "*"))):
             t = os.path.basename(t_dir)
             schema = schema_from_json(os.path.join(t_dir, "schema.json"))
-            table = bigquery.Table(f"{PROJECT}.{ds}.{t}", schema=schema)
-            client.create_table(table, exists_ok=True)
-            rows, n, t0 = [], 0, time.time()
-            for shard in sorted(glob.glob(os.path.join(t_dir, "*.ndjson.gz"))):
-                with gzip.open(shard, "rt") as fh:
-                    for line in fh:
-                        rows.append(json.loads(line))
-                        if len(rows) >= BATCH:
-                            errs = client.insert_rows_json(table, rows)
-                            if errs: print(f"  insert errors {ds}.{t}: {errs[:2]}"); return 1
-                            n += len(rows); rows = []
-            if rows:
-                errs = client.insert_rows_json(table, rows)
-                if errs: print(f"  insert errors {ds}.{t}: {errs[:2]}"); return 1
-                n += len(rows)
+            table_id = f"{PROJECT}.{ds}.{t}"
+            t0 = time.time()
+            for i, shard in enumerate(sorted(glob.glob(os.path.join(t_dir, "*.ndjson.gz")))):
+                with gzip.open(shard, "rb") as fh:
+                    job = client.load_table_from_file(
+                        fh, table_id,
+                        job_config=bigquery.LoadJobConfig(
+                            source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
+                            schema=schema,
+                            write_disposition="WRITE_TRUNCATE" if i == 0 else "WRITE_APPEND"))
+                job.result()
+            n = list(client.query(f"SELECT COUNT(*) FROM `{table_id}`").result())[0][0]
+            expected = counts.get(f"{ds}.{t}")
+            if expected is not None and n != expected:
+                print(f"  ROW COUNT MISMATCH {ds}.{t}: loaded {n}, expected {expected}")
+                return 1
             total += n
             print(f"  {ds}.{t}: {n} rows in {time.time()-t0:.1f}s")
     import create_views

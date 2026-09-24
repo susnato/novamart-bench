@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        emulator_tag: ["0.8.1", "latest"]
+        emulator_tag: ["1.4.0", "latest"]
     env:
       BQ_EMULATOR_TAG: ${{ matrix.emulator_tag }}
       HF_TOKEN: ${{ secrets.HF_TOKEN }}

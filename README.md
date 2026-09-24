@@ -53,7 +53,7 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## ⚙️ Setup
 
-**Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: the [BigQuery emulator](https://github.com/goccy/bigquery-emulator) loaded with all 35 tables and the 5 estate views (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack. See [`docs/setup_local.md`](docs/setup_local.md).
+**Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API, loaded with all 35 tables and the 5 estate views (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack. See [`docs/setup_local.md`](docs/setup_local.md).
 
 **GCP**: `python setup/setup_gcp.py --project your-project-id` loads the three datasets into your own BigQuery project (permission preflight first, nothing created on failure; `roles/bigquery.user` suffices). Agents then use the real BigQuery API at your own scale and cost. Submissions disclose which mode produced the runs. See [`docs/setup_gcp.md`](docs/setup_gcp.md).
 
