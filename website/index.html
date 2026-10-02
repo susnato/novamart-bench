@@ -163,7 +163,7 @@
         <tr><td>Audited gold claims</td><td class="num">51</td></tr>
         <tr><td>Baseline books from the paper</td><td class="num">9 (3 systems &times; 3 runs)</td></tr>
       </table>
-      <p style="font-size:13px; color:var(--muted); margin:12px 0 0">Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator. The estate, the claims, and the scoring harness ship in one repo; the README walks through local (docker compose) and GCP setup.</p>
+      <p style="font-size:13px; color:var(--muted); margin:12px 0 0">Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator. The claims and the scoring harness ship in the GitHub repo; the frozen estate is a versioned Hugging Face dataset plus the application repo on GitHub. The README walks through local (docker compose) and GCP setup.</p>
       <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench" id="runit" target="_blank" rel="noopener">Set it up on GitHub &rarr;</a>
     </section>
 
@@ -244,7 +244,7 @@ git show 1cb8721 <span class="k">--</span> novamart/constants.py
 
     <section class="card" id="submit">
       <h2 style="font-size:17px">Submit your agent</h2>
-      <p style="font-size:14px">Run your agent on the estate three times with the released brief, then open a PR adding a folder under <code>submissions/</code> with:</p>
+      <p style="font-size:14px">Run your agent on the estate three times with the <a href="https://github.com/susnato/novamart-bench/tree/main/default_prompts" target="_blank" rel="noopener">released brief</a>, then open a PR adding a folder under <code>submissions/</code> with:</p>
       <ul class="rubric" style="font-size:13.5px">
         <li>the <b>three knowledge books</b>, one per run (read-only estate)</li>
         <li><b>your system's own prompts or scaffold</b>, if any (the released brief itself must be given to the agent unchanged)</li>
@@ -260,7 +260,7 @@ git show 1cb8721 <span class="k">--</span> novamart/constants.py
 <footer class="footer">
   <hr>
   <p><b>Data attribution.</b> Ambient shopper traffic is replayed from the <a href="https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store" target="_blank" rel="noopener">REES46 eCommerce behavior dataset</a> (<a href="https://rees46.com" target="_blank" rel="noopener">REES46 Marketing Platform</a>), used with attribution per the dataset's stated terms. NovaMart redistributes only derived artifacts; every order traces back to a real browsing session, but the raw event stream is obtained from Kaggle directly.</p>
-  <p>Code: Apache-2.0 &middot; Estate &amp; claims: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato" target="_blank" rel="noopener">@susnato</a>.</p>
+  <p>Code: Apache-2.0 &middot; Estate, claims, books, results &amp; paper: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato" target="_blank" rel="noopener">@susnato</a>.</p>
 </footer>
 
 </body>

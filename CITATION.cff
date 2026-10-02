@@ -11,6 +11,9 @@ authors:
 year: 2026
 url: "https://novamartbench.com"
 repository-code: "https://github.com/susnato/novamart-bench"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
 preferred-citation:
   type: conference-paper
   title: "NovaMart: A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction"

@@ -86,7 +86,7 @@ The summary uses the exact statistics code the maintainer's verification runs, s
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run your agent on the estate three times with the released brief, then open a PR adding your three books, a metadata file, and your system's own prompts (if any) under `submissions/`. The released brief must be given to the agent unmodified, and no gold-claim content may appear in any prompt. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run your agent on the estate three times with the [released brief](default_prompts/), then open a PR adding your three books, a metadata file, and your system's own prompts (if any) under `submissions/`. The released brief must be given to the agent unmodified, and no gold-claim content may appear in any prompt. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
 
 ## 🔎 Verification and provenance
 
@@ -96,7 +96,7 @@ During release preparation a single internal infrastructure identifier was renam
 
 ## 📄 Licenses and attribution
 
-Code is Apache-2.0 (`LICENSE`). The estate, claims, books, and results are CC BY 4.0 (`LICENSE-DATA`). Ambient shopper traffic is replayed from the REES46 eCommerce behavior dataset; see [`ATTRIBUTION.md`](ATTRIBUTION.md).
+Code is Apache-2.0 (`LICENSE`). The estate (the Hugging Face dataset and the `novamart-sim/novamart` application repo with its full git history), the claims, books, results, the paper, and the website are CC BY 4.0 (`LICENSE-DATA`). The application repo is additionally available under Apache-2.0 for use as software (SPDX: `Apache-2.0 OR CC-BY-4.0`); it carries no LICENSE file of its own because its git history is the benchmark artifact. Ambient shopper traffic is replayed from the REES46 eCommerce behavior dataset (https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store, provided by the REES46 Marketing Platform, https://rees46.com), a designated attribution party; see [`ATTRIBUTION.md`](ATTRIBUTION.md).
 
 ## Citation
 
