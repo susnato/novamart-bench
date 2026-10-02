@@ -4,7 +4,7 @@ Please open one pull request that adds one folder named `<system>-<version>-<YYY
 
 1. **Books (required)**: `book_r1.md`, `book_r2.md`, `book_r3.md`, each the direct output of one run under read-only estate access.
 2. **Metadata (required)**: `metadata.yaml`, copied from [`template/metadata.yaml`](template/metadata.yaml). `system_name` (shown on the leaderboard) is required.
-3. **Prompts**: If you use the [default prompts](../default_prompts/) for your agent (we encourage it as well), nothing is required here but if not, then please include them as (`prompt.md`, or `prompt_r1.md`..`prompt_r3.md` if they varied). **No gold-claim content may appear in them.**
+3. **Prompts**: give your agent the [released brief](../default_prompts/) as its task (ideally exactly as shipped). If your system adds prompts or a scaffold of its own, include them (`prompt.md`, or `prompt_r1.md`..`prompt_r3.md` if they varied) so what ran is visible. No gold-claim content may appear in any of them.
 4. **Trajectories (optional, encouraged)**: `trajectories/` with the agent transcript and tool calls per run.
 
 You do not need to compute any statistics: the maintainer runs the judge on your books and computes every listed number, so all entries are scored the same way.

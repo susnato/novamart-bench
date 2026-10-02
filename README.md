@@ -41,7 +41,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | `docs/` | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix |
 | `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records |
 
-The **full frozen estate** (warehouse fixtures, database dump, log exports, Redash export) is distributed separately as a versioned Hugging Face dataset; the application repo with its full history is cloned from GitHub (`novamart-sim/novamart`); see [Setup](#%EF%B8%8F-setup). This repo stays small on purpose.
+The estate itself is not in this repo. The warehouse fixtures, database dump, log exports and Redash export live in a versioned Hugging Face dataset, and the application repo with its full git history is its own GitHub repo (`novamart-sim/novamart`). The setup scripts pull both; see [Setup](#%EF%B8%8F-setup). That keeps this repo small enough to clone in a few seconds.
 
 ## 🏗️ The access surface
 
