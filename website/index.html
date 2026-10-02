@@ -148,7 +148,7 @@
     <section class="card" id="about">
       <h2>About NovaMart</h2>
       <p>AI agents are moving into the daily work of enterprise engineers and analysts. Doing that work properly requires the company's <b>tribal knowledge</b>: which undocumented filters go into a metric, which of several views is canonical, which half-finished migration decided whose data moved. Agents that lack it fail silently, shipping numbers that look right while disagreeing with every existing report.</p>
-      <p>NovaMart is a simulated e-commerce retailer that is <b>executed rather than authored</b>. It is built from two inputs. The first is real shopper behavior: the public REES46 event stream, replayed hourly as ambient traffic through a live application and database. The second is the tape: an authored script of the company's story, written by engineers reproducing failure patterns seen in production (for example: a payment provider that delivers every confirmation twice for three hours, a vendor whose weekly price uploads are silently discarded for a month, three teams that each invent their own definition of an active customer). LLM-powered engineers act out the tape against the running application on one clock; everything a company would accumulate builds up as a side effect, and after 3.5 simulated months the estate is frozen. Every row, log line, query, and dashboard follows from that one executed history.</p>
+      <p>NovaMart is a simulated e-commerce retailer that is <b>executed rather than authored</b>. It is built from two inputs. The first is real shopper behavior: the public REES46 event stream, replayed hourly as ambient traffic through a live application and database. The second is the tape: an authored script of the company's story, written by engineers reproducing failure patterns seen in production (for example: a payment provider that delivers every confirmation twice for three hours, exposing the missing idempotency check, a vendor whose weekly price uploads are silently discarded for a month, three teams that each use their own definition of an active customer). LLM-powered engineers then work through that script against the running application, on one shared clock, for 3.5 simulated months. We never write the data ourselves: rows, logs, queries and dashboards pile up as a side effect of the work, the way they do in a real company. Then we freeze everything. Every row, log line, query and dashboard in the estate traces back to that one run.</p>
     </section>
 
     <section class="card">
@@ -169,9 +169,9 @@
 
     <section class="card">
       <h2>How evaluation works</h2>
-      <p style="font-size:14.5px; margin:0 0 10px">Each system gets identical read-only access to the frozen estate and a single brief: write the company's missing knowledge book. <b>51 audited gold claims</b>, each with a recomputable evidence chain, decide how much it found. The claims split into <b>narrated</b> (20: the rubric can be satisfied from text surfaces alone, i.e. code, git history, docs) and <b>excavated</b> (31: requiring computation over the warehouse, logs, or query history). Systems differ most where knowledge must be computed, not read: what separates them is not reading ability but excavation ability.</p>
-      <p style="font-size:14.5px; margin:0">Each agent's book is passed to a pinned LLM judge, which scores it against every claim's rubric: one verdict per claim. <b>Claim recall</b> is the fraction of the 51 claims the book satisfies. A system's headline score is <b>mean recall over its three runs</b>; <b>pass&sup3;</b> counts the claims it solved in all three. The judge protocol, its stability analysis, and the confidence-interval recipes are in the paper. Every verdict ships with its entry under <code>submissions/</code>, and the leaderboard is compiled from those records (<code>compile_leaderboard.py --check</code>, enforced in CI), so every number on this page can be recomputed.</p>
-      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench#scoring-your-book" target="_blank" rel="noopener">Score your book &rarr;</a>
+      <p style="font-size:14.5px; margin:0 0 10px">Each system gets identical read-only access to the frozen estate and a single brief: write the company's missing knowledge book. <b>51 audited gold claims</b>, each with a recomputable evidence chain, decide how much it found. The claims split into <b>narrated</b> (20: the rubric can be satisfied from text surfaces alone, i.e. code, git history, docs) and <b>excavated</b> (31: requiring computation over the warehouse, logs, or query history). In our baseline runs (three systems, three runs each), the systems differed most where knowledge had to be computed rather than read: what separated them was not reading ability but excavation ability.</p>
+      <p style="font-size:14.5px; margin:0">Each agent's book is passed to an LLM judge (the same model and prompt for every entry), which scores it against every claim's rubric: one verdict per claim. <b>Claim recall</b> is the fraction of the 51 claims the book satisfies. A system's headline score is <b>mean recall over its three runs</b>; <b>pass&sup3;</b> counts the claims it solved in all three. The judge protocol, its stability analysis, and the confidence-interval recipes are in the paper. Every verdict ships with its entry under <code>submissions/</code>, and the leaderboard is compiled from those records (<code>compile_leaderboard.py --check</code>, enforced in CI), so every number on this page can be recomputed.</p>
+      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench#scoring-your-book" target="_blank" rel="noopener">Score your agent's book &rarr;</a>
     </section>
 
     <section class="card" id="claim">
@@ -221,7 +221,7 @@ git show 1cb8721 <span class="k">--</span> novamart/constants.py
   <aside id="leaderboard">
     <section class="card">
       <h2>Leaderboard</h2>
-      <p class="protocol">Three runs per system, frozen brief, read-only estate. All numbers computed by the maintainer from the submitted books with the pinned judge (majority of five passes); listed after verification.</p>
+      <p class="protocol">Three runs per system, frozen brief, read-only estate. All numbers computed by the maintainer from the submitted books with the judge (majority of five passes); listed after verification.</p>
       <div class="tablewrap">
         <table>
           <thead>
@@ -244,15 +244,15 @@ git show 1cb8721 <span class="k">--</span> novamart/constants.py
 
     <section class="card" id="submit">
       <h2 style="font-size:17px">Submit your agent</h2>
-      <p style="font-size:14px">Run the three-run protocol, then open a PR adding a folder under <code>submissions/</code> containing:</p>
+      <p style="font-size:14px">Run your agent on the estate three times with the released brief, then open a PR adding a folder under <code>submissions/</code> with:</p>
       <ul class="rubric" style="font-size:13.5px">
         <li>the <b>three knowledge books</b>, one per run (read-only estate)</li>
-        <li><b>your prompts</b>: frozen-brief entries attest the released brief was unmodified; custom-scaffold entries include the full prompt text and are listed with a marker outside the headline ranking</li>
+        <li><b>prompts: nothing</b> if you used the released brief unchanged; if you used your own prompt or scaffold, its full text (those entries are listed with a * outside the headline ranking)</li>
         <li>optional but encouraged: <b>trajectories and tool calls</b> per run</li>
         <li>system name and version, model and effort setting, environment mode</li>
       </ul>
-      <p style="font-size:13.5px; margin-top:10px">The verifier (the maintainer of this repo) re-runs the pinned judge on your books and computes every column (runs, mean recall, 95% CI, pass&sup3;) during verification, so all entries are scored identically. Self-scoring first with your own judge key is welcome as a sanity check; listed numbers are always the verification run's.</p>
-      <a class="btn" href="https://github.com/susnato/novamart-bench/tree/main/submissions" target="_blank" rel="noopener">Submission guide</a>
+      <p style="font-size:13.5px; margin-top:10px">The maintainer re-runs the judge on your books and computes every column (runs, mean recall, 95% CI, pass&sup3;) during verification, so all entries are scored identically. Self-scoring first with your own judge key is welcome as a sanity check; listed numbers are always the verification run's.</p>
+      <a class="btn" href="https://github.com/susnato/novamart-bench/tree/main/submissions" target="_blank" rel="noopener">Submission guide &rarr;</a>
     </section>
   </aside>
 </div>

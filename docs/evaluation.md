@@ -6,7 +6,7 @@ Each system is evaluated as shipped, zero-shot, **three times** under the same f
 
 ## Scoring
 
-Every book is scored per claim by a pinned LLM judge (Gemini 3 Flash preview) against the claim's rubric, with verdicts correct, partial, missing, or contradicted. The three released baseline entries were scored with `gemini-3-flash-preview`, recorded per entry in `judge_record.json`; that judge is fixed as the benchmark's judge. The released verdict for a claim-book cell is the **majority over five independent judge passes**; ties resolve to the worse verdict. Claim recall is the fraction of the 51 claims whose rubric the book satisfies (verdict: correct).
+Every book is scored per claim by an LLM judge (Gemini 3 Flash preview, the same model and prompt for every entry) against the claim's rubric, with verdicts correct, partial, missing, or contradicted. The three released baseline entries were scored with `gemini-3-flash-preview`, recorded per entry in `judge_record.json`; that judge is fixed as the benchmark's judge. The released verdict for a claim-book cell is the **majority over five independent judge passes**; ties resolve to the worse verdict. Claim recall is the fraction of the 51 claims whose rubric the book satisfies (verdict: correct).
 
 ## Metrics
 
@@ -30,4 +30,4 @@ With 51 claims, one claim is worth about 2 points of recall, and the 95% confide
 
 ## Verification of submissions
 
-Submitters send books only; no statistics are required from them. The verifier (the maintainer of this repo) re-scores every submission with the pinned judge (five passes per cell, majority verdict) and computes all listed numbers, so every entry is scored identically. Self-scored results are a useful sanity check but the listed numbers are always the verification run's. Submissions disclose the environment mode (cloud BigQuery or local emulator stack).
+Submitters send books only; no statistics are required from them. The maintainer re-scores every submission with the judge (five passes per cell, majority verdict) and computes all listed numbers, so every entry is scored identically. Self-scored results are a useful sanity check but the listed numbers are always the verification run's. Submissions disclose the environment mode (cloud BigQuery or local emulator stack).

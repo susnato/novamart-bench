@@ -33,7 +33,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | Path | Contents |
 |---|---|
 | `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
-| `scoring/` | the scoring harness (pinned LLM judge, majority-of-five protocol) |
+| `scoring/` | the scoring harness (LLM judge, majority-of-five protocol) |
 | `default_prompts/` | the frozen brief given to every agent, verbatim |
 | `setup/` | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the GCP loader, plus the emulator parity harness (`setup/parity/`) |
 | `submissions/` | the canonical home of everything leaderboard: entries (baselines included) each carrying books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (derived majorities), and `verified_entry.json` (stats); plus the template and the verification script |
@@ -59,7 +59,7 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## 🧪 Evaluation
 
-Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by a pinned LLM judge against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs.
+Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by an LLM judge (the same model and prompt for every entry) against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs.
 
 See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric definitions, and the statistical notes: what score differences this benchmark can and cannot resolve.
 
@@ -82,11 +82,11 @@ python -m scoring.cli score-book --gold novamart --book book_r1.md --book book_r
 python -m scoring.cli score-book --gold novamart --book book_r1.md --judge-passes 3
 ```
 
-The summary uses the exact statistics code the maintainer's verifier runs, so your self-scored numbers and the verified listing are the same math; they are still unofficial until verification. `scoring/README.md` documents options, judge pinning, and the five-pass majority protocol.
+The summary uses the exact statistics code the maintainer's verification runs, so your self-scored numbers and the verified listing are the same math; they are still unofficial until verification. `scoring/README.md` documents options, the judge configuration, and the five-pass majority protocol.
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`. Please don't worry about computing any statistics: the verifier (the maintainer of this repo) re-runs the pinned judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run your agent on the estate three times with the released brief, then open a PR adding your three books and a metadata file under `submissions/`. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
 
 ## 🔎 Verification and provenance
 
