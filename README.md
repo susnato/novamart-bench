@@ -13,12 +13,12 @@
 
 How much of a company's undocumented knowledge can an AI agent excavate from the data estate alone: the code, the git history, the warehouse, the logs, the dashboards?
 
-NovaMart is a simulated e-commerce retailer that is **executed rather than authored**. Real shopper traffic (the public REES46 event stream) is replayed through a live application and database while LLM-powered engineers act out an authored script of incidents, migrations, and half-finished fixes. Everything a company accumulates builds up as a side effect, then the estate is frozen. Agents get read-only access and a single brief: write the company's missing knowledge book. **51 audited gold claims**, each with a recomputable evidence chain, decide how much they found.
+NovaMart is a simulated e-commerce retailer that is **executed rather than authored**. Real shopper traffic (the public REES46 event stream) is replayed hourly through a live application and database while LLM-powered engineers work through an authored script of incidents, migrations and half-finished fixes against it, on one shared clock, for 3.5 simulated months. We never write the data ourselves: rows, logs, queries and dashboards pile up as a side effect of the work. Then we freeze everything. Agents get read-only access and a single brief: write the company's missing knowledge book. **51 audited gold claims**, each with a recomputable evidence chain, decide how much they found.
 
 | Estate surface | Scale |
 |---|---|
 | Application repo, full git history | 112 commits |
-| Warehouse tables | 32 |
+| Warehouse tables | 32 (plus 3 log export tables) |
 | Warehouse rows | 878,918 |
 | Runtime + query log lines | 5,168,645 |
 | Redash dashboards | 9 |
@@ -41,7 +41,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | `docs/` | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix |
 | `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records |
 
-The **full frozen estate** (repo bundle, warehouse dump, logs, Redash export) is distributed separately as a versioned dataset; see [Setup](#%EF%B8%8F-setup). This repo stays small on purpose.
+The **full frozen estate** (warehouse fixtures, database dump, log exports, Redash export) is distributed separately as a versioned Hugging Face dataset; the application repo with its full history is cloned from GitHub (`novamart-sim/novamart`); see [Setup](#%EF%B8%8F-setup). This repo stays small on purpose.
 
 ## 🏗️ The access surface
 
@@ -59,11 +59,11 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## 🧪 Evaluation
 
-Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by an LLM judge (the same model and prompt for every entry) against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs.
+Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by an LLM judge (the same model and prompt for every entry) against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs. The claims split into **narrated** (20: satisfiable from text surfaces alone, i.e. code, git history, docs) and **excavated** (31: requiring computation over the warehouse, logs, or query history). In the paper's baseline runs (three systems, three runs each), the systems differed most on the excavated claims: what separated them was not reading ability but excavation ability.
 
 See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric definitions, and the statistical notes: what score differences this benchmark can and cannot resolve.
 
-## Scoring your book
+## Scoring your agent's book
 
 The judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `VERTEX_AI_PROJECT_ID` with gcloud application-default credentials. From the repo root:
 
@@ -86,7 +86,7 @@ The summary uses the exact statistics code the maintainer's verification runs, s
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run your agent on the estate three times with the released brief, then open a PR adding your three books and a metadata file under `submissions/`. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run your agent on the estate three times with the released brief, then open a PR adding your three books, a metadata file, and your system's own prompts (if any) under `submissions/`. The released brief must be given to the agent unmodified, and no gold-claim content may appear in any prompt. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
 
 ## 🔎 Verification and provenance
 
