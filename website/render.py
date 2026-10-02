@@ -44,6 +44,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, "index.html"), "w").write(html)
     shutil.copy(os.path.join(HERE, "leaderboard.json"), os.path.join(out, "leaderboard.json"))
+    shutil.copy(os.path.join(HERE, "paper.pdf"), os.path.join(out, "paper.pdf"))
     print(f"rendered {len(rows)} rows -> {out}/index.html")
 
 if __name__ == "__main__":

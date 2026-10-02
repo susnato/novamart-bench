@@ -125,7 +125,7 @@
   <nav>
     <a href="#about">About</a>
     <a href="#leaderboard">Leaderboard</a>
-    <a href="https://github.com/susnato/novamart-bench">Code</a>
+    <a href="https://github.com/susnato/novamart-bench" target="_blank" rel="noopener">Code</a>
     <a href="#claim">Example</a>
     <a href="#submit">Submit</a>
     <a href="#cite">Citation</a>
@@ -137,8 +137,8 @@
   <p class="subtitle">A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction</p>
   <p class="oneliner">How much of a company's undocumented knowledge can an AI agent excavate from the data estate alone: the code, the git history, the warehouse, the logs, the dashboards?</p>
   <div class="cta">
-    <a class="btn" href="#cite">Paper</a>
-    <a class="btn" href="https://github.com/susnato/novamart-bench">Code</a>
+    <a class="btn" href="paper.pdf" target="_blank" rel="noopener">Paper</a>
+    <a class="btn" href="https://github.com/susnato/novamart-bench" target="_blank" rel="noopener">Code</a>
     <a class="btn" href="#submit">Submit</a>
   </div>
 </section>
@@ -165,13 +165,13 @@
         <tr><td>Released agent books (baselines)</td><td class="num">9</td></tr>
       </table>
       <p style="font-size:13px; color:var(--muted); margin:12px 0 0">Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator. The estate, the claims, and the scoring harness ship in one repo; the README walks through local (docker compose) and GCP setup.</p>
-      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench" id="runit">Set it up on GitHub &rarr;</a>
+      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench" id="runit" target="_blank" rel="noopener">Set it up on GitHub &rarr;</a>
     </section>
 
     <section class="card">
       <h2>How scoring works</h2>
       <p style="font-size:14.5px; margin:0">Each agent's book is passed to a pinned LLM judge, which scores it against every claim's rubric: one verdict per claim. <b>Claim recall</b> is the fraction of the 51 claims the book satisfies. A system's headline score is <b>mean recall over its three runs</b>; <b>pass&sup3;</b> counts the claims it solved in all three. The judge protocol, its stability analysis, and the confidence-interval recipes are in the paper; every verdict is released, so every number on this page can be recomputed.</p>
-      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench#scoring-your-book">Score your book &rarr;</a>
+      <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench#scoring-your-book" target="_blank" rel="noopener">Score your book &rarr;</a>
     </section>
 
     <section class="card" id="claim">
@@ -199,12 +199,14 @@
 
     <section class="card" id="cite">
       <h2>Citation</h2>
-<pre>@article{novamart2026,
-  title   = {NovaMart: A Causally Consistent Simulated Enterprise
-             for Measuring Tribal Knowledge Extraction},
-  author  = {&lt;authors&gt;},
-  journal = {arXiv preprint arXiv:26XX.XXXXX},
-  year    = {2026}
+<pre>@inproceedings{dhar2026novamart,
+  title     = {NovaMart: A Causally Consistent Simulated Enterprise
+               for Measuring Tribal Knowledge Extraction},
+  author    = {Dhar, Susnato and Saket, Srijan and Mehrotra, Rishabh},
+  booktitle = {NeurIPS 2026 Workshop on Agentic AI Benchmarks and
+               Applications for Enterprise Tasks (AABA4ET)},
+  year      = {2026},
+  url       = {https://novamartbench.com}
 }</pre>
       <p style="font-size:13px; color:var(--muted); margin:0">Questions: please open an issue on the GitHub repo; or email <a href="mailto:susnatodhar10@gmail.com">susnatodhar10@gmail.com</a>.</p>
     </section>
@@ -244,15 +246,15 @@
         <li>system name and version, model and effort setting, environment mode</li>
       </ul>
       <p style="font-size:13.5px; margin-top:10px">That's the whole submission; there are no statistics for you to compute. The verifier (the maintainer of this repo) re-runs the pinned judge on your books and computes every column (runs, mean recall, 95% CI, pass&sup3;) during verification, so all entries are scored identically. Self-scoring first with your own judge key is welcome as a sanity check; listed numbers are always the verification run's.</p>
-      <a class="btn" href="https://github.com/susnato/novamart-bench/tree/main/submissions">Submission guide</a>
+      <a class="btn" href="https://github.com/susnato/novamart-bench/tree/main/submissions" target="_blank" rel="noopener">Submission guide</a>
     </section>
   </aside>
 </div>
 
 <footer class="footer">
   <hr>
-  <p><b>Data attribution.</b> Ambient shopper traffic is replayed from the <a href="https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store">REES46 eCommerce behavior dataset</a> (<a href="https://rees46.com">REES46 Marketing Platform</a>), used with attribution per the dataset's stated terms. NovaMart redistributes only derived artifacts; every order traces back to a real browsing session, but the raw event stream is obtained from Kaggle directly.</p>
-  <p>Code: Apache-2.0 &middot; Estate &amp; claims: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato">@susnato</a>.</p>
+  <p><b>Data attribution.</b> Ambient shopper traffic is replayed from the <a href="https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store" target="_blank" rel="noopener">REES46 eCommerce behavior dataset</a> (<a href="https://rees46.com" target="_blank" rel="noopener">REES46 Marketing Platform</a>), used with attribution per the dataset's stated terms. NovaMart redistributes only derived artifacts; every order traces back to a real browsing session, but the raw event stream is obtained from Kaggle directly.</p>
+  <p>Code: Apache-2.0 &middot; Estate &amp; claims: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato" target="_blank" rel="noopener">@susnato</a>.</p>
 </footer>
 
 </body>

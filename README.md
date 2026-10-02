@@ -1,9 +1,9 @@
 # NovaMart: A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction
 
 <p align="center">
-  <a href="https://novamart-bench.github.io">Website</a> •
-  <a href="https://novamart-bench.github.io">Leaderboard</a> •
-  <a href="#citation">Paper</a> •
+  <a href="https://novamartbench.com">Website</a> •
+  <a href="https://novamartbench.com/#leaderboard">Leaderboard</a> •
+  <a href="website/paper.pdf">Paper</a> •
   <a href="submissions/README.md">Submit</a>
 </p>
 
@@ -86,7 +86,7 @@ The summary uses the exact statistics code the maintainer's verifier runs, so yo
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamart-bench.github.io is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`. Please don't worry about computing any statistics: the verifier (the maintainer of this repo) re-runs the pinned judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run the three-run protocol, then open a PR adding your three books and a metadata file under `submissions/`. Please don't worry about computing any statistics: the verifier (the maintainer of this repo) re-runs the pinned judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
 
 ## 🔎 Verification and provenance
 
@@ -101,12 +101,14 @@ Code is Apache-2.0 (`LICENSE`). The estate, claims, books, and results are CC BY
 ## Citation
 
 ```bibtex
-@article{novamart2026,
-  title   = {NovaMart: A Causally Consistent Simulated Enterprise
-             for Measuring Tribal Knowledge Extraction},
-  author  = {<authors, added at release>},
-  journal = {arXiv preprint arXiv:26XX.XXXXX},
-  year    = {2026}
+@inproceedings{dhar2026novamart,
+  title     = {NovaMart: A Causally Consistent Simulated Enterprise
+               for Measuring Tribal Knowledge Extraction},
+  author    = {Dhar, Susnato and Saket, Srijan and Mehrotra, Rishabh},
+  booktitle = {NeurIPS 2026 Workshop on Agentic AI Benchmarks and
+               Applications for Enterprise Tasks (AABA4ET)},
+  year      = {2026},
+  url       = {https://novamartbench.com}
 }
 ```
 
