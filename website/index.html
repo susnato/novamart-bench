@@ -147,9 +147,8 @@
   <main>
     <section class="card" id="about">
       <h2>About NovaMart</h2>
-      <p>AI agents are moving into the daily work of enterprise engineers and analysts. Doing that work well requires the company's <b>tribal knowledge</b>: which undocumented filters go into a metric, which of several views is canonical, which half-finished migration decided whose data moved. Agents that lack it fail silently, shipping numbers that look right while disagreeing with every existing report.</p>
-      <p>NovaMart is a simulated e-commerce retailer that is <b>executed rather than authored</b>. It is built from two inputs. The first is real shopper behavior: the public REES46 event stream, replayed hourly as ambient traffic through a live application and database. The second is the tape: an authored script of the company's story, written by engineers reproducing failure patterns seen in production (a payment provider that delivers every confirmation twice for three hours, a vendor whose weekly price uploads are silently discarded for a month, three teams that each invent their own definition of an active customer). LLM-powered engineers act out the tape against the running application on one clock; everything a company would accumulate builds up as a side effect, and after 3.5 simulated months the estate is frozen. Every row, log line, query, and dashboard follows from that one executed history.</p>
-      <p>Each system gets identical read-only access to the frozen estate and a single brief: write the company's missing knowledge book. <b>51 audited gold claims</b>, each with a recomputable evidence chain, decide how much it found. The claims split into <b>narrated</b> (20: the rubric can be satisfied from text surfaces alone, i.e. code, git history, docs) and <b>excavated</b> (31: requiring computation over the warehouse, logs, or query history). Systems differ most where knowledge must be computed, not read: what separates them is not reading ability but excavation ability.</p>
+      <p>AI agents are moving into the daily work of enterprise engineers and analysts. Doing that work properly requires the company's <b>tribal knowledge</b>: which undocumented filters go into a metric, which of several views is canonical, which half-finished migration decided whose data moved. Agents that lack it fail silently, shipping numbers that look right while disagreeing with every existing report.</p>
+      <p>NovaMart is a simulated e-commerce retailer that is <b>executed rather than authored</b>. It is built from two inputs. The first is real shopper behavior: the public REES46 event stream, replayed hourly as ambient traffic through a live application and database. The second is the tape: an authored script of the company's story, written by engineers reproducing failure patterns seen in production (for example: a payment provider that delivers every confirmation twice for three hours, a vendor whose weekly price uploads are silently discarded for a month, three teams that each invent their own definition of an active customer). LLM-powered engineers act out the tape against the running application on one clock; everything a company would accumulate builds up as a side effect, and after 3.5 simulated months the estate is frozen. Every row, log line, query, and dashboard follows from that one executed history.</p>
     </section>
 
     <section class="card">
@@ -162,38 +161,45 @@
         <tr><td>Redash dashboards</td><td>included (full export)</td></tr>
         <tr><td>Simulated history</td><td class="num">3.5 months</td></tr>
         <tr><td>Audited gold claims</td><td class="num">51</td></tr>
-        <tr><td>Released agent books (baselines)</td><td class="num">9</td></tr>
+        <tr><td>Baseline books from the paper</td><td class="num">9 (3 systems &times; 3 runs)</td></tr>
       </table>
       <p style="font-size:13px; color:var(--muted); margin:12px 0 0">Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator. The estate, the claims, and the scoring harness ship in one repo; the README walks through local (docker compose) and GCP setup.</p>
       <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench" id="runit" target="_blank" rel="noopener">Set it up on GitHub &rarr;</a>
     </section>
 
     <section class="card">
-      <h2>How scoring works</h2>
-      <p style="font-size:14.5px; margin:0">Each agent's book is passed to a pinned LLM judge, which scores it against every claim's rubric: one verdict per claim. <b>Claim recall</b> is the fraction of the 51 claims the book satisfies. A system's headline score is <b>mean recall over its three runs</b>; <b>pass&sup3;</b> counts the claims it solved in all three. The judge protocol, its stability analysis, and the confidence-interval recipes are in the paper; every verdict is released, so every number on this page can be recomputed.</p>
+      <h2>How evaluation works</h2>
+      <p style="font-size:14.5px; margin:0 0 10px">Each system gets identical read-only access to the frozen estate and a single brief: write the company's missing knowledge book. <b>51 audited gold claims</b>, each with a recomputable evidence chain, decide how much it found. The claims split into <b>narrated</b> (20: the rubric can be satisfied from text surfaces alone, i.e. code, git history, docs) and <b>excavated</b> (31: requiring computation over the warehouse, logs, or query history). Systems differ most where knowledge must be computed, not read: what separates them is not reading ability but excavation ability.</p>
+      <p style="font-size:14.5px; margin:0">Each agent's book is passed to a pinned LLM judge, which scores it against every claim's rubric: one verdict per claim. <b>Claim recall</b> is the fraction of the 51 claims the book satisfies. A system's headline score is <b>mean recall over its three runs</b>; <b>pass&sup3;</b> counts the claims it solved in all three. The judge protocol, its stability analysis, and the confidence-interval recipes are in the paper. Every verdict ships with its entry under <code>submissions/</code>, and the leaderboard is compiled from those records (<code>compile_leaderboard.py --check</code>, enforced in CI), so every number on this page can be recomputed.</p>
       <a class="btn" style="margin-top:12px" href="https://github.com/susnato/novamart-bench#scoring-your-book" target="_blank" rel="noopener">Score your book &rarr;</a>
     </section>
 
     <section class="card" id="claim">
-      <h2>A gold claim, verbatim</h2>
-      <p>Claim <b>FIN-04</b>, exactly as released. This is what "tribal knowledge" looks like: two official revenue numbers, and the reason for the difference is written down nowhere.</p>
-      <blockquote>"October 2019 has two official gross revenue numbers: the published statement says 1,230,332.43 while the restated view <code>analytics.statements_final</code> says 1,226,764.86. The difference is chargebacks, booked in a separate analytics table and subtracted by the view, never in the statements table."</blockquote>
-      <p class="meta-line mono">narration: excavated &middot; type: dynamic &middot; acquisition: hard-derive &middot; source: data warehouse</p>
-      <p style="margin-top:12px; font-size:14px">The evidence chain is recomputable against the shipped warehouse:</p>
-<pre><span class="k">SELECT</span> s.month, s.gross <span class="k">AS</span> published, f.gross <span class="k">AS</span> restated
-<span class="k">FROM</span> `&lt;warehouse&gt;.novamart.statements` s
-<span class="k">JOIN</span> `&lt;warehouse&gt;.novamart_analytics.statements_final` f <span class="k">USING</span> (month)
-<span class="k">WHERE</span> s.month = <span class="c">'2019-10'</span>
-<span class="c">-- returns published=1230332.43, restated=1226764.86 (delta 3567.57 = booked chargebacks)</span></pre>
+      <h2>Example: a gold claim, verbatim</h2>
+      <p>Claim <b>HC-02</b>, exactly as released. This is what tribal knowledge looks like: an engineer cleans something up by hand with a single <code>UPDATE</code>. No code path performs that operation, and nobody beyond that engineer knows what was released or why; the knowledge sits in one person's head. The only trace is in the database query log, and the only way to learn it is to go through that log.</p>
+      <blockquote>"On 2019-12-29 an engineer manually released fraud-held orders with a hand-run UPDATE (status 6 back to 1, for held orders under $2,600) — an operation no code path performs; only the database session records its execution. The same day, a commit raised the fraud-hold threshold from 0.70 to 0.85: the release and the threshold change were one coordinated cleanup."</blockquote>
+      <p class="meta-line mono">narration: excavated &middot; type: dynamic &middot; acquisition: hard-derive &middot; source: codebase + data warehouse &middot; requires: query history, commit history</p>
+      <p style="margin-top:12px; font-size:14px">The evidence chain spans two sources and is recomputable against the shipped estate:</p>
+<pre><span class="c">-- 1. the database query log: find the engineer session</span>
+<span class="k">SELECT</span> textPayload <span class="k">FROM</span> `&lt;warehouse&gt;.novamart_logs.db_queries`
+<span class="k">WHERE</span> textPayload <span class="k">LIKE</span> <span class="c">'%engineer%'</span> <span class="k">AND</span> textPayload <span class="k">LIKE</span> <span class="c">'%status = 6%'</span>
+<span class="k">ORDER BY</span> timestamp
+<span class="c">-- returns 2019-12-29T15:00 [engineer-backfill:maya]
+--   "UPDATE orders SET status = 1, updated_at = NOW() WHERE status = 6 AND price &lt; 2600;"
+--   preceded by two survey SELECTs over held orders in the same session</span>
+
+<span class="c">-- 2. the codebase: tie it to the same-day commit</span>
+git show 1cb8721 <span class="k">--</span> novamart/constants.py
+<span class="c">-- 2019-12-29: "Raise FRAUD_HOLD_THRESHOLD from 0.70 to 0.85 and release held orders under $2600"</span></pre>
       <p style="font-size:14px; margin-bottom:2px">A book earns this claim only if it states all of the following:</p>
       <ul class="rubric">
-        <li>The published October 2019 statement gross is 1,230,332.43.</li>
-        <li>The chargeback-restated October gross (statements_final) is 1,226,764.86.</li>
-        <li>Chargebacks are booked in an analytics table and are not part of the statements table.</li>
+        <li>Held orders were mass-released by a manual SQL operation run by an engineer, not by any code path.</li>
+        <li>The operation is attributable to an engineer session recorded in the database query log.</li>
+        <li>It coincided with the fraud threshold being raised to 0.85 in late December.</li>
       </ul>
       <p style="font-size:14px; margin:8px 0 2px">and avoids the contradiction:</p>
       <ul class="rubric">
-        <li>"There is only one official October gross figure."</li>
+        <li>"The release of held orders was performed by an application endpoint or scheduled job."</li>
       </ul>
     </section>
 
@@ -215,7 +221,7 @@
   <aside id="leaderboard">
     <section class="card">
       <h2>Leaderboard</h2>
-      <p class="protocol">Three runs per system, frozen brief, read-only estate. All numbers computed by the maintainer from the submitted books with the pinned judge (majority of five passes); listed after verification. Differences within roughly 10 points are inside the noise floor: entries 1 and 2 are statistically tied.</p>
+      <p class="protocol">Three runs per system, frozen brief, read-only estate. All numbers computed by the maintainer from the submitted books with the pinned judge (majority of five passes); listed after verification.</p>
       <div class="tablewrap">
         <table>
           <thead>
@@ -233,7 +239,7 @@
         </tbody>
         </table>
       </div>
-      <p class="lb-note">Scores are claim recall over 51 gold claims, mean of three runs with claim-level bootstrap 95% CI. pass³ = solved in all three runs, the dependable core. Claude Code and Cursor run the same model; their gap is inside the judge spread. Per-entry details (any-run coverage, per-claim scorecards, released books) live in the repo.</p>
+      <p class="lb-note">Scores are claim recall over 51 gold claims, mean of three runs with claim-level bootstrap 95% CI. pass³ = solved in all three runs, the dependable core. Per-entry details (any-run coverage, per-claim scorecards, released books) live in the repo.</p>
     </section>
 
     <section class="card" id="submit">
@@ -245,7 +251,7 @@
         <li>optional but encouraged: <b>trajectories and tool calls</b> per run</li>
         <li>system name and version, model and effort setting, environment mode</li>
       </ul>
-      <p style="font-size:13.5px; margin-top:10px">That's the whole submission; there are no statistics for you to compute. The verifier (the maintainer of this repo) re-runs the pinned judge on your books and computes every column (runs, mean recall, 95% CI, pass&sup3;) during verification, so all entries are scored identically. Self-scoring first with your own judge key is welcome as a sanity check; listed numbers are always the verification run's.</p>
+      <p style="font-size:13.5px; margin-top:10px">The verifier (the maintainer of this repo) re-runs the pinned judge on your books and computes every column (runs, mean recall, 95% CI, pass&sup3;) during verification, so all entries are scored identically. Self-scoring first with your own judge key is welcome as a sanity check; listed numbers are always the verification run's.</p>
       <a class="btn" href="https://github.com/susnato/novamart-bench/tree/main/submissions" target="_blank" rel="noopener">Submission guide</a>
     </section>
   </aside>

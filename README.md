@@ -24,7 +24,7 @@ NovaMart is a simulated e-commerce retailer that is **executed rather than autho
 | Redash dashboards | 9 |
 | Simulated history | 3.5 months |
 | Audited gold claims | 51 |
-| Released baseline books | 9 (3 systems × 3 runs) |
+| Baseline books from the paper | 9 (3 systems × 3 runs) |
 
 Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator.
 
