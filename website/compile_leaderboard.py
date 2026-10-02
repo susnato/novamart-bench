@@ -18,7 +18,6 @@ def compile_entries():
         d = os.path.dirname(vp)
         meta = yaml.safe_load(open(os.path.join(d, "metadata.yaml")))
         ve = json.load(open(vp))
-        has_prompts = bool(meta.get("prompt_files")) or bool(glob.glob(os.path.join(d, "prompt*.md")))
         entries.append({
             "system": meta["system_name"], "version": str(meta.get("version", "")),
             "model": meta.get("model", ""), "effort": meta.get("effort", ""),
@@ -27,7 +26,6 @@ def compile_entries():
             "ci95": ve["ci95"], "pass3": ve["pass3"], "any_run": ve["any_run"],
             "mode": meta.get("environment_mode", ""),
             "verified": bool(ve.get("verified")),
-            "track": "custom" if has_prompts else "frozen-brief",
             "submitted_by": meta.get("submitted_by", ""),
         })
     entries.sort(key=lambda e: -e["mean_recall"])

@@ -11,7 +11,7 @@ START, END = "<!-- LEADERBOARD_ROWS_START -->", "<!-- LEADERBOARD_ROWS_END -->"
 ROW = """          <tr>
             <td class="rankcell"><div class="ranknum num">{rank}</div><div class="rankdate">{date_h}</div></td>
             <td>
-              <div><span class="sysname">{system}{marker}</span> <span class="sysver">v{version}</span></div>
+              <div><span class="sysname">{system}</span> <span class="sysver">v{version}</span></div>
               <div class="sysmodel">{model} ({effort} effort)</div>
               <div class="sysruns mono num">runs {runs}</div>
             </td>
@@ -27,20 +27,16 @@ def fmt_date(iso):
 def main():
     out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else os.path.join(ROOT, "_site")
     lb = json.load(open(os.path.join(HERE, "leaderboard.json")))
-    rows, any_custom = [], False
+    rows = []
     for e in lb["entries"]:
-        custom = e.get("track") == "custom"
-        any_custom = any_custom or custom
         rows.append(ROW.format(rank=e["rank"], date_h=fmt_date(e["date"]), system=e["system"],
-                    marker="*" if custom else "", version=e["version"], model=e["model"],
+                    version=e["version"], model=e["model"],
                     effort=e["effort"], runs=" / ".join(f"{r:.1f}" for r in e["runs_sorted"]),
                     mean_recall=f'{e["mean_recall"]:.1f}', ci0=f'{e["ci95"][0]:.1f}',
                     ci1=f'{e["ci95"][1]:.1f}', pass3=f'{e["pass3"]:.1f}'))
     html = open(os.path.join(HERE, "index.html")).read()
     a, b = html.index(START) + len(START), html.index(END)
     html = html[:a] + "\n" + "\n".join(rows) + "\n          " + html[b:]
-    if any_custom:
-        html = html.replace("Per-entry details", "Entries marked * use a custom prompt or scaffold and sit outside the headline ranking. Per-entry details")
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, "index.html"), "w").write(html)
     shutil.copy(os.path.join(HERE, "leaderboard.json"), os.path.join(out, "leaderboard.json"))
