@@ -36,7 +36,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | `scoring/` | the scoring harness (LLM judge, majority-of-five protocol) |
 | `default_prompts/` | the frozen brief given to every agent, verbatim |
 | `setup/` | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the GCP loader, plus the emulator parity harness (`setup/parity/`) |
-| `submissions/` | the canonical home of everything leaderboard: entries (baselines included) each carrying books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (derived majorities), and `verified_entry.json` (stats); plus the template and the verification script |
+| `submissions/` | everything the leaderboard is built from: one folder per entry (baselines included) with its books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (the majority verdicts) and `verified_entry.json` (the entry's statistics); plus the submission template and the verification script |
 | `website/` | source of the benchmark website |
 | `docs/` | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix |
 | `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records |
