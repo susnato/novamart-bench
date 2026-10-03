@@ -84,8 +84,8 @@ def main():
     if r.returncode != 0:
         sys.exit("view creation failed")
     print(f"\ndone. Your <warehouse-project> is: {a.project}")
-    print("Redash and the world repo run locally either way: python setup/setup_local.py "
-          "(it skips nothing you did here; the warehouse in your access pack will be this project).")
+    print("Now the local half (Redash and the repo; no emulator), which also writes your access pack and checks every surface:\n"
+          f"  python setup/setup_local.py --warehouse-project {a.project} --no-download")
 
 if __name__ == "__main__":
     main()

@@ -35,7 +35,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
 | `scoring/` | the scoring harness (LLM judge, majority-of-five protocol) |
 | `default_prompts/` | the frozen brief given to every agent, verbatim |
-| `setup/` | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the GCP loader, plus the emulator parity harness (`setup/parity/`) |
+| `setup/` | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the real-BigQuery loader, plus the access check (`verify_access.py`) and the emulator parity harness (`setup/parity/`) |
 | `submissions/` | everything the leaderboard is built from: one folder per entry (baselines included) with its books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (the majority verdicts) and `verified_entry.json` (the entry's statistics); plus the submission template and the verification script |
 | `website/` | source of the benchmark website |
 | `docs/` | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix |
@@ -53,9 +53,9 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## ⚙️ Setup
 
-**Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API, loaded with all 35 tables and the 5 estate views (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack. See [`docs/setup_local.md`](docs/setup_local.md).
+**Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API, loaded with all 35 tables and the 5 estate views (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack, then checks that every surface answers (`setup/verify_access.py`). `source setup/access-pack/env.sh` points `bq` and the client libraries at the local warehouse; `bq` then works with no Google login. See [`docs/setup_local.md`](docs/setup_local.md).
 
-**GCP**: `python setup/setup_gcp.py --project your-project-id` loads the three datasets into your own BigQuery project (permission preflight first, nothing created on failure; `roles/bigquery.user` suffices). Agents then use the real BigQuery API at your own scale and cost. Submissions disclose which mode produced the runs. See [`docs/setup_gcp.md`](docs/setup_gcp.md).
+**Real BigQuery (`cloud-bigquery` mode)**: `python setup/setup_gcp.py --project your-project-id` loads the three datasets into your own BigQuery project (permission preflight first, nothing created on failure; `roles/bigquery.user` suffices), then `python setup/setup_local.py --warehouse-project your-project-id --no-download` brings up Redash and the repo locally and writes the access pack. Agents then use the real BigQuery API at your own scale and cost; Redash and the repo stay on your machine. Submissions disclose which mode produced the runs. See [`docs/setup_cloud_bigquery.md`](docs/setup_cloud_bigquery.md).
 
 ## 🧪 Evaluation
 

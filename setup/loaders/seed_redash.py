@@ -1,6 +1,6 @@
 """Seed the local Redash from the released export: data source, queries, dashboards.
 
-Idempotent-ish: safe to re-run on a fresh Redash; skips existing names.
+Idempotent: re-running on an already seeded Redash creates nothing and just prints the key.
 Prints the read-only API key for the access pack.
 """
 import json, os, subprocess, sys, time
@@ -44,6 +44,13 @@ def main():
                         "password": "novamart", "dbname": "novamart"}})
     ds_id = [s["id"] for s in api(key, "GET", "/api/data_sources") if s["name"] == "novamart"][0]
 
+    dashboards = json.load(open(os.path.join(base, "dashboards_full.json")))
+    existing = {d["name"] for d in api(key, "GET", "/api/dashboards?page_size=250").get("results", [])}
+    if {d["name"] for d in dashboards} <= existing:
+        print(f"redash already seeded ({len(dashboards)} dashboards present), nothing to do")
+        print(f"REDASH_ADMIN_API_KEY={key}")
+        return 0
+
     queries = json.load(open(os.path.join(base, "queries_full.json")))
     qmap = {}
     for q in queries:
@@ -60,8 +67,9 @@ def main():
                         "options": v.get("options") or {}})
             qmap.setdefault("viz", {})[v["id"]] = made_v["id"]
 
-    dashboards = json.load(open(os.path.join(base, "dashboards_full.json")))
     for d in dashboards:
+        if d["name"] in existing:
+            continue
         made = api(key, "POST", "/api/dashboards", {"name": d["name"]})
         for w in d.get("widgets") or []:
             viz = w.get("visualization")

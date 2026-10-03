@@ -6,3 +6,4 @@ novamart/
 setup/data
 setup/workspace/
 setup/access-pack/
+setup/.env

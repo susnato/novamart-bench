@@ -29,7 +29,7 @@ services:
     volumes:
       - ./data/roles.sql:/docker-entrypoint-initdb.d/00-roles.sql:ro
       - ./data/db.sql.gz:/docker-entrypoint-initdb.d/01-estate.sql.gz:ro
-    ports: ["5433:5432"]
+    ports: ["${ESTATE_PG_PORT:-5433}:5432"]
 
   redash-redis:
     image: redis:7-alpine
