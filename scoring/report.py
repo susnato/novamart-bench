@@ -143,7 +143,7 @@ def update_index(runs_dir: Path) -> Path | None:
     lines.append("")
 
     if not rows:
-        lines.append("No runs yet. Run `python -m scoring.cli score-book --gold <benchmark-dir> --book <book.md>`.")
+        lines.append("No runs yet. Run `python -m scoring.cli score-book --gold claims --book <book.md>`.")
     else:
         lines.append("## Latest run per book")
         lines.append("")

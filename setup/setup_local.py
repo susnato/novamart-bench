@@ -85,6 +85,9 @@ def main():
         if os.environ.get("BQ_EMULATOR_TAG"): f.write(f"BQ_EMULATOR_TAG={os.environ['BQ_EMULATOR_TAG']}\n")
     compose = ["docker", "compose", "-f", os.path.join(HERE, "docker-compose.yml"), "up", "-d"]
     sh(compose + (LOCAL_ONLY if cloud else []))
+    if cloud:   # a previous local run may have left the emulator up; it is not part of this mode
+        subprocess.run(["docker", "compose", "-f", os.path.join(HERE, "docker-compose.yml"), "stop", "bq-emulator"],
+                       capture_output=True)
     ws = os.path.join(estate, "workspace")
     os.makedirs(ws, exist_ok=True)
     repo = os.path.join(ws, "novamart")

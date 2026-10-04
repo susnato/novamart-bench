@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import time
 
 from google import genai
@@ -80,6 +81,19 @@ VALID_CONFIDENCE = {"high", "medium", "low"}
 _client: genai.Client | None = None
 
 
+class JudgeAPIError(RuntimeError):
+    """A judge call failed for good (bad credentials, or retries exhausted). Scoring must stop:
+    a claim must never be recorded as "missing" because the API was unreachable."""
+
+
+_RETRYABLE = ("429", "RESOURCE_EXHAUSTED", "500", "INTERNAL", "502", "503", "UNAVAILABLE",
+              "504", "DEADLINE_EXCEEDED", "Connection", "connection", "timed out", "Timeout")
+
+
+def _is_retryable(exc: Exception) -> bool:
+    return any(tok in str(exc) for tok in _RETRYABLE)
+
+
 def _get_client() -> genai.Client:
     global _client
     if _client is None:
@@ -88,16 +102,13 @@ def _get_client() -> genai.Client:
         if api_key:
             _client = genai.Client(api_key=api_key)
             return _client
-        project = (
-            os.getenv("VERTEX_AI_HIGH_PROJECT_ID")
-            or os.getenv("VERTEX_AI_PROJECT_ID")
-            or os.getenv("GOOGLE_CLOUD_PROJECT")
-        )
+        # Deliberately NOT GOOGLE_CLOUD_PROJECT: the local access pack exports it as the
+        # emulator's fake project id, which would send the judge to a non-existent Vertex project.
+        project = os.getenv("VERTEX_AI_HIGH_PROJECT_ID") or os.getenv("VERTEX_AI_PROJECT_ID")
         if not project:
-            raise RuntimeError(
+            raise JudgeAPIError(
                 "Judge credentials not configured: set GEMINI_API_KEY (Gemini API) or "
-                "VERTEX_AI_PROJECT_ID / GOOGLE_CLOUD_PROJECT (Vertex AI with gcloud "
-                "application-default credentials)."
+                "VERTEX_AI_PROJECT_ID (Vertex AI with gcloud application-default credentials)."
             )
         location = (
             os.getenv("VERTEX_AI_LOCATION")
@@ -209,8 +220,8 @@ def evaluate_claim_llm(
     user_prompt = _build_user_prompt(claim, book_text, use_must_include_fields)
     system_prompt = SYSTEM_PROMPT_WITH_MUST_INCLUDE if use_must_include_fields else SYSTEM_PROMPT_WITHOUT_MUST_INCLUDE
 
-    max_attempts = 5
-    last_exc: Exception | None = None
+    max_attempts = 6
+    claim_id = claim.get("claim_id", "?")
     for attempt in range(1, max_attempts + 1):
         try:
             client = _get_client()
@@ -231,24 +242,15 @@ def evaluate_claim_llm(
             )
             raw_text = response.text or ""
             break
+        except JudgeAPIError:
+            raise
         except Exception as exc:
-            last_exc = exc
-            message = str(exc)
-            is_retryable = "RESOURCE_EXHAUSTED" in message or "429" in message
-            if not is_retryable or attempt == max_attempts:
-                return _normalize_result(
-                    None,
-                    claim,
-                    f"LLM API error after {attempt} attempt(s): {exc}",
-                    use_must_include_fields=use_must_include_fields,
-                )
-            time.sleep(min(60, 4 * attempt))
-    else:
-        return _normalize_result(
-            None,
-            claim,
-            f"LLM API error: {last_exc}",
-            use_must_include_fields=use_must_include_fields,
-        )
+            if not _is_retryable(exc):
+                raise JudgeAPIError(f"claim {claim_id}: {exc}") from exc
+            if attempt == max_attempts:
+                raise JudgeAPIError(f"claim {claim_id}: still failing after {attempt} attempts: {exc}") from exc
+            # rate limits start at 5 s, other transient errors at 2 s; doubling, capped at 60 s, with jitter
+            base = 5 if ("429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)) else 2
+            time.sleep(min(60, base * 2 ** (attempt - 1)) + random.random())
 
     return _normalize_result(_parse_response(raw_text), claim, use_must_include_fields=use_must_include_fields)

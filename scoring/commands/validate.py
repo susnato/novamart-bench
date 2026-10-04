@@ -50,7 +50,7 @@ def _dynamic_claim_has_process_evidence(claim: dict) -> bool:
 @click.command("validate-claims-format")
 @click.argument("benchmark_dir", type=click.Path(exists=True))
 def validate(benchmark_dir: str) -> None:
-    """Validate a benchmark's claim-only gold suite."""
+    """Validate the gold claims: pass claims/ (this repo) or a <benchmark>/gold/claims layout."""
     bench = Path(benchmark_dir)
     errors: list[str] = []
     warnings: list[str] = []

@@ -4,7 +4,7 @@ import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from scoring.judges.llm_judge import evaluate_claim_llm
+from scoring.judges.llm_judge import evaluate_claim_llm, JudgeAPIError
 
 
 def evaluate_claim(
@@ -50,6 +50,9 @@ def evaluate_all_claims(
         for future in as_completed(futures):
             try:
                 idx, result = future.result()
+            except JudgeAPIError:
+                executor.shutdown(wait=False, cancel_futures=True)
+                raise
             except Exception as exc:
                 # Should not happen since llm_judge handles its own errors,
                 # but defensive: synthesize a failure result.

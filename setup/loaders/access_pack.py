@@ -78,6 +78,12 @@ def main():
                 f'  echo "warning: the BigQuery emulator is not answering on {a.emulator_endpoint}; start it with: docker compose -f {compose} up -d bq-emulator" >&2',
                 'fi']
     else:
+        for stale in ("bigqueryrc", "bigquery-v2-discovery.json", "sa-key.json.NOT_NEEDED",
+                      "agent-github-pat.NOT_NEEDED", os.path.join("bin", "bq")):
+            path = os.path.join(out, stale)
+            if os.path.exists(path): os.remove(path)
+        if os.path.isdir(os.path.join(out, "bin")) and not os.listdir(os.path.join(out, "bin")):
+            os.rmdir(os.path.join(out, "bin"))
         env += ['unset BIGQUERY_EMULATOR_HOST BIGQUERYRC',
                 'if ! gcloud auth print-access-token >/dev/null 2>&1; then',
                 '  echo "warning: gcloud is not logged in; run gcloud auth login, or export GOOGLE_APPLICATION_CREDENTIALS pointing at your own key" >&2',
@@ -89,8 +95,26 @@ def main():
     # the launcher names the original runs' paths; the rendered copy points at the rendered contexts
     for name in ("novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
         subs[f"~/book_runs/prompts/{name}"] = os.path.join(out, "rendered_" + name)
+    # Local mode has no service-account key and no GitHub token (the emulator accepts any token,
+    # the repo is public and checked out), so the three sentences in the brief that point the
+    # agent at those files are swapped for ones that describe this machine. Exact-string swaps
+    # on the released text: the cloud-bigquery rendering and default_prompts/ are untouched.
+    local_swaps = {
+        " A read-only GitHub token (org `<github-org>`) is stored at `<access-pack>/agent-github-pat` if you need remote git operations.":
+            " The repo is public and already checked out; `git log` works offline and no GitHub token is needed.",
+        "read-only service-account credentials at `<access-pack>/sa-key.json`.":
+            f"served by a local emulator at {a.emulator_endpoint} that needs no credentials. Run `source <access-pack>/env.sh` first; `bq` and the client libraries then work with no Google login.",
+        "Do not modify the repository or push via the GitHub token.":
+            "Do not modify the repository or push to GitHub.",
+    } if local else {}
     for name in ("novamart_sim_launcher.md", "novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
         s = open(os.path.join(root, "default_prompts", name)).read()
+        if name == "novamart_sim_extra_context.md":
+            for k, v in local_swaps.items():
+                if k not in s:
+                    print(f"note: the released brief no longer contains the sentence this local swap expects; "
+                          f"update local_swaps in {__file__}: {k[:60]}...")
+                s = s.replace(k, v)
         for k, v in subs.items(): s = s.replace(k, v)
         open(os.path.join(out, "rendered_" + name), "w").write(s)
 
@@ -110,7 +134,7 @@ def main():
         warehouse = f"""The warehouse is your own BigQuery project, `{a.warehouse_project}`. Use the credentials you already have: `gcloud auth application-default login`, or your own service-account key saved as `sa-key.json` in this folder with `GOOGLE_APPLICATION_CREDENTIALS` pointing at it (that is the file the brief mentions). With `env.sh` sourced:
 
     bq ls"""
-    nokey = f"""The brief says the warehouse credentials are at `{os.path.join(out, "sa-key.json")}`. In local mode there is no key and none is needed: the emulator accepts any token. Run `source {os.path.join(out, "env.sh")}` and use `bq` as usual (`bq ls` lists the datasets). The same goes for `{os.path.join(out, "agent-github-pat")}`: the repo is public, `git log` works offline."""
+    nokey = f"""The released brief says the warehouse credentials are at `{os.path.join(out, "sa-key.json")}`; the rendered copy in this folder says instead that none are needed. In local mode there is no key: the emulator accepts any token. Run `source {os.path.join(out, "env.sh")}` and use `bq` as usual (`bq ls` lists the datasets). The same goes for `{os.path.join(out, "agent-github-pat")}`: the repo is public, `git log` works offline."""
     if local:
         open(os.path.join(out, "sa-key.json.NOT_NEEDED"), "w").write(nokey + "\n")
         open(os.path.join(out, "agent-github-pat.NOT_NEEDED"), "w").write(

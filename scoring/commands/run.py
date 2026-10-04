@@ -3,18 +3,20 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 
+import sys
+
 import click
 
-from scoring.loaders import load_claims, load_book
+from scoring.loaders import load_claims, load_book, resolve_claims_dir
 from scoring.judges.composite import evaluate_all_claims
-from scoring.judges.llm_judge import DEFAULT_MODEL
+from scoring.judges.llm_judge import DEFAULT_MODEL, JudgeAPIError
 from scoring.scoring import compute_scorecard
 from scoring.report import write_scorecard
 from scoring.stats import majority, stats
 
 
 @click.command("score-book")
-@click.option("--gold", required=True, type=click.Path(exists=True), help="Path to benchmark directory")
+@click.option("--gold", required=True, type=click.Path(exists=True), help="Gold claims: the directory holding the claim YAMLs (claims/ in this repo), or a <benchmark>/gold/claims layout")
 @click.option("--book", "books", required=True, multiple=True, type=click.Path(exists=True),
               help="Path to a markdown book under test; repeat for multiple books (the leaderboard protocol uses 3)")
 @click.option("--judge-passes", default=1, type=int,
@@ -47,7 +49,8 @@ def run(
     if output_dir is not None and not single:
         raise click.UsageError("--output-dir only applies to a single book with a single judge pass")
 
-    click.echo(f"Loading benchmark from {gold_path} ...")
+    claims_dir, bench_root = resolve_claims_dir(gold_path)
+    click.echo(f"Loading claims from {claims_dir} ...")
     claims = load_claims(gold_path)
     click.echo(f"Loaded {len(claims)} claims, {len(book_paths)} book(s), {judge_passes} judge pass(es) per book")
     click.echo(f"Judge model: {judge_model} (workers={workers})")
@@ -64,16 +67,22 @@ def run(
         book_text = load_book(book_path)
         pass_verdicts = []
         for p in range(judge_passes):
-            claim_results = evaluate_all_claims(
-                claims,
-                book_text,
-                model=judge_model,
-                max_workers=workers,
-                use_must_include_fields=use_must_include_fields,
-            )
+            try:
+                claim_results = evaluate_all_claims(
+                    claims,
+                    book_text,
+                    model=judge_model,
+                    max_workers=workers,
+                    use_must_include_fields=use_must_include_fields,
+                )
+            except JudgeAPIError as exc:
+                click.echo(f"\nJUDGE FAILED on {book_path.name} pass {p + 1}: {exc}", err=True)
+                click.echo("No scorecard was written for this pass and nothing was scored. Fix the credentials "
+                           "(GEMINI_API_KEY or VERTEX_AI_PROJECT_ID) or wait for the quota, then re-run.", err=True)
+                sys.exit(2)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             metadata = {
-                "benchmark": gold_path.name,
+                "benchmark": bench_root.resolve().name,
                 "book": book_path.stem,
                 "book_path": str(book_path),
                 "timestamp": timestamp,
@@ -84,9 +93,9 @@ def run(
             if output_dir is not None:
                 out = Path(output_dir)
             elif single:
-                out = gold_path / "eval-run-outputs" / f"{book_path.stem}_{timestamp}"
+                out = bench_root / "eval-run-outputs" / f"{book_path.stem}_{timestamp}"
             else:
-                out = gold_path / "eval-run-outputs" / f"{book_path.stem}_{timestamp}_p{p + 1}"
+                out = bench_root / "eval-run-outputs" / f"{book_path.stem}_{timestamp}_p{p + 1}"
             json_path, md_path = write_scorecard(scorecard, out)
             pass_verdicts.append({c["claim_id"]: c["verdict"] for c in scorecard["claim_results"]})
             if single:
