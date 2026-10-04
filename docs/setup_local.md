@@ -19,13 +19,15 @@ The script downloads the estate from Hugging Face [dataset](https://huggingface.
 - [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API on :9050
 - Redash on :5050
 - the estate Postgres on :15433
-- Repo cloned at `./setup/workspace` with pinned commit
+- Repo cloned at `~/novamart-estate/workspace/novamart` with pinned commit
 
-This loads the 35 tables into the emulator, creates the 5 estate views (4 in `novamart_analytics`, 1 in `novamart_logs`), restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `setup/workspace/novamart` at the pinned commit, and writes `setup/access-pack/` with the values the brief's placeholders refer to (warehouse project, Redash URL and API key, workspace path) and rendered copies of the brief.
+This loads the 35 tables into the emulator, creates the 5 estate views (4 in `novamart_analytics`, 1 in `novamart_logs`), restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `~/novamart-estate/workspace/novamart` at the pinned commit, and writes `~/novamart-estate/access-pack/` with the values the brief's placeholders refer to (warehouse project, Redash URL and API key, workspace path) and rendered copies of the brief.
+
+The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace/novamart` and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
 
 **To run it again without downloading the data**: add `--no-download`. 
 
-**To wipe everything (including the emulator's data volume)**: `docker compose -f setup/docker-compose.yml down -v`.
+**To wipe everything (including the emulator's data volume)**: `docker compose -f setup/docker-compose.yml down -v` and `rm -rf ~/novamart-estate`.
 
 ## Check it works
 
@@ -37,7 +39,7 @@ python ./setup/verify_access.py
 # access pack mode: local
 #   [PASS] BigQuery         http://localhost:9050: 3 datasets, novamart.orders has 9127 rows
 #   [PASS] Redash           http://localhost:5050: 9 dashboards
-#   [PASS] Codebase         ./setup/workspace/novamart: HEAD 5ae1182
+#   [PASS] Codebase         ~/novamart-estate/workspace/novamart: HEAD 5ae1182
 #   [PASS] Estate Postgres  127.0.0.1:15433: accepting connections
 # all surfaces answer
 ```
@@ -45,7 +47,7 @@ python ./setup/verify_access.py
 Before running `bq` or your agent, source the access pack's env file; it points `bq` and the client libraries at the local emulator
 
 ```bash
-source ./setup/access-pack/env.sh
+source ~/novamart-estate/access-pack/env.sh
 ```
 
 Then u can query BQ emulator to make sure it's working:
@@ -70,7 +72,7 @@ from google.auth.credentials import AnonymousCredentials
 client = bigquery.Client(project="novamart-warehouse", credentials=AnonymousCredentials())
 ```
 
-Checkout the newly created `setup/access-pack/README.md` for more information.
+Checkout the newly created `~/novamart-estate/access-pack/README.md` for more information.
 
 ## Notes
 

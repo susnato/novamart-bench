@@ -12,4 +12,4 @@ We recommend using these briefs.
 | `novamart_sim_extra_context.md` | how to work: data sources, rules, output format                       |
 
 
-If you have successfully setup novamart estate, then go to `setup/access-pack/` it has updated `novamart_sim_goal_context.md` and `novamart_sim_extra_context.md`, with updated values for `<warehouse-project>`, `<redash-url>`, `<workspace>` etc. We recommend using them.
+If you have successfully setup novamart estate, then go to `~/novamart-estate/access-pack/` (the default location; it is wherever you pointed `--estate-dir` otherwise) it has updated `novamart_sim_goal_context.md` and `novamart_sim_extra_context.md`, with updated values for `<warehouse-project>`, `<redash-url>`, `<workspace>` etc. We recommend using them.

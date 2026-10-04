@@ -16,10 +16,11 @@ def main():
     ap.add_argument("--mode", choices=["local", "cloud-bigquery"], default="local")
     ap.add_argument("--emulator-endpoint", default="http://localhost:9050")
     ap.add_argument("--estate-pg-port", default="15433")
+    ap.add_argument("--out", default="~/novamart-estate/access-pack", help="where to write the pack")
     a = ap.parse_args()
 
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    out = os.path.join(root, "setup", "access-pack")
+    out = os.path.abspath(os.path.expanduser(a.out))
     os.makedirs(out, exist_ok=True)
     workspace = os.path.abspath(a.workspace)          # the brief appends /novamart itself
     compose = os.path.join(root, "setup", "docker-compose.yml")
@@ -98,7 +99,7 @@ def main():
 
 `env.sh` points `bq` at the emulator (`BIGQUERYRC`: endpoint, project, a local copy of the API's discovery document) and puts a one-line `bq` wrapper first on `PATH` that passes a dummy token, so `bq` works with no Google login at all:
 
-    bq query 'SELECT month, gross FROM `{a.warehouse_project}.novamart.statements` ORDER BY month LIMIT 10'
+    bq ls
 
 `env.sh` also sets `BIGQUERY_EMULATOR_HOST`, which the Python, Go, Node and Java client libraries read for the endpoint. They still insist on some credential object before sending a request: on a machine that has run `gcloud auth application-default login` (any account) they work unchanged; otherwise pass anonymous credentials explicitly, for example in Python:
 
@@ -108,7 +109,13 @@ def main():
     else:
         warehouse = f"""The warehouse is your own BigQuery project, `{a.warehouse_project}`. Use the credentials you already have: `gcloud auth application-default login`, or your own service-account key saved as `sa-key.json` in this folder with `GOOGLE_APPLICATION_CREDENTIALS` pointing at it (that is the file the brief mentions). With `env.sh` sourced:
 
-    bq query --use_legacy_sql=false 'SELECT month, gross FROM `{a.warehouse_project}.novamart.statements` ORDER BY month LIMIT 10'"""
+    bq ls"""
+    nokey = f"""The brief says the warehouse credentials are at `{os.path.join(out, "sa-key.json")}`. In local mode there is no key and none is needed: the emulator accepts any token. Run `source {os.path.join(out, "env.sh")}` and use `bq` as usual (`bq ls` lists the datasets). The same goes for `{os.path.join(out, "agent-github-pat")}`: the repo is public, `git log` works offline."""
+    if local:
+        open(os.path.join(out, "sa-key.json.NOT_NEEDED"), "w").write(nokey + "\n")
+        open(os.path.join(out, "agent-github-pat.NOT_NEEDED"), "w").write(
+            "No GitHub token is needed: the repo is public and checked out locally, git log works offline.\n")
+    nokey_section = f"## There is no sa-key.json here\n\n{nokey}\n\n" if local else ""
     readme = f"""# Access pack ({a.mode})
 
 The values the brief's placeholders refer to, for this machine. Source `env.sh` in the shell you launch the agent from, then check everything answers:
@@ -116,7 +123,7 @@ The values the brief's placeholders refer to, for this machine. Source `env.sh` 
     source {os.path.join(out, "env.sh")}
     python {os.path.join(root, "setup", "verify_access.py")}
 
-## Warehouse (BigQuery)
+{nokey_section}## Warehouse (BigQuery)
 
 {warehouse}
 
@@ -133,6 +140,8 @@ The application repo is checked out at `{os.path.join(workspace, "novamart")}` a
 ## The rendered brief
 
 `rendered_novamart_sim_launcher.md`, `rendered_novamart_sim_goal_context.md` and `rendered_novamart_sim_extra_context.md` are the released brief with the placeholders filled in for this machine. Start your agent with the rendered launcher; it points at the two rendered context files. `values.env` holds the same values for scripts.
+
+Run the agent with `{os.path.join(workspace, "novamart")}` as its working directory. The benchmark repo (with the gold claims and the released books) is not part of the estate and must not be given to the agent.
 """
     open(os.path.join(out, "README.md"), "w").write(readme)
     print(f"access pack written to {out} (mode: {a.mode})")

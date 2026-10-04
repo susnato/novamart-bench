@@ -1,6 +1,6 @@
 """Check that every surface in the access pack answers the way an agent would use it.
 
-  source setup/access-pack/env.sh      # optional; the script reads values.env itself
+  python setup/verify_access.py        # finds the access pack through setup/.env (ESTATE_DIR)
   python setup/verify_access.py
 
 Works for both modes (local emulator and your own BigQuery project). Exit code 1 if
@@ -13,9 +13,17 @@ PIN = "5ae1182"
 DATASETS = {"novamart", "novamart_analytics", "novamart_logs"}
 
 def load_values():
-    path = os.path.join(HERE, "access-pack", "values.env")
-    if not os.path.exists(path):
-        sys.exit(f"no access pack at {path}; run setup/setup_local.py first")
+    candidates = []
+    envf = os.path.join(HERE, ".env")
+    if os.path.exists(envf):
+        for line in open(envf):
+            if line.startswith("ESTATE_DIR="):
+                candidates.append(os.path.join(line.strip().split("=", 1)[1], "access-pack", "values.env"))
+    candidates += [os.path.expanduser("~/novamart-estate/access-pack/values.env"),
+                   os.path.join(HERE, "access-pack", "values.env")]
+    path = next((c for c in candidates if os.path.exists(c)), None)
+    if path is None:
+        sys.exit("no access pack found (looked for " + ", ".join(candidates) + "); run setup/setup_local.py first")
     v = {}
     for line in open(path):
         line = line.strip()

@@ -6,11 +6,12 @@
                                                            # access pack points at your BigQuery project
 
 Endpoints when done: BigQuery emulator http://localhost:9050 (project
-novamart-warehouse), Redash http://localhost:5050, estate Postgres :15433, world
-repo cloned at setup/workspace/novamart (checked out at the pin). Host ports can be
-set with BQ_EMULATOR_PORT, REDASH_PORT and ESTATE_PG_PORT; a default that is busy
-moves to the next free port. The chosen ports are recorded in setup/.env (read by
-docker compose) and in the access pack in setup/access-pack/.
+novamart-warehouse), Redash http://localhost:5050, estate Postgres :15433. The
+estate itself (the world repo at the pin and the access pack) lives OUTSIDE this
+repo, under ~/novamart-estate by default (--estate-dir), so an agent running there
+never sees the claims or the released books. Host ports can be set with
+BQ_EMULATOR_PORT, REDASH_PORT and ESTATE_PG_PORT; a default that is busy moves to
+the next free port. Ports and the estate location are recorded in setup/.env.
 """
 import argparse, os, socket, subprocess, sys, time
 
@@ -62,8 +63,11 @@ def main():
     ap.add_argument("--warehouse-project", default=None,
                     help="your BigQuery project (after setup_gcp.py); skips the local emulator")
     ap.add_argument("--skip-verify", action="store_true")
+    ap.add_argument("--estate-dir", default="~/novamart-estate",
+                    help="where the world repo checkout and the access pack live (outside this repo)")
     a = ap.parse_args()
     cloud = a.warehouse_project is not None
+    estate = os.path.abspath(os.path.expanduser(a.estate_dir))
     ports = resolve_ports()
     pg_port = str(ports["ESTATE_PG_PORT"])
     bq_endpoint = f"http://localhost:{ports['BQ_EMULATOR_PORT']}"
@@ -77,10 +81,11 @@ def main():
     if not os.path.exists(roles): open(roles, "w").write("-- placeholder for estate roles\n")
     with open(ENV_FILE, "w") as f:   # read by every docker compose call for this file
         for var, p in ports.items(): f.write(f"{var}={p}\n")
+        f.write(f"ESTATE_DIR={estate}\n")
         if os.environ.get("BQ_EMULATOR_TAG"): f.write(f"BQ_EMULATOR_TAG={os.environ['BQ_EMULATOR_TAG']}\n")
     compose = ["docker", "compose", "-f", os.path.join(HERE, "docker-compose.yml"), "up", "-d"]
     sh(compose + (LOCAL_ONLY if cloud else []))
-    ws = os.path.join(HERE, "workspace")
+    ws = os.path.join(estate, "workspace")
     os.makedirs(ws, exist_ok=True)
     repo = os.path.join(ws, "novamart")
     if not os.path.exists(repo):
@@ -98,15 +103,15 @@ def main():
     sh([sys.executable, os.path.join(HERE, "loaders", "access_pack.py"),
         a.warehouse_project or "novamart-warehouse", redash_url, key, ws,
         "--mode", "cloud-bigquery" if cloud else "local", "--estate-pg-port", pg_port,
-        "--emulator-endpoint", bq_endpoint])
-    pack = os.path.join(HERE, "access-pack")
-    print(f"\nestate is up. The access pack in {pack} has the values the brief's placeholders refer to.")
+        "--emulator-endpoint", bq_endpoint, "--out", os.path.join(estate, "access-pack")])
+    pack = os.path.join(estate, "access-pack")
+    print(f"\nestate is up at {estate}. The access pack in {pack} has the values the brief's placeholders refer to.")
     if not a.skip_verify:
         print("checking every surface...")
         r = subprocess.run([sys.executable, os.path.join(HERE, "verify_access.py")])
         if r.returncode != 0: sys.exit(1)
-    print(f"\ntry it now:\n  source {os.path.join(pack, 'env.sh')}\n"
-          f"  bq query 'SELECT month, gross FROM `{a.warehouse_project or 'novamart-warehouse'}.novamart.statements` ORDER BY month LIMIT 10'")
+    print(f"\ntry it now:\n  source {os.path.join(pack, 'env.sh')}\n  bq ls\n"
+          f"\nrun your agent from {os.path.join(ws, 'novamart')}; this repo (claims, released books) is not part of the estate.")
 
 if __name__ == "__main__":
     main()

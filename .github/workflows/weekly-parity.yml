@@ -37,7 +37,7 @@ jobs:
           WORLD_REPO_TOKEN: ${{ secrets.WORLD_REPO_TOKEN }}
         run: |
           if [ -n "$WORLD_REPO_TOKEN" ]; then
-            git clone "https://x-access-token:${WORLD_REPO_TOKEN}@github.com/novamart-sim/novamart" setup/workspace/novamart
+            mkdir -p "$HOME/novamart-estate/workspace" && git clone "https://x-access-token:${WORLD_REPO_TOKEN}@github.com/novamart-sim/novamart" "$HOME/novamart-estate/workspace/novamart"
           else
             echo "no WORLD_REPO_TOKEN; letting setup_local.py clone anonymously (post-flip path)"
           fi

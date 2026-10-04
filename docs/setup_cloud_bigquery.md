@@ -27,13 +27,15 @@ The second script starts the containers (no emulator this time):
 
 - Redash on :5050
 - the estate Postgres on :15433
-- Repo cloned at `./setup/workspace` with pinned commit
+- Repo cloned at `~/novamart-estate/workspace/novamart` with pinned commit
 
-This restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `setup/workspace/novamart` at the pinned commit, and writes `setup/access-pack/` with the values the brief's placeholders refer to (your project as the warehouse, Redash URL and API key, workspace path) and rendered copies of the brief.
+This restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `~/novamart-estate/workspace/novamart` at the pinned commit, and writes `~/novamart-estate/access-pack/` with the values the brief's placeholders refer to (your project as the warehouse, Redash URL and API key, workspace path) and rendered copies of the brief.
+
+The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace/novamart` and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
 
 **To run the first script again**: just run the same command, it skips the tables which are already fully loaded (row count matches `counts.json`) and reloads only the missing or partial ones, so if the upload stops midway you don't lose anything.
 
-**To wipe everything**: `docker compose -f setup/docker-compose.yml down -v` for the local part, and delete the three datasets from your project to stop the storage cost: `bq rm -r -f -d your-project-id:novamart`, `bq rm -r -f -d your-project-id:novamart_analytics`, `bq rm -r -f -d your-project-id:novamart_logs`.
+**To wipe everything**: `docker compose -f setup/docker-compose.yml down -v` and `rm -rf ~/novamart-estate` for the local part, and delete the three datasets from your project to stop the storage cost: `bq rm -r -f -d your-project-id:novamart`, `bq rm -r -f -d your-project-id:novamart_analytics`, `bq rm -r -f -d your-project-id:novamart_logs`.
 
 ## Check it works
 
@@ -45,7 +47,7 @@ python ./setup/verify_access.py
 # access pack mode: cloud-bigquery
 #   [PASS] BigQuery         bigquery.googleapis.com: 3 datasets, novamart.orders has 9127 rows
 #   [PASS] Redash           http://localhost:5050: 9 dashboards
-#   [PASS] Codebase         ./setup/workspace/novamart: HEAD 5ae1182
+#   [PASS] Codebase         ~/novamart-estate/workspace/novamart: HEAD 5ae1182
 #   [PASS] Estate Postgres  127.0.0.1:15433: accepting connections
 # all surfaces answer
 ```
@@ -53,7 +55,7 @@ python ./setup/verify_access.py
 Before running `bq` or your agent, source the access pack's env file; it sets your project for `bq` and the client libraries (and warns you if `gcloud` is not logged in)
 
 ```bash
-source ./setup/access-pack/env.sh
+source ~/novamart-estate/access-pack/env.sh
 ```
 
 Then you can list the datasets to make sure it's working:
@@ -68,9 +70,9 @@ bq ls
 #   novamart_logs
 ```
 
-**About the service account key**: the brief says there is a key at `<access-pack>/sa-key.json`. In this mode that is your own credential, either you already did `gcloud auth application-default login` (then `bq` and all the client libraries just work), or you put your own key at `setup/access-pack/sa-key.json` and point `GOOGLE_APPLICATION_CREDENTIALS` at it. No anonymous credentials needed here.
+**About the service account key**: the brief says there is a key at `<access-pack>/sa-key.json`. In this mode that is your own credential, either you already did `gcloud auth application-default login` (then `bq` and all the client libraries just work), or you put your own key at `~/novamart-estate/access-pack/sa-key.json` and point `GOOGLE_APPLICATION_CREDENTIALS` at it. No anonymous credentials needed here.
 
-Checkout the newly created `setup/access-pack/README.md` for more information.
+Checkout the newly created `~/novamart-estate/access-pack/README.md` for more information.
 
 ## Notes
 
