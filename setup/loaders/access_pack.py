@@ -85,7 +85,10 @@ def main():
 
     subs = {"<warehouse-project>": a.warehouse_project, "<redash-url>": a.redash_url,
             "<workspace>": workspace, "<github-org>": "novamart-sim", "<access-pack>": out}
+    # the launcher names the original runs' paths; the rendered copy points at the rendered contexts
     for name in ("novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
+        subs[f"~/book_runs/prompts/{name}"] = os.path.join(out, "rendered_" + name)
+    for name in ("novamart_sim_launcher.md", "novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
         s = open(os.path.join(root, "default_prompts", name)).read()
         for k, v in subs.items(): s = s.replace(k, v)
         open(os.path.join(out, "rendered_" + name), "w").write(s)
@@ -129,7 +132,7 @@ The application repo is checked out at `{os.path.join(workspace, "novamart")}` a
 
 ## The rendered brief
 
-`rendered_novamart_sim_goal_context.md` and `rendered_novamart_sim_extra_context.md` are the released brief with the placeholders filled in for this machine. Give your agent the brief as its task; `values.env` holds the same values for scripts.
+`rendered_novamart_sim_launcher.md`, `rendered_novamart_sim_goal_context.md` and `rendered_novamart_sim_extra_context.md` are the released brief with the placeholders filled in for this machine. Start your agent with the rendered launcher; it points at the two rendered context files. `values.env` holds the same values for scripts.
 """
     open(os.path.join(out, "README.md"), "w").write(readme)
     print(f"access pack written to {out} (mode: {a.mode})")

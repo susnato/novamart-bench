@@ -45,6 +45,9 @@ def main():
                              client_options=ClientOptions(api_endpoint=ENDPOINT))
     counts = json.load(open(os.path.join(base, "counts.json")))
     total = 0
+    print(f"loading {len(counts)} tables into the emulator; about 4 minutes on a first run, "
+          "nearly all of it the two log tables")
+    BIG, ROWS_PER_S = 500_000, 25_000   # observed: the emulator ingests on one core at ~25k rows/s
     for ds_dir in sorted(glob.glob(os.path.join(base, "tables", "*"))):
         ds = os.path.basename(ds_dir)
         client.create_dataset(bigquery.Dataset(f"{PROJECT}.{ds}"), exists_ok=True)
@@ -53,7 +56,15 @@ def main():
             schema = schema_from_json(os.path.join(t_dir, "schema.json"))
             table_id = f"{PROJECT}.{ds}.{t}"
             t0 = time.time()
-            for i, shard in enumerate(sorted(glob.glob(os.path.join(t_dir, "*.ndjson.gz")))):
+            shards = sorted(glob.glob(os.path.join(t_dir, "*.ndjson.gz")))
+            expected = counts.get(f"{ds}.{t}")
+            big = expected is not None and expected > BIG
+            if big:
+                lo = max(1, int(expected / ROWS_PER_S / 60))
+                print(f"  {ds}.{t}: {expected:,} rows, will take {lo}-{lo + 1} minutes...")
+            for i, shard in enumerate(shards):
+                if big:
+                    print(f"\r    shard {i + 1}/{len(shards)}", end="", flush=True)
                 with gzip.open(shard, "rb") as fh:
                     job = client.load_table_from_file(
                         fh, table_id,
@@ -62,8 +73,9 @@ def main():
                             schema=schema,
                             write_disposition="WRITE_TRUNCATE" if i == 0 else "WRITE_APPEND"))
                 job.result()
+            if big:
+                print("\r" + " " * 24 + "\r", end="", flush=True)
             n = list(client.query(f"SELECT COUNT(*) FROM `{table_id}`").result())[0][0]
-            expected = counts.get(f"{ds}.{t}")
             if expected is not None and n != expected:
                 print(f"  ROW COUNT MISMATCH {ds}.{t}: loaded {n}, expected {expected}")
                 return 1

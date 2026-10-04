@@ -1,11 +1,6 @@
 # NovaMart: A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction
 
-<p align="center">
-  <a href="https://novamartbench.com">Website</a> •
-  <a href="https://novamartbench.com/#leaderboard">Leaderboard</a> •
-  <a href="website/paper.pdf">Paper</a> •
-  <a href="submissions/README.md">Submit</a>
-</p>
+[Website](https://novamartbench.com) • [Leaderboard](https://novamartbench.com/#leaderboard) • [Paper](website/paper.pdf) • [Submit](submissions/README.md)
 
 ## 👋 Overview
 
@@ -15,31 +10,35 @@ How much of a company's undocumented knowledge can an AI agent excavate from the
 
 NovaMart is a simulated e-commerce retailer that is **executed rather than authored**. Real shopper traffic (the public REES46 event stream) is replayed hourly through a live application and database while LLM-powered engineers work through an authored script of incidents, migrations and half-finished fixes against it, on one shared clock, for 3.5 simulated months. We never write the data ourselves: rows, logs, queries and dashboards pile up as a side effect of the work. Then we freeze everything. Agents get read-only access and a single brief: write the company's missing knowledge book. **51 audited gold claims**, each with a recomputable evidence chain, decide how much they found.
 
-| Estate surface | Scale |
-|---|---|
-| Application repo, full git history | 112 commits |
-| Warehouse tables | 32 (plus 3 log export tables) |
-| Warehouse rows | 878,918 |
-| Runtime + query log lines | 5,168,645 |
-| Redash dashboards | 9 |
-| Simulated history | 3.5 months |
-| Audited gold claims | 51 |
-| Baseline books from the paper | 9 (3 systems × 3 runs) |
+
+| Estate surface                     | Scale                         |
+| ---------------------------------- | ----------------------------- |
+| Application repo, full git history | 112 commits                   |
+| Warehouse tables                   | 32 (plus 3 log export tables) |
+| Warehouse rows                     | 878,918                       |
+| Runtime + query log lines          | 5,168,645                     |
+| Redash dashboards                  | 9                             |
+| Simulated history                  | 3.5 months                    |
+| Audited gold claims                | 51                            |
+| Baseline books from the paper      | 9 (3 systems × 3 runs)        |
+
 
 Every order and payment traces back to a real browsing session in the replayed REES46 stream. Every claim is re-verifiable against the shipped estate without the generator.
 
 ## 📦 What's in this repo
 
-| Path | Contents |
-|---|---|
-| `claims/` | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric |
-| `scoring/` | the scoring harness (LLM judge, majority-of-five protocol) |
-| `default_prompts/` | the frozen brief given to every agent, verbatim |
-| `setup/` | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the real-BigQuery loader, plus the access check (`verify_access.py`) and the emulator parity harness (`setup/parity/`) |
-| `submissions/` | everything the leaderboard is built from: one folder per entry (baselines included) with its books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (the majority verdicts) and `verified_entry.json` (the entry's statistics); plus the submission template and the verification script |
-| `website/` | source of the benchmark website |
-| `docs/` | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix |
-| `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records |
+
+| Path                             | Contents                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `claims/`                        | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric                                                                                                                                                                                                                                                               |
+| `scoring/`                       | the scoring harness (LLM judge, majority-of-five protocol)                                                                                                                                                                                                                                                                                       |
+| `default_prompts/`               | the frozen brief given to every agent, verbatim                                                                                                                                                                                                                                                                                                  |
+| `setup/`                         | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the real-BigQuery loader, plus the access check (`verify_access.py`) and the emulator parity harness (`setup/parity/`)                                                                                                     |
+| `submissions/`                   | everything the leaderboard is built from: one folder per entry (baselines included) with its books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (the majority verdicts) and `verified_entry.json` (the entry's statistics); plus the submission template and the verification script |
+| `website/`                       | source of the benchmark website                                                                                                                                                                                                                                                                                                                  |
+| `docs/`                          | setup guides, the evaluation protocol and statistical notes, the provenance record, and the baselines claim matrix                                                                                                                                                                                                                               |
+| `reproduce_figures_tables.ipynb` | reproduces the paper's tables from the per-entry judge records                                                                                                                                                                                                                                                                                   |
+
 
 The estate itself is not in this repo. The warehouse fixtures, database dump, log exports and Redash export live in a versioned Hugging Face dataset, and the application repo with its full git history is its own GitHub repo (`novamart-sim/novamart`). The setup scripts pull both; see [Setup](#%EF%B8%8F-setup). That keeps this repo small enough to clone in a few seconds.
 
@@ -51,18 +50,24 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 - **git** over the application repo
 - **Redash** for dashboards
 
+
+
 ## ⚙️ Setup
+
+
 
 ### Before you start
 
-Both modes need the same tools. Install them once:
+Both modes need the same tools. Make sure you have them installed, otherwise follow their official pages to install them:
 
-| Tool | Why | Install |
-|---|---|---|
-| Python 3.10 or newer | the setup, verify and scoring scripts | https://www.python.org/downloads/ |
-| Docker with the compose plugin | Redash, the estate Postgres, and in local mode the BigQuery emulator | https://docs.docker.com/get-docker/ |
-| git | clones the application repo at the pinned commit | https://git-scm.com/downloads |
-| Google Cloud SDK (`gcloud` and `bq`) | `bq` is what the baseline agents used to query the warehouse; `setup/access-pack/env.sh` makes it work against the local emulator with no Google login. `gcloud` itself is needed only for cloud-bigquery mode | https://cloud.google.com/sdk/docs/install |
+
+| Tool                                 | Where are they used                                                                                                                                                                                            | Install                                                                                |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Python 3.10 or newer                 | the setup, verify and scoring scripts                                                                                                                                                                          | [https://www.python.org/downloads/](https://www.python.org/downloads/)                 |
+| Docker with the compose plugin       | Redash, the estate Postgres, and in local mode the BigQuery emulator                                                                                                                                           | [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)             |
+| git                                  | clones the application repo at the pinned commit                                                                                                                                                               | [https://git-scm.com/downloads](https://git-scm.com/downloads)                         |
+| Google Cloud SDK (`gcloud` and `bq`) | `bq` is what the baseline agents used to query the warehouse; `setup/access-pack/env.sh` makes it work against the local emulator with no Google login. `gcloud` itself is needed only for cloud-bigquery mode | [https://cloud.google.com/sdk/docs/install](https://cloud.google.com/sdk/docs/install) |
+
 
 Then, from the repo root, install the Python packages every script uses (the Hugging Face download, the BigQuery client, the judge client, the CLI):
 
@@ -72,15 +77,17 @@ pip install -r setup/requirements.txt
 
 A virtual environment is a good idea but not required.
 
-**Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API, loaded with all 35 tables and the 5 estate views (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack, then checks that every surface answers (`setup/verify_access.py`). `source setup/access-pack/env.sh` points `bq` and the client libraries at the local warehouse; `bq` then works with no Google login. See [`docs/setup_local.md`](docs/setup_local.md).
+**Local (recommended)**: See `[docs/setup_local.md](docs/setup_local.md)` for full guide, `python setup/setup_local.py` sets up everything with docker compose: [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API, loaded with all tables and views in project `novamart-warehouse`, a seeded Redash with the dashboards and the estate Postgres. The application repo is cloned and checked out at the commit hash. You need to run `source setup/access-pack/env.sh` which points `bq` and the BQ client libraries at the local emulator rather than hitting googles bq server, `bq` then works without Google login.
 
-**Real BigQuery (`cloud-bigquery` mode)**: `python setup/setup_gcp.py --project your-project-id` loads the three datasets into your own BigQuery project (permission preflight first, nothing created on failure; `roles/bigquery.user` suffices), then `python setup/setup_local.py --warehouse-project your-project-id --no-download` brings up Redash and the repo locally and writes the access pack. Agents then use the real BigQuery API at your own scale and cost; Redash and the repo stay on your machine. Submissions disclose which mode produced the runs. See [`docs/setup_cloud_bigquery.md`](docs/setup_cloud_bigquery.md).
+**Real BigQuery (**`cloud-bigquery` **mode)**: See `[docs/setup_cloud_bigquery.md](docs/setup_cloud_bigquery.md)` for full guide, `python setup/setup_gcp.py --project your-project-id` loads the novamart datasets into your own BigQuery project (permission is checked first, `roles/bigquery.user` is needed for this operation), then run `python setup/setup_local.py --warehouse-project your-project-id --no-download` brings up Redash and the repo locally. if you are setting this up then all costs related to BQ call are billed to your gcp project billing account. Submissions disclose which mode produced the runs.
+
+After setting up, you can call `setup/verify_access.py` which verifies all access and the access pack is setup by either of the commands which updates the needed files such as `setup/access-pack/env.sh`, `rendered_novamart_sim_extra_context.md` etc to make your local setup ready to start running your agent on novamart estate.
 
 ## 🧪 Evaluation
 
 Each system runs as shipped, zero-shot, **three times** under the same frozen brief (`default_prompts/`), with read-only access to the full estate; each run produces one knowledge book. Books are scored per claim by an LLM judge (the same model and prompt for every entry) against the claim's rubric, majority over five independent passes. Headline metrics: **mean claim recall** over the three runs and **pass³** (claims solved in all three runs), with claim-level bootstrap 95% CIs. The claims split into **narrated** (20: satisfiable from text surfaces alone, i.e. code, git history, docs) and **excavated** (31: requiring computation over the warehouse, logs, or query history). In the paper's baseline runs (three systems, three runs each), the systems differed most on the excavated claims: what separated them was not reading ability but excavation ability.
 
-See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric definitions, and the statistical notes: what score differences this benchmark can and cannot resolve.
+See `[docs/evaluation.md](docs/evaluation.md)` for the full protocol, metric definitions, and the statistical notes: what score differences this benchmark can and cannot resolve.
 
 ## Scoring your agent's book
 
@@ -88,34 +95,33 @@ The judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `V
 
 ```bash
 pip install -r setup/requirements.txt
-mkdir -p novamart/gold && cp -r claims novamart/gold/claims
-python -m scoring.cli validate-claims-format novamart
+python -m scoring.cli validate-claims-format novamart/gold/claims
 
 # one book: per-claim scorecard, recall, 95% CI
-python -m scoring.cli score-book --gold novamart --book book_r1.md
+python -m scoring.cli score-book --gold novamart/gold/claims --book book_r1.md
 
 # your three runs: mean recall, 95% CI, pass^3, pass@3 (repeat --book per book)
-python -m scoring.cli score-book --gold novamart --book book_r1.md --book book_r2.md --book book_r3.md
+python -m scoring.cli score-book --gold novamart/gold/claims --book book_r1.md --book book_r2.md --book book_r3.md
 
 # optional: majority verdicts over multiple judge passes per book
-python -m scoring.cli score-book --gold novamart --book book_r1.md --judge-passes 3
+python -m scoring.cli score-book --gold novamart/gold/claims --book book_r1.md --judge-passes 3
 ```
 
 The summary uses the exact statistics code the maintainer's verification runs, so your self-scored numbers and the verified listing are the same math; they are still unofficial until verification. `scoring/README.md` documents options, the judge configuration, and the five-pass majority protocol.
 
 ## 🏆 Leaderboard and submissions
 
-The leaderboard at https://novamartbench.com is generated from [`website/leaderboard.json`](website/leaderboard.json). To submit: run your agent on the estate three times with the [released brief](default_prompts/), then open a PR adding your three books, a metadata file, and your system's own prompts (if any) under `submissions/`. The released brief must be given to the agent unmodified, and no gold-claim content may appear in any prompt. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See [`submissions/README.md`](submissions/README.md).
+The leaderboard at [https://novamartbench.com](https://novamartbench.com) is generated from `[website/leaderboard.json](website/leaderboard.json)`. To submit: run your agent on the estate three times with the [released brief](default_prompts/), then open a PR adding your three books, a metadata file, and your system's own prompts (if any) under `submissions/`. The released brief must be given to the agent unmodified, and no gold-claim content may appear in any prompt. Please don't worry about computing any statistics: the maintainer re-runs the judge on every submitted book and computes all listed numbers during verification, so every entry on the board is scored the same way. See `[submissions/README.md](submissions/README.md)`.
 
 ## 🔎 Verification and provenance
 
 Every number in this repo is recomputable: books are scored against the released claims, verdicts are released per claim-book cell, and evidence SQL runs against the shipped estate.
 
-During release preparation a single internal infrastructure identifier was renamed across the world repo and the distributed fixtures, which re-hashed the six final world commits (the released books cite the original hashes). The full record, including the commit hash map, every field updated, and an evidence SQL fix, is in [`docs/provenance.md`](docs/provenance.md). It is an artifact naming change and does not alter the benchmark's content.
+During release preparation a single internal infrastructure identifier was renamed across the world repo and the distributed fixtures, which re-hashed the six final world commits (the released books cite the original hashes). The full record, including the commit hash map, every field updated, and an evidence SQL fix, is in `[docs/provenance.md](docs/provenance.md)`. It is an artifact naming change and does not alter the benchmark's content.
 
 ## 📄 Licenses and attribution
 
-Code is Apache-2.0 (`LICENSE`). The estate (the Hugging Face dataset and the `novamart-sim/novamart` application repo with its full git history), the claims, books, results, the paper, and the website are CC BY 4.0 (`LICENSE-DATA`). The application repo is additionally available under Apache-2.0 for use as software (SPDX: `Apache-2.0 OR CC-BY-4.0`); it carries no LICENSE file of its own because its git history is the benchmark artifact. Ambient shopper traffic is replayed from the REES46 eCommerce behavior dataset (https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store, provided by the REES46 Marketing Platform, https://rees46.com), a designated attribution party; see [`ATTRIBUTION.md`](ATTRIBUTION.md).
+Code is Apache-2.0 (`LICENSE`). The estate (the Hugging Face dataset and the `novamart-sim/novamart` application repo with its full git history), the claims, books, results, the paper, and the website are CC BY 4.0 (`LICENSE-DATA`). The application repo is additionally available under Apache-2.0 for use as software (SPDX: `Apache-2.0 OR CC-BY-4.0`); it carries no LICENSE file of its own because its git history is the benchmark artifact. Ambient shopper traffic is replayed from the REES46 eCommerce behavior dataset ([https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store](https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store), provided by the REES46 Marketing Platform, [https://rees46.com](https://rees46.com)), a designated attribution party; see `[ATTRIBUTION.md](ATTRIBUTION.md)`.
 
 ## Citation
 
