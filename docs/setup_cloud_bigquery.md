@@ -1,30 +1,81 @@
-# Real BigQuery (`cloud-bigquery` mode)
+# Real BigQuery setup (`cloud-bigquery` mode)
 
-Your warehouse in your own BigQuery project; Redash and the repo stay on your machine. Agents then hit the real BigQuery API, the same one the paper's baselines used, at whatever scale and cost you choose. Nothing else moves to the cloud: Redash and the estate Postgres run in docker on your machine, the repo is a local checkout, and to an agent those look exactly as they did in the original runs.
+Two commands set up the estate with the warehouse in your own BigQuery project and the rest (Redash and the application repo checkout) on your machine. These are the same interfaces all the Agents should be evaluated against.
 
 ## Requirements
 
-Tools as listed under [Before you start](../README.md#before-you-start) in the README, with `gcloud` logged in. Then a project where you hold `roles/bigquery.user` (or anything that grants `bigquery.datasets.create` and `bigquery.jobs.create`). Docker for the local half. Cost: about 2 GB of BigQuery storage, and whatever queries you run, billed to your project.
+Before running the setup scripts make sure, tools as listed under [Before you start](../README.md#before-you-start) in the README are installed and install the python packages. Also make sure `gcloud` is logged in (`gcloud auth login`) and `bq` works from your terminal.
+
+You need a GCP project where you have `roles/bigquery.user` (or any role which gives `bigquery.datasets.create` and `bigquery.jobs.create`). The datasets take about 2 GB of storage in BigQuery and every query your agent runs is billed to your project. Docker is still needed for Redash and the estate Postgres (no emulator in this mode, so around 1.5 GB of memory is enough).
 
 ## Run
-
-Two commands. The first loads the warehouse, the second brings up the local half and writes your access pack:
 
 ```bash
 python setup/setup_gcp.py --project your-project-id
 python setup/setup_local.py --warehouse-project your-project-id --no-download
 ```
 
-`setup_gcp.py` first checks your permissions (`testIamPermissions`) and stops before creating anything if one is missing, printing the exact grant command to send to your admin. Then it creates the three datasets (`novamart`, `novamart_analytics`, `novamart_logs`; the names are fixed, only the project varies), loads every table from the downloaded data, and creates the 5 estate views from `setup/views/`.
+The first script downloads the estate from Hugging Face [dataset](https://huggingface.co/datasets/susnato/novamart-bench) into `setup/data/`, checks that you have the permissions (nothing is created if any permission is missing, it prints the exact command to ask your admin for) and then creates these datasets in your project and loads the data (takes approx 10 minutes, mostly uploading the two big log tables):
 
-`setup_local.py --warehouse-project` starts Redash and the estate Postgres (no emulator), checks out the repo at the pin, seeds the dashboards, writes `setup/access-pack/` with your project as `<warehouse-project>`, and runs `setup/verify_access.py` against everything.
+- `novamart` (app tables)
+- `novamart_analytics` (analytics tables and views)
+- `novamart_logs` (log exports, including the query log)
 
-## Credentials
+This loads all 35 tables, creates the 5 estate views (4 in `novamart_analytics`, 1 in `novamart_logs`) and at the end prints the second command. The dataset names are fixed, only the project changes, your project id becomes the `<warehouse-project>` in the brief.
 
-The brief tells the agent to find a service-account key at `<access-pack>/sa-key.json`. In this mode that is your own credential: either `gcloud auth application-default login`, or a key of your own saved as `setup/access-pack/sa-key.json` with `GOOGLE_APPLICATION_CREDENTIALS` pointing at it. `source setup/access-pack/env.sh` sets the project for every client and warns if gcloud is not logged in.
+The second script starts the containers (no emulator this time):
 
-## If it gets interrupted
+- Redash on :5050
+- the estate Postgres on :15433
+- Repo cloned at `./setup/workspace` with pinned commit
 
-Run the same `setup_gcp.py` command again. It skips every table whose row count already matches `counts.json` and reloads only the tables that are missing or partial, so nothing finished is transferred twice.
+This restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `setup/workspace/novamart` at the pinned commit, and writes `setup/access-pack/` with the values the brief's placeholders refer to (your project as the warehouse, Redash URL and API key, workspace path) and rendered copies of the brief.
 
-If you cannot get the role, please use local mode: `python setup/setup_local.py`.
+**To run the first script again**: just run the same command, it skips the tables which are already fully loaded (row count matches `counts.json`) and reloads only the missing or partial ones, so if the upload stops midway you don't lose anything.
+
+**To wipe everything**: `docker compose -f setup/docker-compose.yml down -v` for the local part, and delete the three datasets from your project to stop the storage cost: `bq rm -r -f -d your-project-id:novamart`, `bq rm -r -f -d your-project-id:novamart_analytics`, `bq rm -r -f -d your-project-id:novamart_logs`.
+
+## Check it works
+
+The second script runs `setup/verify_access.py` which calls your BigQuery project, redash and postgres instances to make sure they are healthy and prints the status, you should see something like this:
+
+```bash
+python ./setup/verify_access.py
+
+# access pack mode: cloud-bigquery
+#   [PASS] BigQuery         bigquery.googleapis.com: 3 datasets, novamart.orders has 9127 rows
+#   [PASS] Redash           http://localhost:5050: 9 dashboards
+#   [PASS] Codebase         ./setup/workspace/novamart: HEAD 5ae1182
+#   [PASS] Estate Postgres  127.0.0.1:15433: accepting connections
+# all surfaces answer
+```
+
+Before running `bq` or your agent, source the access pack's env file; it sets your project for `bq` and the client libraries (and warns you if `gcloud` is not logged in)
+
+```bash
+source ./setup/access-pack/env.sh
+```
+
+Then you can list the datasets to make sure it's working:
+
+```bash
+bq ls
+
+#   datasetId
+#  --------------------
+#   novamart
+#   novamart_analytics
+#   novamart_logs
+```
+
+**About the service account key**: the brief says there is a key at `<access-pack>/sa-key.json`. In this mode that is your own credential, either you already did `gcloud auth application-default login` (then `bq` and all the client libraries just work), or you put your own key at `setup/access-pack/sa-key.json` and point `GOOGLE_APPLICATION_CREDENTIALS` at it. No anonymous credentials needed here.
+
+Checkout the newly created `setup/access-pack/README.md` for more information.
+
+## Notes
+
+- Submissions mention which mode produced the runs (`environment_mode: cloud-bigquery` in `metadata.yaml`), the paper's baselines were run in this mode.
+- Host ports: Redash 5050, estate Postgres 15433. Set `REDASH_PORT` or `ESTATE_PG_PORT` to choose others; if a default is busy, setup moves to the next free port and tells you. The chosen ports are recorded in `setup/.env` and in the access pack, so every later command agrees.
+- `--no-download` in the second command reuses the data the first one downloaded, drop it if you are running the second command on a different machine.
+- If you cannot get the role, please use local mode: `python setup/setup_local.py`.
+
