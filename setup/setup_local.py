@@ -93,7 +93,13 @@ def main():
     repo = os.path.join(ws, "novamart")
     if not os.path.exists(repo):
         sh(["git", "clone", "https://github.com/novamart-sim/novamart", repo])
-    sh(["git", "-C", repo, "checkout", PIN])
+    head = subprocess.run(["git", "-C", repo, "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
+    if not head.startswith(PIN):
+        dirty = subprocess.run(["git", "-C", repo, "status", "--porcelain"], capture_output=True, text=True).stdout.strip()
+        if dirty:
+            sys.exit(f"{repo} is not at the pinned commit {PIN} and has local changes; setup never discards "
+                     f"anything in the estate. Commit or move those changes, or run: git -C {repo} checkout {PIN}")
+        sh(["git", "-C", repo, "checkout", PIN])
     print("waiting for services...")
     time.sleep(20)
     if not cloud:

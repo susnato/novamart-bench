@@ -33,9 +33,11 @@ This restores the Postgres dump that Redash queries, seeds the 9 dashboards, clo
 
 The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace/novamart` and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
 
+Setup never deletes anything in the estate it did not write itself: your run outputs, books and traces survive re-runs and a switch between local and cloud mode.
+
 **To run the first script again**: just run the same command, it skips the tables which are already fully loaded (row count matches `counts.json`) and reloads only the missing or partial ones, so if the upload stops midway you don't lose anything.
 
-**To wipe everything**: `docker compose -f setup/docker-compose.yml down -v` and `rm -rf ~/novamart-estate` for the local part, and delete the three datasets from your project to stop the storage cost: `bq rm -r -f -d your-project-id:novamart`, `bq rm -r -f -d your-project-id:novamart_analytics`, `bq rm -r -f -d your-project-id:novamart_logs`.
+**To wipe everything**: `docker compose -f setup/docker-compose.yml down -v` and `rm -rf ~/novamart-estate/workspace/novamart ~/novamart-estate/access-pack` (anything else you keep in the estate is left alone) for the local part, and delete the three datasets from your project to stop the storage cost: `bq rm -r -f -d your-project-id:novamart`, `bq rm -r -f -d your-project-id:novamart_analytics`, `bq rm -r -f -d your-project-id:novamart_logs`.
 
 ## Check it works
 

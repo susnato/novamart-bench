@@ -25,9 +25,11 @@ This loads the 35 tables into the emulator, creates the 5 estate views (4 in `no
 
 The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace/novamart` and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
 
+Setup never deletes anything in the estate it did not write itself: your run outputs, books and traces survive re-runs and a switch between local and cloud mode.
+
 **To run it again without downloading the data**: add `--no-download`. 
 
-**To wipe everything (including the emulator's data volume)**: `docker compose -f setup/docker-compose.yml down -v` and `rm -rf ~/novamart-estate`.
+**To wipe everything (including the emulator's data volume)**: `docker compose -f setup/docker-compose.yml down -v` and `rm -rf ~/novamart-estate/workspace/novamart ~/novamart-estate/access-pack` (anything else you keep in the estate is left alone).
 
 ## Check it works
 

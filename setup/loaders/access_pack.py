@@ -26,15 +26,23 @@ def main():
     compose = os.path.join(root, "setup", "docker-compose.yml")
     local = a.mode == "local"
     host = a.emulator_endpoint   # the Python client needs the scheme in BIGQUERY_EMULATOR_HOST
+    manifest = os.path.join(out, ".generated")   # every file this script writes; nothing else is ever deleted
+    previously_generated = set(open(manifest).read().split()) if os.path.exists(manifest) else set()
+    generated = []
+    def write(rel, text, mode="w"):
+        path = os.path.join(out, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, mode) as f: f.write(text)
+        generated.append(rel)
+        return path
 
     values = [f"MODE={a.mode}", f"WAREHOUSE_PROJECT={a.warehouse_project}",
               f"REDASH_URL={a.redash_url}", f"REDASH_API_KEY={a.redash_key}",
               f"WORKSPACE={workspace}", "GITHUB_ORG=novamart-sim", f"ESTATE_PG_PORT={a.estate_pg_port}"]
     if local:
         values += [f"BIGQUERY_API_ENDPOINT={a.emulator_endpoint}", f"BIGQUERY_EMULATOR_HOST={host}"]
-    open(os.path.join(out, "values.env"), "w").write("\n".join(values) + "\n")
-    open(os.path.join(out, "redash-agent-creds"), "w").write(
-        f"REDASH_URL={a.redash_url}\nREDASH_API_KEY={a.redash_key}\n")
+    write("values.env", "\n".join(values) + "\n")
+    write("redash-agent-creds", f"REDASH_URL={a.redash_url}\nREDASH_API_KEY={a.redash_key}\n")
 
     if local:
         # bq needs a token (any token; the emulator never checks it) and the API's discovery
@@ -44,21 +52,21 @@ def main():
         try:
             import urllib.request
             urllib.request.urlretrieve("https://bigquery.googleapis.com/$discovery/rest?version=v2", disc)
+            generated.append("bigquery-v2-discovery.json")
         except Exception as e:
             print(f"note: could not fetch the BigQuery discovery document ({e}); bq will not work until "
                   f"it is saved as {disc}; the Python client is unaffected")
             disc = None
         rc = [f"api = {a.emulator_endpoint}", f"project_id = {a.warehouse_project}"]
         if disc: rc.append(f"discovery_file = {disc}")
-        open(os.path.join(out, "bigqueryrc"), "w").write("\n".join(rc) + "\n\n[query]\nuse_legacy_sql = false\n")
+        write("bigqueryrc", "\n".join(rc) + "\n\n[query]\nuse_legacy_sql = false\n")
         # bq only honors the dummy token as a command-line flag, so a wrapper first on PATH
         # supplies it; this reaches agent subprocesses and leaves gcloud itself untouched.
         import shutil, stat
         real_bq = shutil.which("bq")
         bindir = os.path.join(out, "bin"); os.makedirs(bindir, exist_ok=True)
         if real_bq:
-            wrapper = os.path.join(bindir, "bq")
-            open(wrapper, "w").write(f'#!/bin/sh\n# NovaMart local mode: the emulator accepts any token\nexec "{real_bq}" --oauth_access_token=dummy "$@"\n')
+            wrapper = write(os.path.join("bin", "bq"), f'#!/bin/sh\n# NovaMart local mode: the emulator accepts any token\nexec "{real_bq}" --oauth_access_token=dummy "$@"\n')
             os.chmod(wrapper, os.stat(wrapper).st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         else:
             print("note: bq is not installed on this machine; install the Google Cloud SDK to use it against the emulator")
@@ -78,17 +86,19 @@ def main():
                 f'  echo "warning: the BigQuery emulator is not answering on {a.emulator_endpoint}; start it with: docker compose -f {compose} up -d bq-emulator" >&2',
                 'fi']
     else:
+        # A previous local run left files that are wrong in cloud mode. Remove ONLY the ones the
+        # manifest says this script wrote; anything a user put in the pack is never touched.
         for stale in ("bigqueryrc", "bigquery-v2-discovery.json", "sa-key.json.NOT_NEEDED",
                       "agent-github-pat.NOT_NEEDED", os.path.join("bin", "bq")):
             path = os.path.join(out, stale)
-            if os.path.exists(path): os.remove(path)
+            if stale in previously_generated and os.path.exists(path): os.remove(path)
         if os.path.isdir(os.path.join(out, "bin")) and not os.listdir(os.path.join(out, "bin")):
             os.rmdir(os.path.join(out, "bin"))
         env += ['unset BIGQUERY_EMULATOR_HOST BIGQUERYRC',
                 'if ! gcloud auth print-access-token >/dev/null 2>&1; then',
                 '  echo "warning: gcloud is not logged in; run gcloud auth login, or export GOOGLE_APPLICATION_CREDENTIALS pointing at your own key" >&2',
                 'fi']
-    open(os.path.join(out, "env.sh"), "w").write("\n".join(env) + "\n")
+    write("env.sh", "\n".join(env) + "\n")
 
     subs = {"<warehouse-project>": a.warehouse_project, "<redash-url>": a.redash_url,
             "<workspace>": workspace, "<github-org>": "novamart-sim", "<access-pack>": out}
@@ -116,7 +126,7 @@ def main():
                           f"update local_swaps in {__file__}: {k[:60]}...")
                 s = s.replace(k, v)
         for k, v in subs.items(): s = s.replace(k, v)
-        open(os.path.join(out, "rendered_" + name), "w").write(s)
+        write("rendered_" + name, s)
 
     if local:
         warehouse = f"""The warehouse is a BigQuery emulator on {a.emulator_endpoint}, project `{a.warehouse_project}`. It needs no credentials and accepts any token, so the `sa-key.json` the brief mentions does not exist here and is not needed.
@@ -136,9 +146,8 @@ def main():
     bq ls"""
     nokey = f"""The released brief says the warehouse credentials are at `{os.path.join(out, "sa-key.json")}`; the rendered copy in this folder says instead that none are needed. In local mode there is no key: the emulator accepts any token. Run `source {os.path.join(out, "env.sh")}` and use `bq` as usual (`bq ls` lists the datasets). The same goes for `{os.path.join(out, "agent-github-pat")}`: the repo is public, `git log` works offline."""
     if local:
-        open(os.path.join(out, "sa-key.json.NOT_NEEDED"), "w").write(nokey + "\n")
-        open(os.path.join(out, "agent-github-pat.NOT_NEEDED"), "w").write(
-            "No GitHub token is needed: the repo is public and checked out locally, git log works offline.\n")
+        write("sa-key.json.NOT_NEEDED", nokey + "\n")
+        write("agent-github-pat.NOT_NEEDED", "No GitHub token is needed: the repo is public and checked out locally, git log works offline.\n")
     nokey_section = f"## There is no sa-key.json here\n\n{nokey}\n\n" if local else ""
     readme = f"""# Access pack ({a.mode})
 
@@ -167,7 +176,8 @@ The application repo is checked out at `{os.path.join(workspace, "novamart")}` a
 
 Run the agent with `{os.path.join(workspace, "novamart")}` as its working directory. The benchmark repo (with the gold claims and the released books) is not part of the estate and must not be given to the agent.
 """
-    open(os.path.join(out, "README.md"), "w").write(readme)
+    write("README.md", readme)
+    open(manifest, "w").write("\n".join(sorted(set(generated))) + "\n")
     print(f"access pack written to {out} (mode: {a.mode})")
 
 if __name__ == "__main__":
