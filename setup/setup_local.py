@@ -6,15 +6,51 @@
                                                            # access pack points at your BigQuery project
 
 Endpoints when done: BigQuery emulator http://localhost:9050 (project
-novamart-warehouse), Redash http://localhost:5050, estate Postgres :5433 (override
-with ESTATE_PG_PORT), world repo cloned at setup/workspace/novamart (checked out
-at the pin). The access pack in setup/access-pack/ carries all of it.
+novamart-warehouse), Redash http://localhost:5050, estate Postgres :15433, world
+repo cloned at setup/workspace/novamart (checked out at the pin). Host ports can be
+set with BQ_EMULATOR_PORT, REDASH_PORT and ESTATE_PG_PORT; a default that is busy
+moves to the next free port. The chosen ports are recorded in setup/.env (read by
+docker compose) and in the access pack in setup/access-pack/.
 """
-import argparse, os, subprocess, sys, time
+import argparse, os, socket, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PIN = "5ae1182"
 LOCAL_ONLY = ["estate-pg", "redash-redis", "redash-pg", "redash", "redash-scheduler", "redash-worker"]
+DEFAULT_PORTS = {"BQ_EMULATOR_PORT": 9050, "REDASH_PORT": 5050, "ESTATE_PG_PORT": 15433}
+ENV_FILE = os.path.join(HERE, ".env")
+
+def port_free(port):
+    with socket.socket() as s:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            s.bind(("0.0.0.0", port)); return True
+        except OSError:
+            return False
+
+def resolve_ports():
+    """Explicit env var > the port recorded in setup/.env by an earlier run (our own
+    containers hold it) > the default, moved to the next free port if it is busy."""
+    recorded = {}
+    if os.path.exists(ENV_FILE):
+        for line in open(ENV_FILE):
+            if "=" in line and not line.startswith("#"):
+                k, v = line.strip().split("=", 1); recorded[k] = v
+    chosen = {}
+    for var, default in DEFAULT_PORTS.items():
+        if os.environ.get(var):
+            p = int(os.environ[var])
+            if p != int(recorded.get(var, -1)) and not port_free(p):
+                sys.exit(f"host port {p} ({var}) is already in use; pick another and re-run")
+        elif var in recorded:
+            p = int(recorded[var])
+        else:
+            p = default
+            while not port_free(p): p += 1
+            if p != default:
+                print(f"host port {default} is in use, using {p} for {var} (recorded in setup/.env and the access pack)")
+        chosen[var] = p
+    return chosen
 
 def sh(cmd, **kw):
     print("+", " ".join(cmd)); r = subprocess.run(cmd, **kw)
@@ -28,14 +64,19 @@ def main():
     ap.add_argument("--skip-verify", action="store_true")
     a = ap.parse_args()
     cloud = a.warehouse_project is not None
-    pg_port = os.environ.get("ESTATE_PG_PORT", "5433")
+    ports = resolve_ports()
+    pg_port = str(ports["ESTATE_PG_PORT"])
+    bq_endpoint = f"http://localhost:{ports['BQ_EMULATOR_PORT']}"
+    redash_url = f"http://localhost:{ports['REDASH_PORT']}"
+    os.environ["BQ_EMULATOR_ENDPOINT"] = bq_endpoint   # read by the loader and the parity script
+    os.environ["REDASH_URL"] = redash_url               # read by the Redash seeder
 
     if not a.no_download:
         sh([sys.executable, os.path.join(HERE, "loaders", "download_data.py")])
     roles = os.path.join(HERE, "data", "roles.sql")
     if not os.path.exists(roles): open(roles, "w").write("-- placeholder for estate roles\n")
-    with open(os.path.join(HERE, ".env"), "w") as f:   # read by every docker compose call for this file
-        f.write(f"ESTATE_PG_PORT={pg_port}\n")
+    with open(ENV_FILE, "w") as f:   # read by every docker compose call for this file
+        for var, p in ports.items(): f.write(f"{var}={p}\n")
         if os.environ.get("BQ_EMULATOR_TAG"): f.write(f"BQ_EMULATOR_TAG={os.environ['BQ_EMULATOR_TAG']}\n")
     compose = ["docker", "compose", "-f", os.path.join(HERE, "docker-compose.yml"), "up", "-d"]
     sh(compose + (LOCAL_ONLY if cloud else []))
@@ -55,8 +96,9 @@ def main():
     if out.returncode != 0: print(out.stderr[-2000:]); sys.exit("redash seed failed")
     key = [l for l in out.stdout.splitlines() if l.startswith("REDASH_ADMIN_API_KEY=")][-1].split("=", 1)[1]
     sh([sys.executable, os.path.join(HERE, "loaders", "access_pack.py"),
-        a.warehouse_project or "novamart-warehouse", "http://localhost:5050", key, ws,
-        "--mode", "cloud-bigquery" if cloud else "local", "--estate-pg-port", pg_port])
+        a.warehouse_project or "novamart-warehouse", redash_url, key, ws,
+        "--mode", "cloud-bigquery" if cloud else "local", "--estate-pg-port", pg_port,
+        "--emulator-endpoint", bq_endpoint])
     pack = os.path.join(HERE, "access-pack")
     print(f"\nestate is up. The access pack in {pack} has the values the brief's placeholders refer to.")
     if not a.skip_verify:

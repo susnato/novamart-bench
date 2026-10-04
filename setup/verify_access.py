@@ -70,7 +70,7 @@ def check_workspace(v):
     return head.startswith(PIN), f"{repo}: HEAD {head}" + ("" if head.startswith(PIN) else f" (expected {PIN})")
 
 def check_postgres(v):
-    port = int(v.get("ESTATE_PG_PORT", "5433"))
+    port = int(v.get("ESTATE_PG_PORT", "15433"))
     with socket.socket() as s:
         s.settimeout(3)
         try:

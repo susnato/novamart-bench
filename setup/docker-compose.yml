@@ -6,7 +6,7 @@ services:
     environment:
       # bulk loads otherwise snapshot the table on every batch (81 GB file observed at 5x)
       BQEMU_TIME_TRAVEL_RETENTION_DAYS: "0"
-    ports: ["9050:9050"]
+    ports: ["${BQ_EMULATOR_PORT:-9050}:9050"]
     # the image's own BQEMU_DATA_DIR; a fresh named volume inherits its bqemu ownership
     # (mounting anywhere else, e.g. /data, is root-owned and the non-root server cannot write)
     volumes: ["bq-data:/var/lib/bqemulator"]
@@ -18,7 +18,7 @@ services:
     profiles: ["goccy"]
     image: ghcr.io/goccy/bigquery-emulator:0.8.1
     command: ["--project=novamart-warehouse", "--port=9050"]
-    ports: ["9050:9050"]
+    ports: ["${BQ_EMULATOR_PORT:-9050}:9050"]
 
   estate-pg:
     image: postgres:15-alpine
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./data/roles.sql:/docker-entrypoint-initdb.d/00-roles.sql:ro
       - ./data/db.sql.gz:/docker-entrypoint-initdb.d/01-estate.sql.gz:ro
-    ports: ["${ESTATE_PG_PORT:-5433}:5432"]
+    ports: ["${ESTATE_PG_PORT:-15433}:5432"]
 
   redash-redis:
     image: redis:7-alpine
@@ -52,7 +52,7 @@ services:
       REDASH_SECRET_KEY: novamart-local-secret
       REDASH_COOKIE_SECRET: novamart-local-cookie
       REDASH_WEB_WORKERS: "1"
-    ports: ["5050:5000"]  # host 5050: macOS AirPlay squats 5000
+    ports: ["${REDASH_PORT:-5050}:5000"]  # host 5050: macOS AirPlay squats 5000
 
   redash-scheduler:
     image: redash/redash:10.1.0.b50633

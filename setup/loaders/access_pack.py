@@ -15,7 +15,7 @@ def main():
     ap.add_argument("redash_key"); ap.add_argument("workspace")
     ap.add_argument("--mode", choices=["local", "cloud-bigquery"], default="local")
     ap.add_argument("--emulator-endpoint", default="http://localhost:9050")
-    ap.add_argument("--estate-pg-port", default="5433")
+    ap.add_argument("--estate-pg-port", default="15433")
     a = ap.parse_args()
 
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -70,6 +70,7 @@ def main():
            f'export WORKSPACE="{workspace}"', f'export ESTATE_PG_PORT="{a.estate_pg_port}"']
     if local:
         env += [f'export BIGQUERY_EMULATOR_HOST="{host}"   # Python, Go, Node and Java clients switch to the emulator',
+                f'export BQ_EMULATOR_ENDPOINT="{a.emulator_endpoint}"   # setup/parity/run_parity.py',
                 f'export BIGQUERYRC="{os.path.join(out, "bigqueryrc")}"   # bq CLI: endpoint, project, discovery document',
                 f'export PATH="{os.path.join(out, "bin")}:$PATH"   # bq wrapper that passes the dummy token',
                 f'if [ "$(curl -s -o /dev/null -w \'%{{http_code}}\' {a.emulator_endpoint}/ 2>/dev/null)" = "000" ]; then',
