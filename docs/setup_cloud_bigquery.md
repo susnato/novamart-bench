@@ -4,7 +4,7 @@ Your warehouse in your own BigQuery project; Redash and the repo stay on your ma
 
 ## Requirements
 
-`gcloud` logged in and `bq` installed, plus a project where you hold `roles/bigquery.user` (or anything that grants `bigquery.datasets.create` and `bigquery.jobs.create`). Docker for the local half. Cost: about 2 GB of BigQuery storage, and whatever queries you run, billed to your project.
+Tools as listed under [Before you start](../README.md#before-you-start) in the README, with `gcloud` logged in. Then a project where you hold `roles/bigquery.user` (or anything that grants `bigquery.datasets.create` and `bigquery.jobs.create`). Docker for the local half. Cost: about 2 GB of BigQuery storage, and whatever queries you run, billed to your project.
 
 ## Run
 

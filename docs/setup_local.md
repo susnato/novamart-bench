@@ -4,7 +4,7 @@ One command brings up the whole estate on your machine: the BigQuery API (projec
 
 ## Requirements
 
-Docker with compose, Python 3.10 or newer, `pip install -r setup/requirements.txt`, about 15 GB of free disk (the emulator's data volume is about 7 GB once the estate is loaded), and Docker allowed at least 4 CPUs and 8 GB of memory: the stack idles at about 3.5 GB (emulator 2 GB, Redash 1.4 GB), the load peaks at one core and 2.3 GB in the emulator for a few minutes, and heavy log-table queries can use several cores for a few seconds. Compose sets no per-container limits. No cloud account and no credentials.
+Tools as listed under [Before you start](../README.md#before-you-start) in the README. Then about 15 GB of free disk (the emulator's data volume is about 7 GB once the estate is loaded), and Docker allowed at least 4 CPUs and 8 GB of memory: the stack idles at about 3.5 GB (emulator 2 GB, Redash 1.4 GB), the load peaks at one core and 2.3 GB in the emulator for a few minutes, and heavy log-table queries can use several cores for a few seconds. Compose sets no per-container limits. No cloud account and no credentials.
 
 ## Run
 

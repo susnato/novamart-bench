@@ -53,6 +53,25 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 ## ⚙️ Setup
 
+### Before you start
+
+Both modes need the same tools. Install them once:
+
+| Tool | Why | Install |
+|---|---|---|
+| Python 3.10 or newer | the setup, verify and scoring scripts | https://www.python.org/downloads/ |
+| Docker with the compose plugin | Redash, the estate Postgres, and in local mode the BigQuery emulator | https://docs.docker.com/get-docker/ |
+| git | clones the application repo at the pinned commit | https://git-scm.com/downloads |
+| Google Cloud SDK (`gcloud` and `bq`) | `bq` is what the baseline agents used to query the warehouse; `setup/access-pack/env.sh` makes it work against the local emulator with no Google login. `gcloud` itself is needed only for cloud-bigquery mode | https://cloud.google.com/sdk/docs/install |
+
+Then, from the repo root, install the Python packages every script uses (the Hugging Face download, the BigQuery client, the judge client, the CLI):
+
+```bash
+pip install -r setup/requirements.txt
+```
+
+A virtual environment is a good idea but not required.
+
 **Local (recommended)**: `python setup/setup_local.py` stands up everything with docker compose: [bqemulator](https://github.com/jjviscomi/bqemulator) serving the BigQuery API, loaded with all 35 tables and the 5 estate views (project `novamart-warehouse`, matching the in-world docs), a seeded Redash with the 9 dashboards, the estate Postgres they query, the application repo checked out at the pin, and your access pack, then checks that every surface answers (`setup/verify_access.py`). `source setup/access-pack/env.sh` points `bq` and the client libraries at the local warehouse; `bq` then works with no Google login. See [`docs/setup_local.md`](docs/setup_local.md).
 
 **Real BigQuery (`cloud-bigquery` mode)**: `python setup/setup_gcp.py --project your-project-id` loads the three datasets into your own BigQuery project (permission preflight first, nothing created on failure; `roles/bigquery.user` suffices), then `python setup/setup_local.py --warehouse-project your-project-id --no-download` brings up Redash and the repo locally and writes the access pack. Agents then use the real BigQuery API at your own scale and cost; Redash and the repo stay on your machine. Submissions disclose which mode produced the runs. See [`docs/setup_cloud_bigquery.md`](docs/setup_cloud_bigquery.md).
