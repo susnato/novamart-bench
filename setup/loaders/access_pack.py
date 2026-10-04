@@ -89,7 +89,7 @@ def main():
         # A previous local run left files that are wrong in cloud mode. Remove ONLY the ones the
         # manifest says this script wrote; anything a user put in the pack is never touched.
         for stale in ("bigqueryrc", "bigquery-v2-discovery.json", "sa-key.json.NOT_NEEDED",
-                      "agent-github-pat.NOT_NEEDED", os.path.join("bin", "bq")):
+                      "agent-github-pat.NOT_NEEDED", os.path.join("bin", "bq")):   # the GitHub marker is from older packs
             path = os.path.join(out, stale)
             if stale in previously_generated and os.path.exists(path): os.remove(path)
         if os.path.isdir(os.path.join(out, "bin")) and not os.listdir(os.path.join(out, "bin")):
@@ -105,17 +105,13 @@ def main():
     # the launcher names the original runs' paths; the rendered copy points at the rendered contexts
     for name in ("novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
         subs[f"~/book_runs/prompts/{name}"] = os.path.join(out, "rendered_" + name)
-    # Local mode has no service-account key and no GitHub token (the emulator accepts any token,
-    # the repo is public and checked out), so the three sentences in the brief that point the
-    # agent at those files are swapped for ones that describe this machine. Exact-string swaps
-    # on the released text: the cloud-bigquery rendering and default_prompts/ are untouched.
+    # The only thing that differs between the modes is the warehouse. Local mode has no
+    # service-account key (the emulator accepts any token), so the one sentence in the brief that
+    # points the agent at sa-key.json is swapped for one that describes this machine. Exact-string
+    # swap on the released text: the cloud-bigquery rendering and default_prompts/ are untouched.
     local_swaps = {
-        " A read-only GitHub token (org `<github-org>`) is stored at `<access-pack>/agent-github-pat` if you need remote git operations.":
-            " The repo is public and already checked out; `git log` works offline and no GitHub token is needed.",
         "read-only service-account credentials at `<access-pack>/sa-key.json`.":
             f"served by a local emulator at {a.emulator_endpoint} that needs no credentials. Run `source <access-pack>/env.sh` first; `bq` and the client libraries then work with no Google login.",
-        "Do not modify the repository or push via the GitHub token.":
-            "Do not modify the repository or push to GitHub.",
     } if local else {}
     for name in ("novamart_sim_launcher.md", "novamart_sim_goal_context.md", "novamart_sim_extra_context.md"):
         s = open(os.path.join(root, "default_prompts", name)).read()
@@ -144,10 +140,14 @@ def main():
         warehouse = f"""The warehouse is your own BigQuery project, `{a.warehouse_project}`. Use the credentials you already have: `gcloud auth application-default login`, or your own service-account key saved as `sa-key.json` in this folder with `GOOGLE_APPLICATION_CREDENTIALS` pointing at it (that is the file the brief mentions). With `env.sh` sourced:
 
     bq ls"""
-    nokey = f"""The released brief says the warehouse credentials are at `{os.path.join(out, "sa-key.json")}`; the rendered copy in this folder says instead that none are needed. In local mode there is no key: the emulator accepts any token. Run `source {os.path.join(out, "env.sh")}` and use `bq` as usual (`bq ls` lists the datasets). The same goes for `{os.path.join(out, "agent-github-pat")}`: the repo is public, `git log` works offline."""
+    nokey = f"""The released brief says the warehouse credentials are at `{os.path.join(out, "sa-key.json")}`; the rendered copy in this folder says instead that none are needed. In local mode there is no key: the emulator accepts any token. Run `source {os.path.join(out, "env.sh")}` and use `bq` as usual (`bq ls` lists the datasets)."""
     if local:
         write("sa-key.json.NOT_NEEDED", nokey + "\n")
-        write("agent-github-pat.NOT_NEEDED", "No GitHub token is needed: the repo is public and checked out locally, git log works offline.\n")
+    # the brief names this file in both modes ("if you need remote git operations"); the repo is
+    # public, so an empty token means anonymous access and works. Never overwrite one the user filled.
+    pat = os.path.join(out, "agent-github-pat")
+    if not os.path.exists(pat) or os.path.getsize(pat) == 0:
+        write("agent-github-pat", "")
     nokey_section = f"## There is no sa-key.json here\n\n{nokey}\n\n" if local else ""
     readme = f"""# Access pack ({a.mode})
 
@@ -168,7 +168,7 @@ The values the brief's placeholders refer to, for this machine. Source `env.sh` 
 
 ## Codebase
 
-The application repo is checked out at `{os.path.join(workspace, "novamart")}` at commit `{PIN}`. It is public, so the `agent-github-pat` the brief mentions is not needed; `git log` works offline.
+The application repo is checked out at `{os.path.join(workspace, "novamart")}` at commit `{PIN}`. It is public, so `git log` and `git fetch` work without a token; `agent-github-pat` (the file the brief mentions) is empty by default, which every git and `gh` client treats as no token. Put a read-only PAT of your own in it only if your agent needs the GitHub API.
 
 ## The rendered brief
 
