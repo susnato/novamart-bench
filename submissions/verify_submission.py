@@ -1,7 +1,7 @@
 """Verify a leaderboard submission, or self-test against the released verdicts.
 
-  python verify/verify_submission.py --from-verdicts "Claude Code"   # self-test, no API calls
-  python verify/verify_submission.py --submission submissions/<dir>  # full verification:
+  python submissions/verify_submission.py --from-verdicts "Claude Code"   # self-test, no API calls
+  python submissions/verify_submission.py --submission submissions/<dir>  # full verification:
         5 judge passes per book (scoring score-book), majority verdicts, stats
 
 Judge credentials: GEMINI_API_KEY, or Vertex AI via VERTEX_AI_PROJECT_ID with
@@ -31,10 +31,10 @@ def from_verdicts(system):
     return stats(matrix_from_verdicts(system))
 
 def score_once(book_path):
-    out_root = os.path.join(ROOT, "novamart", "eval-run-outputs")
+    out_root = os.path.join(ROOT, "eval-run-outputs")
     before = set(glob.glob(os.path.join(out_root, "*")))
     r = subprocess.run([sys.executable, "-m", "scoring.cli", "score-book",
-                        "--gold", os.path.join(ROOT, "novamart"), "--book", book_path],
+                        "--gold", os.path.join(ROOT, "claims"), "--book", book_path],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         sys.exit(f"score-book failed: {r.stderr[-500:]}")
@@ -70,7 +70,7 @@ def verify_submission(subdir):
     json.dump(entry, open(os.path.join(subdir, "verified_entry.json"), "w"), indent=1)
     print(f"wrote {subdir}/verified_entry.json and verified_verdicts.json")
     print("next: python website/compile_leaderboard.py && python website/render.py")
-    compare_to_board(meta.get("system_name") or os.path.basename(subdir.rstrip("/")), matrix)
+    compare_to_board(os.path.basename(subdir.rstrip("/")), matrix)
     return entry
 
 def matrix_from_verdicts(system):

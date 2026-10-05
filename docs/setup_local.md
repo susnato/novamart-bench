@@ -23,7 +23,7 @@ The script downloads the estate from Hugging Face [dataset](https://huggingface.
 
 This loads the 35 tables into the emulator, creates the 5 estate views (4 in `novamart_analytics`, 1 in `novamart_logs`), restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `~/novamart-estate/workspace/novamart` at the pinned commit, and writes `~/novamart-estate/access-pack/` with the values the brief's placeholders refer to (warehouse project, Redash URL and API key, workspace path) and rendered copies of the brief. In local mode the rendered brief's one credential sentence are adjusted to this machine (no `sa-key.json`, no GitHub token, `source env.sh` instead); the cloud-bigquery rendering keeps the released wording, and `default_prompts/` is never modified.
 
-The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace/novamart` and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
+The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace` (it creates its output folder there, beside the checkout) and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
 
 Setup never deletes anything in the estate it did not write itself: your run outputs, books and traces survive re-runs and a switch between local and cloud mode.
 

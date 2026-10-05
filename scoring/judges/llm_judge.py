@@ -87,7 +87,10 @@ class JudgeAPIError(RuntimeError):
 
 
 _RETRYABLE = ("429", "RESOURCE_EXHAUSTED", "500", "INTERNAL", "502", "503", "UNAVAILABLE",
-              "504", "DEADLINE_EXCEEDED", "Connection", "connection", "timed out", "Timeout")
+              "504", "DEADLINE_EXCEEDED", "Connection", "connection", "timed out", "Timeout",
+              # transient name resolution and credential refresh failures (laptop networks)
+              "nodename nor servname", "Name or service not known", "Temporary failure in name resolution",
+              "getaddrinfo", "Could not resolve API token")
 
 
 def _is_retryable(exc: Exception) -> bool:

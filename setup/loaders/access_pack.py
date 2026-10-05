@@ -83,7 +83,7 @@ def main():
                 f'export BIGQUERYRC="{os.path.join(out, "bigqueryrc")}"   # bq CLI: endpoint, project, discovery document',
                 f'export PATH="{os.path.join(out, "bin")}:$PATH"   # bq wrapper that passes the dummy token',
                 f'if [ "$(curl -s -o /dev/null -w \'%{{http_code}}\' {a.emulator_endpoint}/ 2>/dev/null)" = "000" ]; then',
-                f'  echo "warning: the BigQuery emulator is not answering on {a.emulator_endpoint}; start it with: docker compose -f {compose} up -d bq-emulator" >&2',
+                f'  echo "warning: the BigQuery emulator is not answering on {a.emulator_endpoint}; start it with the setup script (python setup/setup_local.py --no-download)" >&2',
                 'fi']
     else:
         # A previous local run left files that are wrong in cloud mode. Remove ONLY the ones the
@@ -154,7 +154,7 @@ def main():
 The values the brief's placeholders refer to, for this machine. Source `env.sh` in the shell you launch the agent from, then check everything answers:
 
     source {os.path.join(out, "env.sh")}
-    python {os.path.join(root, "setup", "verify_access.py")}
+    python setup/verify_access.py   # from the folder you ran the setup script in
 
 {nokey_section}## Warehouse (BigQuery)
 
@@ -174,7 +174,7 @@ The application repo is checked out at `{os.path.join(workspace, "novamart")}` a
 
 `rendered_novamart_sim_launcher.md`, `rendered_novamart_sim_goal_context.md` and `rendered_novamart_sim_extra_context.md` are the released brief with the placeholders filled in for this machine. Start your agent with the rendered launcher; it points at the two rendered context files. `values.env` holds the same values for scripts.
 
-Run the agent with `{os.path.join(workspace, "novamart")}` as its working directory. The benchmark repo (with the gold claims and the released books) is not part of the estate and must not be given to the agent.
+Run the agent with `{workspace}` as its working directory: it creates its output folder there, beside the checkout. Give the agent nothing outside the workspace and this access pack.
 """
     write("README.md", readme)
     open(manifest, "w").write("\n".join(sorted(set(generated))) + "\n")

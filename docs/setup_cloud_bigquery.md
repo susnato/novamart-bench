@@ -31,7 +31,7 @@ The second script starts the containers (no emulator this time):
 
 This restores the Postgres dump that Redash queries, seeds the 9 dashboards, clones `novamart-sim/novamart` into `~/novamart-estate/workspace/novamart` at the pinned commit, and writes `~/novamart-estate/access-pack/` with the values the brief's placeholders refer to (your project as the warehouse, Redash URL and API key, workspace path) and rendered copies of the brief.
 
-The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace/novamart` and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
+The estate lives outside this repo on purpose: run your agent from `~/novamart-estate/workspace` (it creates its output folder there, beside the checkout) and never give it this repo, it has the gold claims and the released books. If you want the estate somewhere else, pass `--estate-dir /some/path` (the scripts remember it in `setup/.env`).
 
 Setup never deletes anything in the estate it did not write itself: your run outputs, books and traces survive re-runs and a switch between local and cloud mode.
 
