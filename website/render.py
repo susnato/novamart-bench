@@ -9,7 +9,7 @@ ROOT = os.path.dirname(HERE)
 START, END = "<!-- LEADERBOARD_ROWS_START -->", "<!-- LEADERBOARD_ROWS_END -->"
 
 ROW = """          <tr>
-            <td class="rankcell"><div class="ranknum num">{rank}</div><div class="rankdate">{date_h}</div>{pill}</td>
+            <td class="rankcell"><div class="ranknum num">{rank}</div><div class="rankdate">{date_h}</div></td>
             <td>
               <div><span class="sysname">{system}</span> <span class="sysver">v{version}</span></div>
               <div class="sysmodel">{model} ({effort} effort)</div>
@@ -29,8 +29,7 @@ def main():
     lb = json.load(open(os.path.join(HERE, "leaderboard.json")))
     rows = []
     for e in lb["entries"]:
-        pill = '<div class="rankdate maintainer">maintainer submitted</div>' if (e.get("submitted_by") or "").lower() in ("maintainers", "maintainer", "susnato") else ""
-        rows.append(ROW.format(rank=e["rank"], date_h=fmt_date(e["date"]), pill=pill, system=e["system"],
+        rows.append(ROW.format(rank=e["rank"], date_h=fmt_date(e["date"]), system=e["system"],
                     version=e["version"], model=e["model"],
                     effort=e["effort"], runs=" / ".join(f"{r:.1f}" for r in e["runs_sorted"]),
                     mean_recall=f'{e["mean_recall"]:.1f}', ci0=f'{e["ci95"][0]:.1f}',
