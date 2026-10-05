@@ -1,0 +1,10 @@
+system_name: "OpenCode"
+version: "1.18.34"
+model: "GPT-6.1 Sol"
+effort: "high"
+environment_mode: "local-emulator"
+prompt_files: []
+trajectories_included: false
+submitted_by: "maintainers"
+contact: ""
+notes: "maintainer ran on 2026-10-05, OpenCode headless, used the default rendered prompts, OpenCode skills and web tools disabled"

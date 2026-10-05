@@ -14,7 +14,6 @@ Every book is scored per claim by an LLM judge (Gemini 3 Flash preview, the same
 | ----------- | -------------------------------------------------------------------------------------------------------- |
 | Mean recall | average claim recall over the three runs (the leaderboard sort key)                                      |
 | pass^3      | fraction of claims solved in all three runs                                                              |
-| Any-run     | fraction of claims solved in at least one run (ceiling)                                                  |
 | 95% CI      | claim-level bootstrap over the 51 claims, 10,000 resamples, percentile interval, reported on mean recall |
 
 

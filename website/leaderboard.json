@@ -10,9 +10,119 @@
   },
   "entries": [
     {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "Claude Fable 5.1",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        82.4,
+        74.5,
+        70.6
+      ],
+      "mean_recall": 75.8,
+      "ci95": [
+        66.0,
+        84.3
+      ],
+      "pass3": 54.9,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 1
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "Claude Opus 5.5",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        78.4,
+        74.5,
+        70.6
+      ],
+      "mean_recall": 74.5,
+      "ci95": [
+        64.7,
+        83.7
+      ],
+      "pass3": 58.8,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 2
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "GPT-6 Astra",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        80.4,
+        74.5,
+        68.6
+      ],
+      "mean_recall": 74.5,
+      "ci95": [
+        64.1,
+        83.7
+      ],
+      "pass3": 58.8,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 3
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "Claude Sonnet 5.5",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        76.5,
+        72.5,
+        62.7
+      ],
+      "mean_recall": 70.6,
+      "ci95": [
+        59.5,
+        81.0
+      ],
+      "pass3": 56.9,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 4
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "GPT-6.1 Sol",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        70.6,
+        66.7,
+        62.7
+      ],
+      "mean_recall": 66.7,
+      "ci95": [
+        55.6,
+        77.1
+      ],
+      "pass3": 51.0,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 5
+    },
+    {
       "system": "Claude Code",
       "version": "2.1.252",
-      "model": "Fable 5",
+      "model": "Claude Fable 5",
       "effort": "high",
       "date": "2026-08-27",
       "runs_sorted": [
@@ -26,16 +136,15 @@
         72.5
       ],
       "pass3": 35.3,
-      "any_run": 84.3,
       "mode": "cloud-bigquery",
       "verified": true,
       "submitted_by": "maintainers",
-      "rank": 1
+      "rank": 6
     },
     {
       "system": "Cursor",
       "version": "3.15.6",
-      "model": "Fable 5",
+      "model": "Claude Fable 5",
       "effort": "high",
       "date": "2026-08-27",
       "runs_sorted": [
@@ -49,11 +158,32 @@
         69.3
       ],
       "pass3": 35.3,
-      "any_run": 80.4,
       "mode": "cloud-bigquery",
       "verified": true,
       "submitted_by": "maintainers",
-      "rank": 2
+      "rank": 7
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "Claude Fable 5",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        64.7,
+        54.9,
+        49.0
+      ],
+      "mean_recall": 56.2,
+      "ci95": [
+        45.8,
+        66.0
+      ],
+      "pass3": 31.4,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 8
     },
     {
       "system": "Codex CLI",
@@ -72,11 +202,54 @@
         44.4
       ],
       "pass3": 19.6,
-      "any_run": 51.0,
       "mode": "cloud-bigquery",
       "verified": true,
       "submitted_by": "maintainers",
-      "rank": 3
+      "rank": 9
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "Gemini 3.8 Flash",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        31.4,
+        29.4,
+        29.4
+      ],
+      "mean_recall": 30.1,
+      "ci95": [
+        19.6,
+        41.2
+      ],
+      "pass3": 17.6,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 10
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "Gemini 3.1 Pro Preview",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        2.0,
+        2.0,
+        0.0
+      ],
+      "mean_recall": 1.3,
+      "ci95": [
+        0.0,
+        3.9
+      ],
+      "pass3": 0.0,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 11
     }
   ],
   "notes": "Entries 1 and 2 run the same model; their gap is inside the judge spread and they are statistically tied. Differences within roughly 10 points are inside the noise floor."

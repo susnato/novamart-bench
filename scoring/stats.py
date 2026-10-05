@@ -23,8 +23,8 @@ def stats(matrix, runs=3):
     """matrix: {claim_id: [bool solved per run]} with `runs` runs.
 
     Returns run recalls (sorted desc), mean recall, claim-level bootstrap 95%
-    CI (10,000 resamples, seed 0, percentile interval), pass_all (solved in
-    all runs) and pass_any (solved in at least one run), all in percent.
+    CI (10,000 resamples, seed 0, percentile interval) and pass_all (solved in
+    all runs), all in percent.
     """
     claims = sorted(matrix)
     n = len(claims)
@@ -41,5 +41,4 @@ def stats(matrix, runs=3):
     ci = [boots[int(0.025 * len(boots))], boots[int(0.975 * len(boots)) - 1]]
     return {"runs_sorted": [round(r, 1) for r in run_recalls], "mean_recall": round(mean, 1),
             "ci95": [round(ci[0], 1), round(ci[1], 1)],
-            "pass_all": round(100.0 * sum(1 for cid in claims if c[cid] == runs) / n, 1),
-            "pass_any": round(100.0 * sum(1 for cid in claims if c[cid] >= 1) / n, 1)}
+            "pass_all": round(100.0 * sum(1 for cid in claims if c[cid] == runs) / n, 1)}

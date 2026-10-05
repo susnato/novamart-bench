@@ -16,7 +16,7 @@ python -m scoring.cli validate-claims-format claims
 # one book: per-claim scorecard, recall, 95% CI
 python -m scoring.cli score-book --gold claims --book book_r1.md
 
-# your three runs: mean recall, 95% CI, pass^3, pass@3 (repeat --book per book)
+# your three runs: mean recall, 95% CI, pass^3 (repeat --book per book)
 python -m scoring.cli score-book --gold claims --book book_r1.md --book book_r2.md --book book_r3.md
 
 # optional: majority verdicts over multiple judge passes per book

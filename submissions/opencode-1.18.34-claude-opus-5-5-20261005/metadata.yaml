@@ -1,0 +1,10 @@
+system_name: "OpenCode"
+version: "1.18.34"
+model: "Claude Opus 5.5"
+effort: "high"
+environment_mode: "local-emulator"
+prompt_files: ["prompt.md"]
+trajectories_included: false
+submitted_by: "maintainers"
+contact: ""
+notes: "maintainer ran on 2026-10-05, OpenCode headless, OpenCode skills and web tools disabled, prompt: Opus 5.5's classifier denied default prompt multiple times so we had to create a prompt.md by adding the content of rendered_novamart_sim_goal_context.md and rendered_novamart_sim_extra_context.md into single prompt, the contents stay same. book_r3 is a re-run with OpenCode's output-token cap raised to 1 M: the model writes its book in one call and the default 32,000-token cap cut it off"

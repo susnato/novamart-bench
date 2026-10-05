@@ -23,7 +23,7 @@ def compile_entries():
             "model": meta.get("model", ""), "effort": meta.get("effort", ""),
             "date": ve.get("date", ""),
             "runs_sorted": ve["runs_sorted"], "mean_recall": ve["mean_recall"],
-            "ci95": ve["ci95"], "pass3": ve["pass3"], "any_run": ve["any_run"],
+            "ci95": ve["ci95"], "pass3": ve["pass3"],
             "mode": meta.get("environment_mode", ""),
             "verified": bool(ve.get("verified")),
             "submitted_by": meta.get("submitted_by", ""),

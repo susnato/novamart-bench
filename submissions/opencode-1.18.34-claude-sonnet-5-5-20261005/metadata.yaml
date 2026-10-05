@@ -1,0 +1,10 @@
+system_name: "OpenCode"
+version: "1.18.34"
+model: "Claude Sonnet 5.5"
+effort: "high"
+environment_mode: "local-emulator"
+prompt_files: []
+trajectories_included: false
+submitted_by: "maintainers"
+contact: ""
+notes: "maintainer ran on 2026-10-05, OpenCode headless, used the default rendered prompts, OpenCode skills and web tools disabled. book_r3 is a re-run with OpenCode's output-token cap raised to 1 M: the model writes its book in one call and the default 32,000-token cap cut it off"

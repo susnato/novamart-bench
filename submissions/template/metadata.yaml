@@ -1,6 +1,6 @@
 system_name: ""               # REQUIRED. Displayed on the leaderboard, e.g. "Claude Code"
 version: ""                   # agent version, e.g. "2.1.252"
-model: ""                     # underlying model, e.g. "Fable 5"
+model: ""                     # underlying model, e.g. "Claude Fable 5"
 effort: ""                    # reasoning effort / mode setting, e.g. "high"
 environment_mode: ""          # "cloud-bigquery" or "local-emulator"
 prompt_files: []              # your system's own prompt or scaffold files included in this folder, if any (encouraged)

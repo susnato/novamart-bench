@@ -6,7 +6,7 @@
 
 Judge credentials: GEMINI_API_KEY, or Vertex AI via VERTEX_AI_PROJECT_ID with
 gcloud application-default credentials. Stats: mean claim recall over the three
-runs, claim-level bootstrap 95% CI (10,000 resamples, seed 0), pass^3, any-run.
+runs, claim-level bootstrap 95% CI (10,000 resamples, seed 0), pass^3.
 """
 import argparse, glob, json, os, subprocess, sys
 
@@ -22,10 +22,10 @@ def stats(matrix):
 
     The math lives in scoring/stats.py, shared with score-book so self-scored
     and verified numbers are identical by construction; this wrapper only maps
-    the generic pass_all/pass_any names to the released entry field names."""
+    the generic pass_all name to the released entry field name."""
     s = shared_stats(matrix, runs=3)
     return {"runs_sorted": s["runs_sorted"], "mean_recall": s["mean_recall"],
-            "ci95": s["ci95"], "pass3": s["pass_all"], "any_run": s["pass_any"]}
+            "ci95": s["ci95"], "pass3": s["pass_all"]}
 
 def from_verdicts(system):
     return stats(matrix_from_verdicts(system))
@@ -124,7 +124,7 @@ def main():
     if a.from_verdicts:
         lb = json.load(open(os.path.join(ROOT, "website", "leaderboard.json")))
         pub = next(e for e in lb["entries"] if e["system"] == a.from_verdicts)
-        keys = ["runs_sorted", "mean_recall", "ci95", "pass3", "any_run"]
+        keys = ["runs_sorted", "mean_recall", "ci95", "pass3"]
         diffs = {k: (entry[k], pub[k]) for k in keys if entry[k] != pub[k]}
         print("SELF-TEST vs leaderboard.json:", "MATCH" if not diffs else f"DIFFS {diffs}")
         return 1 if diffs else 0

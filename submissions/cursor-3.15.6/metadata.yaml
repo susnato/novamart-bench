@@ -1,6 +1,6 @@
 system_name: "Cursor"
 version: "3.15.6"
-model: "Fable 5"
+model: "Claude Fable 5"
 effort: "high"
 environment_mode: "cloud-bigquery"
 prompt_files: []

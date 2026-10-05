@@ -121,11 +121,10 @@ def run(
                "(claim-level bootstrap, 10,000 resamples)")
     if k >= 2:
         click.echo(f"  pass^{k} (solved in all {k} books): {agg['pass_all']}%")
-        click.echo(f"  pass@{k} (solved in at least one book): {agg['pass_any']}%")
         if k != 3:
             click.echo("  note: the leaderboard protocol requires exactly 3 books (pass^3)")
     else:
-        click.echo("  note: single book, so pass^k / pass@k are not computed; the leaderboard requires 3 books")
+        click.echo("  note: single book, so pass^k is not computed; the leaderboard requires 3 books")
     click.echo("  Self-scored and unofficial: listed numbers always come from maintainer verification.")
     click.echo("═" * 60)
 
