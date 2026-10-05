@@ -4,9 +4,8 @@ name: Weekly parity
 # the pinned emulator (users' stack) and latest (early upstream warning).
 on:
   workflow_dispatch:
-  # Uncomment at release flip (needs the HF dataset public, or an HF_TOKEN secret):
-  # schedule:
-  #   - cron: "0 3 * * 6"
+  schedule:
+    - cron: "0 3 * * 6"
 permissions:
   contents: read
   issues: write
@@ -20,7 +19,6 @@ jobs:
         emulator_tag: ["1.4.0", "latest"]
     env:
       BQ_EMULATOR_TAG: ${{ matrix.emulator_tag }}
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,19 +26,6 @@ jobs:
           python-version: "3.12"
       - name: Install exactly what a user installs
         run: pip install -r setup/requirements.txt
-      # TEMPORARY until the release flip: the world repo is private, so CI
-      # pre-clones it with a token; setup_local.py then skips its own clone.
-      # After the flip this is a no-op (delete the WORLD_REPO_TOKEN secret and,
-      # at leisure, this step: with no token it does nothing).
-      - name: Pre-clone the world repo (private phase only)
-        env:
-          WORLD_REPO_TOKEN: ${{ secrets.WORLD_REPO_TOKEN }}
-        run: |
-          if [ -n "$WORLD_REPO_TOKEN" ]; then
-            mkdir -p "$HOME/novamart-estate/workspace" && git clone "https://x-access-token:${WORLD_REPO_TOKEN}@github.com/novamart-sim/novamart" "$HOME/novamart-estate/workspace/novamart"
-          else
-            echo "no WORLD_REPO_TOKEN; letting setup_local.py clone anonymously (post-flip path)"
-          fi
       - name: Stand up the local estate (the user script, verbatim)
         run: python setup/setup_local.py
       - name: Parity (36 evidence queries parsed from claims/*.yaml)
