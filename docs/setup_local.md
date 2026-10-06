@@ -1,6 +1,6 @@
 # Local setup
 
-One command brings up the whole estate on your machine: the BigQuery API (project `novamart-warehouse`, three datasets), Redash, and a checkout of the application repo at the pinned commit. These are the same interfaces all the Agents should be evaluated against.
+One command brings up the whole estate on your machine: the BigQuery API (project `novamart-warehouse`, three datasets), Redash, and a checkout of the application repo at the pinned commit. These are the same interfaces all the Agents should be evaluated against. Expect about 10 minutes end to end once the tools under Before you start are installed; on a slow connection the image pulls can push it to 15. The script runs unattended and verifies every surface at the end.
 
 ## Requirements
 
