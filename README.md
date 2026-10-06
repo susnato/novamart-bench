@@ -2,6 +2,8 @@
 
 [Website](https://novamartbench.com) • [Leaderboard](https://novamartbench.com/#leaderboard) • [Paper](website/paper.pdf) • [Submit](submissions/README.md)
 
+**Paper accepted at the 2nd Workshop on Agentic AI Benchmarks and Applications for Enterprise Tasks (AABA4ET), NeurIPS 2026.**
+
 ## 👋 Overview
 
 ![The NovaMart pipeline](./website/pipeline.png)
@@ -53,6 +55,8 @@ Agents reach the estate through the same interfaces enterprise data actually liv
 
 
 ## ⚙️ Setup
+
+Once Python, Docker and git are installed, the local setup is one command and takes about 10 minutes end to end on a laptop; we measured 8 minutes on a fresh 4-CPU, 8 GB machine, Docker image pulls included. Nothing needs attention while it runs.
 
 
 
@@ -154,8 +158,8 @@ Code is Apache-2.0 (`LICENSE`). The estate (the Hugging Face dataset and the `no
   title     = {NovaMart: A Causally Consistent Simulated Enterprise
                for Measuring Tribal Knowledge Extraction},
   author    = {Dhar, Susnato and Saket, Srijan and Mehrotra, Rishabh},
-  booktitle = {NeurIPS 2026 Workshop on Agentic AI Benchmarks and
-               Applications for Enterprise Tasks (AABA4ET)},
+  booktitle = {2nd Workshop on Agentic AI Benchmarks and Applications
+               for Enterprise Tasks (AABA4ET), NeurIPS 2026},
   year      = {2026},
   url       = {https://novamartbench.com}
 }
