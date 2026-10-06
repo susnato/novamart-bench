@@ -54,7 +54,8 @@ def main():
     open(os.path.join(out, "index.html"), "w").write(html)
     shutil.copy(os.path.join(HERE, "leaderboard.json"), os.path.join(out, "leaderboard.json"))
     shutil.copy(os.path.join(HERE, "paper.pdf"), os.path.join(out, "paper.pdf"))
-    shutil.copy(os.path.join(HERE, "pipeline.png"), os.path.join(out, "pipeline.png"))   # social preview image
+    shutil.copy(os.path.join(HERE, "pipeline.png"), os.path.join(out, "pipeline.png"))
+    shutil.copy(os.path.join(HERE, "social-card.png"), os.path.join(out, "social-card.png"))   # 1200x630 social preview card
     print(f"rendered {len(rows)} rows -> {out}/index.html")
 
 if __name__ == "__main__":
