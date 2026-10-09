@@ -4,6 +4,8 @@
 
 **Paper accepted at the 2nd Workshop on Agentic AI Benchmarks and Applications for Enterprise Tasks (AABA4ET), NeurIPS 2026.**
 
+A research benchmark from [Pavo](https://www.pavoai.com/).
+
 ## 👋 Overview
 
 ![The NovaMart pipeline](./website/pipeline.png)
