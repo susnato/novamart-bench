@@ -61,11 +61,13 @@
   p{margin:0 0 12px}
 
   .topbar{
-    display:flex; align-items:baseline; gap:14px; padding:12px 24px;
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; padding:12px 24px;
     background:var(--navbar); color:var(--navbar-ink);
   }
-  .topbar .mark{font-weight:700; font-size:15px}
-  .topbar nav{margin-left:auto; display:flex; gap:16px; font-size:14px}
+  .topbar .lab{display:inline-flex; align-items:center; gap:8px; color:var(--navbar-ink); text-decoration:none; font-weight:700; font-size:15px}
+  .topbar .lab svg{width:22px; height:22px; fill:currentColor; flex:none}
+  .topbar .lab:hover{text-decoration:underline}
+  .topbar nav{margin-left:auto; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:14px}
   .topbar nav a{text-decoration:none; color:var(--navbar-muted)}
   .topbar nav a:hover{color:var(--navbar-ink); text-decoration:underline}
 
@@ -134,7 +136,7 @@
 </style>
 
 <header class="topbar">
-  <span class="mark">NovaMart Benchmark</span>
+  <a class="lab" href="https://www.pavoai.com/" target="_blank" rel="noopener" title="Pavo"><svg viewBox="0 0 1200 1200" aria-hidden="true"><path d="M629.36 1154.43C711.14 1150.16 788.23 1128.22 856.88 1092.32L793.01 729.96L792.13 723.23C781.45 733.84 771.52 745.15 762.38 757.06C736.13 791.27 716.41 830.59 704.77 873.02L704.22 875.04L629.36 1154.43ZM501.37 1146.41L176.18 958.66C186.11 970.41 196.53 981.71 207.4 992.58C285.81 1070.99 387.59 1126.03 501.37 1146.41ZM116.19 872.55L390.16 1030.72L68.44 760.78C80.3 800.06 96.39 837.49 116.19 872.55ZM51.82 688.46L418.62 996.23L46.76 553.06C45.46 568.54 44.8 584.18 44.8 599.99C44.8 630.1 47.2 659.66 51.82 688.46ZM55.04 493.36L452.97 967.61L100.55 357.22C79.8 399.84 64.34 445.5 55.04 493.36ZM125.64 311.34L491.73 945.38L219.03 196.12C215.09 199.81 211.23 203.59 207.41 207.41C176.22 238.6 148.73 273.48 125.65 311.34H125.64ZM255.15 164.85L533.6 929.87L385.1 87.92C338.16 107.65 294.48 133.63 255.14 164.85H255.15ZM427.75 72.04L604.51 1074.26L753.32 518.84L568.9 298.88L594.27 286.19C629.29 268.69 666.23 255.39 704.23 246.48C742.4 237.51 781.55 232.97 820.83 232.97C829.16 232.97 838.25 233.24 848.03 233.74L875.64 235.2L805.37 497.47L1047.99 562.47L859.07 671.63C852.34 675.98 846.86 681.81 842.97 688.56C838.73 696 836.37 704.59 836.37 713.57C836.46 717.06 836.66 718.8 837.11 722.25L898.14 1068.43C932.36 1046.6 964.03 1021.14 992.6 992.57C1093.07 892.11 1155.21 753.29 1155.21 599.97C1155.21 446.65 1093.06 307.85 992.6 207.39C892.14 106.93 753.32 44.79 600 44.79C539.87 44.79 481.98 54.36 427.76 72.03L427.75 72.04ZM932.26 577.8L793.78 540.71L750.59 701.9C776.15 674.5 805.84 650.75 838.87 631.69L932.26 577.8ZM782.4 410.32L817.91 277.79C798.38 277.9 778.95 279.23 759.75 281.76L782.4 410.32ZM715.7 289.74C689.79 295.77 664.66 303.91 640.18 314.3L741.28 434.9L715.69 289.75L715.7 289.74ZM1024.25 1024.25C915.67 1132.83 765.66 1200 599.98 1200C434.3 1200 284.28 1132.83 175.72 1024.25C67.16 915.68 0 765.66 0 599.98C0 434.3 67.16 284.31 175.73 175.73C284.31 67.16 434.31 0 599.99 0C765.67 0 915.69 67.16 1024.26 175.73C1132.83 284.29 1200.01 434.32 1200.01 599.98C1200.01 765.64 1132.84 915.69 1024.26 1024.25H1024.25Z"/></svg>Pavo</a>
   <nav>
     <a href="#about">About</a>
     <a href="#leaderboard">Leaderboard</a>
@@ -146,7 +148,7 @@
 </header>
 
 <section class="hero">
-  <h1>NovaMart</h1>
+  <h1>NovaMart Benchmark</h1>
   <p class="subtitle">A Causally Consistent Simulated Enterprise for Measuring Tribal Knowledge Extraction</p>
   <p class="oneliner">How much of a company's undocumented knowledge can an AI agent excavate from the data estate alone: the code, the git history, the warehouse, the logs, the dashboards?</p>
   <div class="cta">
@@ -275,7 +277,7 @@ git show 1cb8721 <span class="k">--</span> novamart/constants.py
 <footer class="footer">
   <hr>
   <p><b>Data attribution.</b> Ambient shopper traffic is replayed from the <a href="https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store" target="_blank" rel="noopener">REES46 eCommerce behavior dataset</a> (<a href="https://rees46.com" target="_blank" rel="noopener">REES46 Marketing Platform</a>), used with attribution per the dataset's stated terms. NovaMart redistributes only derived artifacts; every order traces back to a real browsing session, but the raw event stream is obtained from Kaggle directly.</p>
-  <p>Code: Apache-2.0 &middot; Estate, claims, books, results &amp; paper: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato" target="_blank" rel="noopener">@susnato</a>.</p>
+  <p>A <a href="https://www.pavoai.com/" target="_blank" rel="noopener">Pavo</a> research benchmark &middot; Code: Apache-2.0 &middot; Estate, claims, books, results &amp; paper: CC BY 4.0 &middot; Maintained by <a href="https://github.com/susnato" target="_blank" rel="noopener">@susnato</a>.</p>
 </footer>
 
 </body>
