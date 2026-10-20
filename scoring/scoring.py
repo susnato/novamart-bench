@@ -95,6 +95,8 @@ def compute_scorecard(
         "book_path": metadata.get("book_path", ""),
         "timestamp": metadata.get("timestamp", ""),
         "judge_model": metadata.get("judge_model", ""),
+        "judge_name": metadata.get("judge_name", ""),
+        "judge_prompt_sha256": metadata.get("judge_prompt_sha256", ""),
         "use_must_include_fields": metadata.get("use_must_include_fields", True),
         "total_claims": len(claim_results),
         "correct": overall["correct"],

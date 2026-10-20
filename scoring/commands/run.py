@@ -9,7 +9,7 @@ import click
 
 from scoring.loaders import load_claims, load_book, resolve_claims_dir
 from scoring.judges.composite import evaluate_all_claims
-from scoring.judges.llm_judge import DEFAULT_MODEL, JudgeAPIError
+from scoring.judges.llm_judge import DEFAULT_MODEL, JudgeAPIError, judge_description
 from scoring.scoring import compute_scorecard
 from scoring.report import write_scorecard
 from scoring.stats import majority, stats
@@ -53,7 +53,8 @@ def run(
     click.echo(f"Loading claims from {claims_dir} ...")
     claims = load_claims(gold_path)
     click.echo(f"Loaded {len(claims)} claims, {len(book_paths)} book(s), {judge_passes} judge pass(es) per book")
-    click.echo(f"Judge model: {judge_model} (workers={workers})")
+    jd = judge_description(judge_model, use_must_include_fields)
+    click.echo(f"Judge: {jd['judge_name']} via {judge_model} (workers={workers}, prompt sha256 {jd['judge_prompt_sha256'][:12]})")
     click.echo(f"Use must_include fields: {use_must_include_fields}")
 
     if len(book_paths) > 3 and not yes:
@@ -77,8 +78,9 @@ def run(
                 )
             except JudgeAPIError as exc:
                 click.echo(f"\nJUDGE FAILED on {book_path.name} pass {p + 1}: {exc}", err=True)
-                click.echo("No scorecard was written for this pass and nothing was scored. Fix the credentials "
-                           "(GEMINI_API_KEY or VERTEX_AI_PROJECT_ID) or wait for the quota, then re-run.", err=True)
+                click.echo("No scorecard was written for this pass and nothing was scored. Fix the judge credentials "
+                           "(ANTHROPIC_API_KEY for the Anthropic API, AWS credentials for a bedrock/ model, GEMINI_API_KEY "
+                           "or VERTEX_AI_PROJECT_ID for a Gemini model) or wait for the quota, then re-run.", err=True)
                 sys.exit(2)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             metadata = {
@@ -86,7 +88,7 @@ def run(
                 "book": book_path.stem,
                 "book_path": str(book_path),
                 "timestamp": timestamp,
-                "judge_model": judge_model,
+                **judge_description(judge_model, use_must_include_fields),
                 "use_must_include_fields": use_must_include_fields,
             }
             scorecard = compute_scorecard(claim_results, claims, metadata)

@@ -8,7 +8,9 @@ import click
 import yaml
 from google.genai import types as genai_types
 
-from scoring.judges.llm_judge import DEFAULT_MODEL, _get_client
+from scoring.judges.llm_judge import _get_gemini_client
+
+CHECKER_MODEL = "gemini-3-flash-preview"  # claim-authoring checker; unrelated to the benchmark judge
 
 SYSTEM_PROMPT = """\
 You are validating an atomic eval claim before it is added to a tribal-knowledge benchmark.
@@ -180,7 +182,7 @@ def check_claim_with_llm(claim: dict, resolved_evidence: list[dict], model: str)
         "Resolved evidence:\n"
         f"{json.dumps(resolved_evidence, indent=2, ensure_ascii=False)}"
     )
-    response = _get_client().models.generate_content(
+    response = _get_gemini_client().models.generate_content(
         model=model,
         contents=[
             genai_types.Content(
@@ -214,7 +216,7 @@ def check_claim_with_llm(claim: dict, resolved_evidence: list[dict], model: str)
 @click.command("llm-review-claims")
 @click.argument("claim_path", type=click.Path(exists=True))
 @click.option("--project-root", default=".", type=click.Path(exists=True), help="Root for resolving code evidence URIs")
-@click.option("--model", default=DEFAULT_MODEL, help="Vertex model for the LLM checker")
+@click.option("--model", default=CHECKER_MODEL, help="Gemini model for the LLM checker")
 @click.option("--resolved-only", is_flag=True, help="Only resolve evidence; do not call the LLM checker")
 def check_claim(claim_path: str, project_root: str, model: str, resolved_only: bool) -> None:
     """Validate one claim YAML using deterministic evidence resolution and the Vertex LLM checker."""
