@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import glob
 import hashlib
 import json
 import os
@@ -176,12 +175,6 @@ def main():
                 lines += ["**Gold evidence, context only. Do not count it as evidence in the book.**"] + [f"- {x}" for x in ev] + [""]
             lines += ["Verdict: correct | partial | missing | contradicted", ""]
         open(os.path.join(a.out, f"guide_book_{code}.md"), "w").write("\n".join(lines))
-
-    # claims pin
-    pin = ["sha256 of every claim file the kit was built from", ""]
-    for f in sorted(glob.glob(os.path.join(a.repo, "claims", "*.yaml"))):
-        pin.append(f"{hashlib.sha256(open(f, 'rb').read()).hexdigest()}  claims/{os.path.basename(f)}")
-    open(os.path.join(a.out, "claims_version.txt"), "w").write("\n".join(pin) + "\n")
 
     print(f"kit written to {a.out}: n={a.n} seed={a.seed} entries={a.entries} strata from {a.judge_record}")
     print("population by judge label:", pop)
