@@ -78,11 +78,11 @@
   "I": 24
  },
  "labelled_total": 260,
- "labelling_order": "Rows within a book were shuffled by the sample seed and labelled as a prefix of that order (see rater_rules.md, note P1), books E to I breadth-first.",
+ "labelling_order": "Rows within a book were shuffled by the sample seed and labelled as a prefix of that order, books E to I breadth-first; the prefix rule was declared before it applied, so no cell was chosen or skipped by its content.",
  "fill_draw": {
   "seed": 20261015,
   "date": "2026-10-15",
-  "reason": "At 250 labelled cells the blanks were concentrated on six claims; ten further unlabelled cells on those claims were drawn with this seed and labelled on 2026-10-16 before the key was opened (rater_rules.md, note P2).",
+  "reason": "At 250 labelled cells the blanks were concentrated on six claims; ten further unlabelled cells on those claims were drawn with this seed and labelled on 2026-10-16 before the key was opened.",
   "cells": [
    {
     "study_book": "A",

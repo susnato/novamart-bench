@@ -186,7 +186,7 @@ mark{background:#FFE58A;color:#1B2430;padding:0 1px} mark.cur{background:#FF9632
         <button id="next">next</button>
         <button id="nextU" class="primary">next unlabelled</button>
       </div>
-      <div class="hint">Rules: only what the book itself says counts. Any must-not-include point in the book = contradicted. All must-include points present = correct. Some present, important ones missing = partial. Most or all missing = missing. See labels/rater_rules.md for the standard the published labels were made with.</div>
+      <div class="hint">Rules: only what the book itself says counts. Any must-not-include point in the book = contradicted. All must-include points present = correct. Some present, important ones missing = partial. Most or all missing = missing. The labels section of scoring/judges/validation/README.md describes the standard the published labels were made with.</div>
     </div>
   </div>
 </main>
