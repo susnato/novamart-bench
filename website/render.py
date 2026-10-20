@@ -56,6 +56,8 @@ def main():
     shutil.copy(os.path.join(HERE, "paper.pdf"), os.path.join(out, "paper.pdf"))
     shutil.copy(os.path.join(HERE, "pipeline.png"), os.path.join(out, "pipeline.png"))
     shutil.copy(os.path.join(HERE, "social-card.png"), os.path.join(out, "social-card.png"))   # 1200x630 social preview card
+    shutil.copy(os.path.join(HERE, "robots.txt"), os.path.join(out, "robots.txt"))
+    shutil.copy(os.path.join(HERE, "sitemap.xml"), os.path.join(out, "sitemap.xml"))
     print(f"rendered {len(rows)} rows -> {out}/index.html")
 
 if __name__ == "__main__":
