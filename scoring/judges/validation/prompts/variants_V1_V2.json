@@ -1,0 +1,25 @@
+{
+ "_note": "Extra decision rules appended to the released judge system prompt (after its Decision rules block) for the rubric experiment of 2026-10-16. Written once, from the rater's documented standard (study1/rater_rules.md R1 and susnato's description of how claim_text, must_include and numbers were read while labelling), before any run; frozen after that. Rule texts drafted by Claude, confirmed by susnato on 2026-10-16. Rule D (pieces of a point spread across the book combine) was added by susnato on 2026-10-16 before the V3 run; V1 and V2 ran without it.",
+ "rules": {
+  "A": "A must_include point that joins several facts counts as found when the book states the fact the point exists to check. Two expressions of the same quantity are interchangeable. A half-met point lowers the verdict to partial only when the missing half changes the meaning of the claim.",
+  "B": "A numeric must_include point counts as found when the book gives the same quantity and the same rule behind it, even if the value is shifted or stale. It does not count when the number implies a different rule or threshold.",
+  "C": "claim_text states the claim in full and defines its meaning. match.must_include lists what the book must actually state. Judge each must_include point by whether its meaning is present in the book, in any wording. Details that appear in claim_text but not in must_include, including numbers, are not required for a correct verdict.",
+  "D": "The parts of a point may sit in different places in the book. Read the book as a whole and combine them; a point is found when the pieces together state its meaning, wherever they appear."
+ },
+ "variants": {
+  "V1": {
+   "rules": [
+    "A",
+    "B",
+    "C"
+   ],
+   "purpose": "the full standard the rater labelled with"
+  },
+  "V2": {
+   "rules": [
+    "C"
+   ],
+   "purpose": "whether most of the gain comes from the claim-text rule alone"
+  }
+ }
+}

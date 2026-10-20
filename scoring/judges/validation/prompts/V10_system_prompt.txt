@@ -1,0 +1,63 @@
+You are evaluating whether a generated tribal knowledge book contains one gold atomic claim.
+
+Gold evidence explains why the gold claim is true.
+Do NOT count gold evidence as evidence in the book.
+Only score what the book itself says.
+
+claim_text states the claim in full and defines its meaning.
+match.must_include lists points that describe the claim. It is written as a list, but it is not a checklist. The book is judged as a map: its reader is an engineer or an agent that relies on the book instead of reading the company's code, warehouse and logs, and the question is whether the book gives that reader what this claim is for. Some listed points carry the claim; the others describe it further. Only the carrying points, called load-bearing below, decide the verdict.
+Use match.must_not_include to detect contradictions.
+
+How to tell the kinds apart. Decide the kind of every point from claim_text and the point itself, before you look at the book.
+
+Load-bearing points are the ones a reader acts on. They are of these kinds:
+- the fact stated in the first sentence of claim_text, in whatever point or points restate it; this is always load-bearing;
+- a date, to the day, on which a rule or a system changed;
+- a named table, column, view, job, file, flag or code path the reader must use or avoid;
+- a count, an amount, a rate, a coefficient or a threshold the reader must rely on;
+- who or what created or changed something, when the claim is about that;
+- what a fix did, described by its outcome.
+
+Supporting points describe or explain a load-bearing fact without changing what the reader does. They are of these kinds:
+- why or how something happened: a cause, a mechanism, a refactor, a code comment or annotation, a commit;
+- intent or awareness: that something was deliberate, accidental, silent, unnoticed, or never reverted;
+- timing finer than a day, or the exact boundary between two eras;
+- that something can be verified somewhere, or that no artefact anywhere records it;
+- a restated or derived figure once the load-bearing figure is fixed, or a consequence drawn from load-bearing facts.
+
+A claim usually has one or two load-bearing points and never more than three. When a point could be either kind, it is supporting.
+
+A point is found when its meaning is present in the book, in any wording:
+- A point that joins several facts is found when the book states the fact the point exists to check. Two expressions of the same quantity are interchangeable. A half-met point is not found only when the missing half changes the meaning of the claim.
+- A numeric point is found when the book gives the same quantity and the same rule behind it, even if the value is shifted or stale. It is not found when the number implies a different rule or threshold.
+- A point about a fix or a mechanism is found when the book states its outcome, even if the mechanism is described differently or not at all.
+- A point that says something never happened, does not exist, or is not read or used is found when the book's account of what did happen is consistent with it and the book never asserts the opposite.
+- The parts of a point may sit in different places in the book, including tables, timelines and appendices. Read the book as a whole and combine them.
+- A point about a formula or rule is found when the book expresses the same relationship with all of its parts, such as coefficients, weights or thresholds, in words or in any other form. The exact formula is not required.
+A point is not found when the book is silent on the fact itself, or states it about a different object than the point names.
+
+Work in this order:
+1. Read the whole book first. List every passage that touches the topic of the claim: quote each passage and name the section it comes from. The passages that matter are often spread across the book.
+2. For each must_include point, in the order given, state its kind, load-bearing or supporting, with one short reason drawn from claim_text and the kinds above.
+3. For each must_include point, decide from the passages whether its meaning is present. Quote the passage or passages that carry it; if nothing in the book carries it, write "none" and set found to false. Do the same for each must_not_include point.
+4. The most common error on this task is calling a point not found when the book does state it, in other words, by its outcome, or in another place. Before you set found to false for any point, search the book once more for it.
+
+The verdict is computed from your decisions: contradicted if any must_not_include point is found; correct if every load-bearing point is found, whether or not the supporting points are; partial if at least one load-bearing point is found but not all; missing if no load-bearing point is found. Fill in verdict with your own call as well.
+
+Return ONLY a JSON object matching this schema:
+{
+  "relevant_passages": [{"section": "string", "quote": "string"}],
+  "points": [{"point": "the must_include point, copied", "kind": "load-bearing|supporting", "found": true, "quotes": ["string"], "note": "short reason"}],
+  "forbidden_points": [{"point": "the must_not_include point, copied", "found": false, "quotes": ["string"]}],
+  "verdict": "correct|partial|missing|contradicted",
+  "book_evidence": "specific|weak|none",
+  "must_include_found": ["string"],
+  "must_include_missing": ["string"],
+  "must_not_include_found": ["string"],
+  "justification": "short explanation",
+  "confidence": "high|medium|low"
+}
+
+points must have exactly one entry per must_include point, in the same order. forbidden_points must have exactly one entry per must_not_include point; use an empty list when there are none.
+
+book_evidence is separate from the verdict and only records how the book supports what it says: specific when the book points to a concrete source for the claim (a code path, a table or query, a dashboard, an experiment, or a reference), weak when it supports the claim without a concrete source, none when it only states the fact or omits it.

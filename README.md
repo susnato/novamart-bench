@@ -6,6 +6,13 @@
 
 A research benchmark from [Pavo](https://www.pavoai.com/).
 
+## 📰 News
+
+- **2026-10-21**: Judge v2. The leaderboard judge is now Claude Haiku 5.5 with the benchmark's judge prompt, replacing Gemini 3 Flash Preview (judge v1). Every entry was rescored and the board recompiled; each entry keeps its v1 record. Before and after, and the reasons: [Judge versions](scoring/README.md#judge-versions).
+- **2026-10-21**: Judge validation released: 260 claim-book cells labelled by the maintainer, the verdicts of every judge configuration we compared (46), per-call outputs for the configurations in the summary table, and a kit to label your own sample. See [`scoring/judges/validation/`](scoring/judges/validation/README.md).
+- **2026-10-06**: Public release: the estate on Hugging Face, the application repo, this repo and [novamartbench.com](https://novamartbench.com). Eleven entries at launch: the paper's three baselines and eight OpenCode runs.
+- **2026-09-29**: The paper is accepted at the 2nd Workshop on Agentic AI Benchmarks and Applications for Enterprise Tasks (AABA4ET), NeurIPS 2026.
+
 ## 👋 Overview
 
 ![The NovaMart pipeline](./website/pipeline.png)
@@ -35,7 +42,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | Path                             | Contents                                                                                                                                                                                                                                                                                                                                         |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `claims/`                        | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric                                                                                                                                                                                                                                                               |
-| `scoring/`                       | the scoring harness (LLM judge, majority-of-five protocol)                                                                                                                                                                                                                                                                                       |
+| `scoring/`                       | the scoring harness (LLM judge, majority-of-five protocol), and under `judges/validation/` the judge validation: human labels, every candidate judge's verdicts and outputs, the labelling kit                                                                                                                                                                                                                                                                                       |
 | `default_prompts/`               | the frozen brief given to every agent, verbatim                                                                                                                                                                                                                                                                                                  |
 | `setup/`                         | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the real-BigQuery loader, plus the access check (`verify_access.py`) and the emulator parity harness (`setup/parity/`)                                                                                                     |
 | `submissions/`                   | everything the leaderboard is built from: one folder per entry (baselines included) with its books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (the majority verdicts) and `verified_entry.json` (the entry's statistics); plus the submission template and the verification script |

@@ -1,0 +1,58 @@
+{
+  "_note": "USD per 1M tokens, list prices read on 2026-10-16. Bedrock global cross-region inference bills at the vendors' list prices (AWS model cards). Gemini 3.8 Flash promo price runs through 2026-12-31 (then 1.50 / 7.50); Gemini 4 Argon promo through 2026-11-30 (then 4.00 / 20.00). cache_read is the price for cached input tokens where the vendor publishes one; the judge prompt is not cacheable as written, so it rarely applies. cache_write: Bedrock bills prompt-cache writes at 1.25x the input rate (AWS model cards); Bedrock's implicit caching for OpenAI models reports the whole prompt as cache-write tokens on a cache miss, so input_tokens is near zero and cache_write_tokens carries the prompt. Gemini has no separate write charge beyond storage, so cache_write = in there (it never applies: Gemini reports cached tokens inside prompt_token_count).",
+  "_sources": {
+    "anthropic": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "openai": "https://developers.openai.com/api/docs/pricing",
+    "bedrock_sol_card": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html",
+    "bedrock_luna_card": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-luna.html",
+    "google": "https://ai.google.dev/gemini-api/docs/pricing"
+  },
+  "bedrock/global.anthropic.claude-sonnet-5-5": {
+    "in": 2.0,
+    "out": 10.0,
+    "cache_read": 0.1,
+    "cache_write": 2.5
+  },
+  "bedrock/global.anthropic.claude-haiku-5-5": {
+    "in": 0.1,
+    "out": 0.5,
+    "cache_read": 0.01,
+    "cache_write": 0.125
+  },
+  "bedrock/global.anthropic.claude-opus-5-5": {
+    "in": 4.0,
+    "out": 20.0,
+    "cache_read": 0.2,
+    "cache_write": 5.0
+  },
+  "bedrock/global.openai.gpt-6.1-sol": {
+    "in": 2.0,
+    "out": 10.0,
+    "cache_read": 0.1,
+    "cache_write": 2.5
+  },
+  "bedrock/global.openai.gpt-6-luna": {
+    "in": 0.1,
+    "out": 0.5,
+    "cache_read": 0.01,
+    "cache_write": 0.125
+  },
+  "gemini-3.8-flash": {
+    "in": 0.75,
+    "out": 3.75,
+    "cache_read": 0.1875,
+    "cache_write": 0.75
+  },
+  "gemini-4-argon": {
+    "in": 2.0,
+    "out": 10.0,
+    "cache_read": 0.2,
+    "cache_write": 2.0
+  },
+  "gemini-3-flash-preview": {
+    "in": 0.5,
+    "out": 3.0,
+    "cache_read": 0.125,
+    "cache_write": 0.5
+  }
+}

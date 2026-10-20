@@ -1,0 +1,183 @@
+{
+ "what": "How the 300 cells in labels.csv were drawn from the 459 claim-book cells of the paper's three entries (3 entries x 3 books x 51 claims), and which were labelled.",
+ "sampling_judge": "gemini-3-flash-preview__v1 (the v1 judge record of each entry, submissions/<entry>/judge_record_gemini-3-flash-preview.json)",
+ "population_cells": 459,
+ "population_by_sampling_judge_majority": {
+  "correct": 237,
+  "partial": 122,
+  "missing": 96,
+  "contradicted": 4
+ },
+ "sample_seed": 20261010,
+ "sample_n": 300,
+ "sample_allocation_by_sampling_judge_majority": {
+  "correct": 116,
+  "partial": 105,
+  "missing": 75,
+  "contradicted": 4
+ },
+ "sampling_rule": "Stratified by the sampling judge's majority verdict; within a stratum every cell on which the five v1 passes disagreed was taken first, then a seeded random fill balanced across the nine books. Every contradicted cell was taken. Book and cell codes were assigned in seeded order and the mapping was sealed until labelling closed.",
+ "study_books": {
+  "A": {
+   "entry": "claude-code-2.1.252",
+   "book": "book_r2"
+  },
+  "B": {
+   "entry": "claude-code-2.1.252",
+   "book": "book_r1"
+  },
+  "C": {
+   "entry": "cursor-3.15.6",
+   "book": "book_r3"
+  },
+  "D": {
+   "entry": "codex-cli-0.120.0",
+   "book": "book_r2"
+  },
+  "E": {
+   "entry": "codex-cli-0.120.0",
+   "book": "book_r1"
+  },
+  "F": {
+   "entry": "claude-code-2.1.252",
+   "book": "book_r3"
+  },
+  "G": {
+   "entry": "codex-cli-0.120.0",
+   "book": "book_r3"
+  },
+  "H": {
+   "entry": "cursor-3.15.6",
+   "book": "book_r2"
+  },
+  "I": {
+   "entry": "cursor-3.15.6",
+   "book": "book_r1"
+  }
+ },
+ "sampled_per_book": {
+  "A": 32,
+  "B": 28,
+  "C": 29,
+  "D": 38,
+  "E": 36,
+  "F": 34,
+  "G": 38,
+  "H": 33,
+  "I": 32
+ },
+ "labelled_per_book": {
+  "A": 28,
+  "B": 20,
+  "C": 25,
+  "D": 30,
+  "E": 35,
+  "F": 30,
+  "G": 36,
+  "H": 32,
+  "I": 24
+ },
+ "labelled_total": 260,
+ "labelling_order": "Rows within a book were shuffled by the sample seed and labelled as a prefix of that order (see rater_rules.md, note P1), books E to I breadth-first.",
+ "fill_draw": {
+  "seed": 20261015,
+  "date": "2026-10-15",
+  "reason": "At 250 labelled cells the blanks were concentrated on six claims; ten further unlabelled cells on those claims were drawn with this seed and labelled on 2026-10-16 before the key was opened (rater_rules.md, note P2).",
+  "cells": [
+   {
+    "study_book": "A",
+    "cell": "C-0247",
+    "claim_id": "XW-05"
+   },
+   {
+    "study_book": "C",
+    "cell": "C-0057",
+    "claim_id": "NB-21"
+   },
+   {
+    "study_book": "C",
+    "cell": "C-0092",
+    "claim_id": "XW-05"
+   },
+   {
+    "study_book": "E",
+    "cell": "C-0147",
+    "claim_id": "OP-02"
+   },
+   {
+    "study_book": "F",
+    "cell": "C-0009",
+    "claim_id": "HD-02"
+   },
+   {
+    "study_book": "F",
+    "cell": "C-0233",
+    "claim_id": "XW-05"
+   },
+   {
+    "study_book": "F",
+    "cell": "C-0264",
+    "claim_id": "XW-03"
+   },
+   {
+    "study_book": "G",
+    "cell": "C-0146",
+    "claim_id": "NB-21"
+   },
+   {
+    "study_book": "G",
+    "cell": "C-0200",
+    "claim_id": "XW-05"
+   },
+   {
+    "study_book": "I",
+    "cell": "C-0074",
+    "claim_id": "DB-01"
+   }
+  ]
+ },
+ "unlabelled_cells": [
+  "C-0007",
+  "C-0010",
+  "C-0033",
+  "C-0036",
+  "C-0041",
+  "C-0044",
+  "C-0048",
+  "C-0052",
+  "C-0065",
+  "C-0070",
+  "C-0073",
+  "C-0080",
+  "C-0086",
+  "C-0095",
+  "C-0105",
+  "C-0107",
+  "C-0110",
+  "C-0112",
+  "C-0115",
+  "C-0118",
+  "C-0120",
+  "C-0121",
+  "C-0163",
+  "C-0164",
+  "C-0180",
+  "C-0188",
+  "C-0197",
+  "C-0211",
+  "C-0213",
+  "C-0215",
+  "C-0219",
+  "C-0242",
+  "C-0245",
+  "C-0249",
+  "C-0253",
+  "C-0257",
+  "C-0275",
+  "C-0276",
+  "C-0279",
+  "C-0291"
+ ],
+ "rater": "one rater, the benchmark maintainer, labelling blind to the entry and to the judge verdicts; labels made 2026-10-11 to 2026-10-16",
+ "claims_pin": "labels/claims_version.txt"
+}

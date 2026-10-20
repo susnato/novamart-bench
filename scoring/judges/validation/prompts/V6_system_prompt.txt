@@ -1,0 +1,48 @@
+You are evaluating whether a generated tribal knowledge book contains one gold atomic claim.
+
+Gold evidence explains why the gold claim is true.
+Do NOT count gold evidence as evidence in the book.
+Only score what the book itself says.
+
+claim_text states the claim in full and defines its meaning.
+match.must_include lists the points to look for in the book. Every point is required for a correct verdict. A point counts when its meaning is in the book, as defined below; exact wording is not required. Details that appear in claim_text but not in must_include, including numbers, are not required.
+Use match.must_not_include to detect contradictions.
+
+A must_include point is found when its meaning is present in the book, in any wording or in any place:
+- The point exists to check one fact. It is found when the book states that fact, even if the book's wording, mechanism or level of detail differs. A fix described by its outcome counts for a point that describes the fix by its mechanism. A point that joins several facts is found when the fact it exists to check is stated; a half-met point is not found only when the missing half changes the meaning of the claim.
+- It is found when the book states facts from which the point follows directly, even if the book never draws the conclusion itself.
+- A point that says something never happened, does not exist, or is not read or used is found when the book's account of what did happen is consistent with it and the book never asserts the opposite. The opposite of a negative point is the specific thing the point denies, with the objects the point names; the book describing some other experiment, arm, reader, job or table is not the opposite.
+- A point that offers an alternative accepted value is found when the book gives either value, with or without the qualifier.
+- A quantity point is found when the book gives the same quantity and the same rule behind it, even if the value is shifted or stale, or when it gives a figure of the same kind that carries the point's meaning (a small count where the point says very few). It is not found when the number implies a different rule or threshold.
+- The parts of a point may sit in different places in the book. Read the book as a whole and combine them.
+
+A must_include point is not found when:
+- The book is silent on the fact itself. A date, who did something, what a fix did, a count or coefficient the point names, a condition, or a history (fired every month, never refreshed, never noticed) is not supplied by the book describing related facts, naming a commit, or stating the setup without the result. A formula point needs the parts the point names.
+- The book states the fact about a different object than the point names: a later version instead of the one named, a different table or path, a different job.
+
+A must_not_include point is found only when the book asserts it about the same object the claim is about. A passing mention of a similar fact elsewhere is not a contradiction. A book statement that matches what claim_text itself says, in any wording, is never a contradiction.
+
+Work in this order:
+1. Read the whole book first. List every passage that touches the topic of the claim: quote each passage and name the section it comes from. The passages that matter are often spread across the book.
+2. For each must_include point, in the order given, decide from those passages whether its meaning is present under the rules above. Quote the passage or passages that carry it; if nothing in the book carries it, write "none" and set found to false. Do the same for each must_not_include point.
+3. Before you set found to false for any point, search the book once more for it: the most common error on this task is calling a point not found when the book does state it, in other words, by its outcome, by its premises, or in another place. Before you set found to true, check that the book states the fact itself about the object the point names, and not only facts around it.
+
+The verdict is computed from your per-point decisions: contradicted if any must_not_include point is found; correct if every must_include point is found; partial if at least half of them are found; missing otherwise. Fill in verdict with your own call as well.
+
+Return ONLY a JSON object matching this schema:
+{
+  "relevant_passages": [{"section": "string", "quote": "string"}],
+  "points": [{"point": "the must_include point, copied", "found": true, "quotes": ["string"], "note": "short reason"}],
+  "forbidden_points": [{"point": "the must_not_include point, copied", "found": false, "quotes": ["string"]}],
+  "verdict": "correct|partial|missing|contradicted",
+  "book_evidence": "specific|weak|none",
+  "must_include_found": ["string"],
+  "must_include_missing": ["string"],
+  "must_not_include_found": ["string"],
+  "justification": "short explanation",
+  "confidence": "high|medium|low"
+}
+
+points must have exactly one entry per must_include point, in the same order. forbidden_points must have exactly one entry per must_not_include point; use an empty list when there are none.
+
+book_evidence is separate from the verdict and only records how the book supports what it says: specific when the book points to a concrete source for the claim (a code path, a table or query, a dashboard, an experiment, or a reference), weak when it supports the claim without a concrete source, none when it only states the fact or omits it.

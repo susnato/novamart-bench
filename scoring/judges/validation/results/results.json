@@ -1,0 +1,3188 @@
+{
+ "n_labelled": 260,
+ "stratum_weights": {
+  "partial": 0.7198620188816267,
+  "correct": 1.3698812858476725,
+  "missing": 0.8631600788463534,
+  "contradicted": 0.7552650689905592
+ },
+ "floor": {
+  "n": 260,
+  "agreement": 0.6538461538461539,
+  "kappa": 0.0,
+  "table": {
+   "judge_found_human_found": 0.0,
+   "judge_found_human_not": 0.0,
+   "judge_not_human_found": 90.0,
+   "judge_not_human_not": 170.0
+  },
+  "agreement_reweighted": 0.5751244942421414,
+  "kappa_reweighted": 0.0
+ },
+ "results": {
+  "gemini-3-flash-preview__v1": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8153846153846154,
+    "kappa": 0.6005121638924455,
+    "table": {
+     "judge_found_human_found": 70.0,
+     "judge_found_human_not": 28.0,
+     "judge_not_human_found": 20.0,
+     "judge_not_human_not": 142.0
+    },
+    "agreement_reweighted": 0.7964130096483037,
+    "kappa_reweighted": 0.5948155146909607
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.823076923076923,
+     "kappa": 0.6151866151866151,
+     "table": {
+      "judge_found_human_found": 70.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 20.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.8069505580009781,
+     "kappa_reweighted": 0.613994163202935
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5817245817245817,
+     "table": {
+      "judge_found_human_found": 68.0,
+      "judge_found_human_not": 28.0,
+      "judge_not_human_found": 22.0,
+      "judge_not_human_not": 142.0
+     },
+     "agreement_reweighted": 0.7883755353993449,
+     "kappa_reweighted": 0.5771706521787574
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5838668373879642,
+     "table": {
+      "judge_found_human_found": 69.0,
+      "judge_found_human_not": 29.0,
+      "judge_not_human_found": 21.0,
+      "judge_not_human_not": 141.0
+     },
+     "agreement_reweighted": 0.7883755353993449,
+     "kappa_reweighted": 0.5785040011941084
+    },
+    {
+     "n": 260,
+     "agreement": 0.823076923076923,
+     "kappa": 0.6171574903969269,
+     "table": {
+      "judge_found_human_found": 71.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 19.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.8044504838972626,
+     "kappa_reweighted": 0.6105207459767534
+    },
+    {
+     "n": 260,
+     "agreement": 0.8153846153846154,
+     "kappa": 0.5984555984555984,
+     "table": {
+      "judge_found_human_found": 69.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 21.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.7989130837520193,
+     "kappa_reweighted": 0.5982248564079519
+    }
+   ],
+   "unanimous_share": 0.8923076923076924,
+   "cost_per_call_usd": 0.034988122605363985,
+   "cost_per_verified_submission_usd": 26.765913793103447
+  },
+  "claude-haiku-5-5__v1prompt": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7653846153846153,
+    "kappa": 0.43276108726752477,
+    "table": {
+     "judge_found_human_found": 43.0,
+     "judge_found_human_not": 14.0,
+     "judge_not_human_found": 47.0,
+     "judge_not_human_not": 156.0
+    },
+    "agreement_reweighted": 0.7304190194596356,
+    "kappa_reweighted": 0.4259625884113963
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4107913669064747,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7173813970032455,
+     "kappa_reweighted": 0.39664917711343295
+    },
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.42180774748923944,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7251502452832984,
+     "kappa_reweighted": 0.4137552092592591
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.39971139971139974,
+     "table": {
+      "judge_found_human_found": 40.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 50.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7146126969306239,
+     "kappa_reweighted": 0.3892163578716182
+    },
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4107913669064747,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7198814711069612,
+     "kappa_reweighted": 0.40150653570845446
+    },
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.41847041847041844,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 13.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 157.0
+     },
+     "agreement_reweighted": 0.7251502452832985,
+     "kappa_reweighted": 0.4117687352644761
+    }
+   ],
+   "unanimous_share": 0.8192307692307692,
+   "cost_per_call_usd": 0.0026218583396801216,
+   "cost_per_verified_submission_usd": 2.005721629855293
+  },
+  "claude-haiku-5-5__V10": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8038461538461539,
+    "kappa": 0.5851063829787234,
+    "table": {
+     "judge_found_human_found": 73.0,
+     "judge_found_human_not": 34.0,
+     "judge_not_human_found": 17.0,
+     "judge_not_human_not": 136.0
+    },
+    "agreement_reweighted": 0.7875557630459589,
+    "kappa_reweighted": 0.577246828209876
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8115384615384615,
+     "kappa": 0.5993710691823899,
+     "table": {
+      "judge_found_human_found": 73.0,
+      "judge_found_human_not": 32.0,
+      "judge_not_human_found": 17.0,
+      "judge_not_human_not": 138.0
+     },
+     "agreement_reweighted": 0.7930931631912025,
+     "kappa_reweighted": 0.5869646629367409
+    },
+    {
+     "n": 260,
+     "agreement": 0.7961538461538461,
+     "kappa": 0.5644753476611882,
+     "table": {
+      "judge_found_human_found": 70.0,
+      "judge_found_human_not": 33.0,
+      "judge_not_human_found": 20.0,
+      "judge_not_human_not": 137.0
+     },
+     "agreement_reweighted": 0.7775693610777644,
+     "kappa_reweighted": 0.5551631147820846
+    },
+    {
+     "n": 260,
+     "agreement": 0.7923076923076923,
+     "kappa": 0.563975155279503,
+     "table": {
+      "judge_found_human_found": 73.0,
+      "judge_found_human_not": 37.0,
+      "judge_not_human_found": 17.0,
+      "judge_not_human_not": 133.0
+     },
+     "agreement_reweighted": 0.7767495887243784,
+     "kappa_reweighted": 0.557173827141405
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5922208281053953,
+     "table": {
+      "judge_found_human_found": 73.0,
+      "judge_found_human_not": 33.0,
+      "judge_not_human_found": 17.0,
+      "judge_not_human_not": 137.0
+     },
+     "agreement_reweighted": 0.7883755353993448,
+     "kappa_reweighted": 0.5781440679889368
+    },
+    {
+     "n": 260,
+     "agreement": 0.7923076923076923,
+     "kappa": 0.5661310259579727,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 38.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 132.0
+     },
+     "agreement_reweighted": 0.779249662828094,
+     "kappa_reweighted": 0.5631791711592041
+    }
+   ],
+   "unanimous_share": 0.7384615384615385,
+   "cost_per_call_usd": 0.0036480429777436684,
+   "cost_per_verified_submission_usd": 2.7907528779739064
+  },
+  "claude-haiku-5-5__V3": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7576923076923077,
+    "kappa": 0.433609958506224,
+    "table": {
+     "judge_found_human_found": 48.0,
+     "judge_found_human_not": 21.0,
+     "judge_not_human_found": 42.0,
+     "judge_not_human_not": 149.0
+    },
+    "agreement_reweighted": 0.7223815452106767,
+    "kappa_reweighted": 0.4201139553853609
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4304589707927676,
+     "table": {
+      "judge_found_human_found": 47.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 43.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7223815452106767,
+     "kappa_reweighted": 0.41818985933330316
+    },
+    {
+     "n": 260,
+     "agreement": 0.7807692307692308,
+     "kappa": 0.4931600547195622,
+     "table": {
+      "judge_found_human_found": 53.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 37.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7514941161649845,
+     "kappa_reweighted": 0.48393238212927836
+    },
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.4515905947441216,
+     "table": {
+      "judge_found_human_found": 49.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 41.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7304190194596357,
+     "kappa_reweighted": 0.4364603697893183
+    },
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4304589707927676,
+     "table": {
+      "judge_found_human_found": 47.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 43.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7223815452106767,
+     "kappa_reweighted": 0.41818985933330316
+    },
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.4515905947441216,
+     "table": {
+      "judge_found_human_found": 49.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 41.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7329190935633512,
+     "kappa_reweighted": 0.44212465794764216
+    }
+   ],
+   "unanimous_share": 0.8307692307692308,
+   "cost_per_call_usd": 0.002683295711060948,
+   "cost_per_verified_submission_usd": 2.0527212189616253
+  },
+  "claude-haiku-5-5__V4": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7923076923076923,
+    "kappa": 0.5363276089828268,
+    "table": {
+     "judge_found_human_found": 61.0,
+     "judge_found_human_not": 25.0,
+     "judge_not_human_found": 29.0,
+     "judge_not_human_not": 145.0
+    },
+    "agreement_reweighted": 0.7698005127977117,
+    "kappa_reweighted": 0.5301576108912887
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.5191545574636723,
+     "table": {
+      "judge_found_human_found": 60.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 30.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.7567628903413217,
+     "kappa_reweighted": 0.5031666163312204
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.4939597315436242,
+     "table": {
+      "judge_found_human_found": 56.0,
+      "judge_found_human_not": 24.0,
+      "judge_not_human_found": 34.0,
+      "judge_not_human_not": 146.0
+     },
+     "agreement_reweighted": 0.7537255642997939,
+     "kappa_reweighted": 0.4939946350336248
+    },
+    {
+     "n": 260,
+     "agreement": 0.8038461538461539,
+     "kappa": 0.5585885486018642,
+     "table": {
+      "judge_found_human_found": 61.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 29.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7831067612230077,
+     "kappa_reweighted": 0.5561854991345139
+    },
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5214190093708165,
+     "table": {
+      "judge_found_human_found": 58.0,
+      "judge_found_human_not": 23.0,
+      "judge_not_human_found": 32.0,
+      "judge_not_human_not": 147.0
+     },
+     "agreement_reweighted": 0.7645317386213744,
+     "kappa_reweighted": 0.5162375525159879
+    },
+    {
+     "n": 260,
+     "agreement": 0.7807692307692308,
+     "kappa": 0.5066577896138482,
+     "table": {
+      "judge_found_human_found": 58.0,
+      "judge_found_human_not": 25.0,
+      "judge_not_human_found": 32.0,
+      "judge_not_human_not": 145.0
+     },
+     "agreement_reweighted": 0.7539941902687001,
+     "kappa_reweighted": 0.49545090064613295
+    }
+   ],
+   "unanimous_share": 0.8423076923076923,
+   "cost_per_call_usd": 0.0032941673062164235,
+   "cost_per_verified_submission_usd": 2.520037989255564
+  },
+  "claude-haiku-5-5__V5": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8153846153846154,
+    "kappa": 0.6143386897404203,
+    "table": {
+     "judge_found_human_found": 77.0,
+     "judge_found_human_not": 35.0,
+     "judge_not_human_found": 13.0,
+     "judge_not_human_not": 135.0
+    },
+    "agreement_reweighted": 0.801413157855735,
+    "kappa_reweighted": 0.6052109205143259
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7923076923076923,
+     "kappa": 0.5595984943538268,
+     "table": {
+      "judge_found_human_found": 71.0,
+      "judge_found_human_not": 35.0,
+      "judge_not_human_found": 19.0,
+      "judge_not_human_not": 135.0
+     },
+     "agreement_reweighted": 0.7748006610051426,
+     "kappa_reweighted": 0.5480378328427692
+    },
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5801242236024845,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7878382834615326,
+     "kappa_reweighted": 0.5765752522173836
+    },
+    {
+     "n": 260,
+     "agreement": 0.8269230769230769,
+     "kappa": 0.6339173967459323,
+     "table": {
+      "judge_found_human_found": 76.0,
+      "judge_found_human_not": 31.0,
+      "judge_not_human_found": 14.0,
+      "judge_not_human_not": 139.0
+     },
+     "agreement_reweighted": 0.8072191839698842,
+     "kappa_reweighted": 0.6148731716777309
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5942571785268416,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 34.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 136.0
+     },
+     "agreement_reweighted": 0.793375683606776,
+     "kappa_reweighted": 0.5869407312579731
+    },
+    {
+     "n": 260,
+     "agreement": 0.8038461538461539,
+     "kappa": 0.5871731008717311,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 35.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 135.0
+     },
+     "agreement_reweighted": 0.7881069094304389,
+     "kappa_reweighted": 0.5777105112842461
+    }
+   ],
+   "unanimous_share": 0.75,
+   "cost_per_call_usd": 0.0034478127398311588,
+   "cost_per_verified_submission_usd": 2.6375767459708364
+  },
+  "claude-haiku-5-5__V5H1": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8192307692307692,
+    "kappa": 0.6176470588235293,
+    "table": {
+     "judge_found_human_found": 75.0,
+     "judge_found_human_not": 32.0,
+     "judge_not_human_found": 15.0,
+     "judge_not_human_not": 138.0
+    },
+    "agreement_reweighted": 0.7991817097209253,
+    "kappa_reweighted": 0.5985150688245938
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8192307692307692,
+     "kappa": 0.6176470588235293,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 32.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 138.0
+     },
+     "agreement_reweighted": 0.7991817097209253,
+     "kappa_reweighted": 0.5985150688245938
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.003456538461538462,
+   "cost_per_verified_submission_usd": 2.6442519230769235
+  },
+  "claude-haiku-5-5__V5H2": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8,
+    "kappa": 0.5627425614489006,
+    "table": {
+     "judge_found_human_found": 66.0,
+     "judge_found_human_not": 28.0,
+     "judge_not_human_found": 24.0,
+     "judge_not_human_not": 142.0
+    },
+    "agreement_reweighted": 0.7828381352541016,
+    "kappa_reweighted": 0.5607614547310075
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5627425614489006,
+     "table": {
+      "judge_found_human_found": 66.0,
+      "judge_found_human_not": 28.0,
+      "judge_not_human_found": 24.0,
+      "judge_not_human_not": 142.0
+     },
+     "agreement_reweighted": 0.7828381352541016,
+     "kappa_reweighted": 0.5607614547310075
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0034669230769230766,
+   "cost_per_verified_submission_usd": 2.6521961538461536
+  },
+  "claude-haiku-5-5__V5H3": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8115384615384615,
+    "kappa": 0.5911424903722722,
+    "table": {
+     "judge_found_human_found": 69.0,
+     "judge_found_human_not": 28.0,
+     "judge_not_human_found": 21.0,
+     "judge_not_human_not": 142.0
+    },
+    "agreement_reweighted": 0.8036446059905442,
+    "kappa_reweighted": 0.6047439081827215
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8115384615384615,
+     "kappa": 0.5911424903722722,
+     "table": {
+      "judge_found_human_found": 69.0,
+      "judge_found_human_not": 28.0,
+      "judge_not_human_found": 21.0,
+      "judge_not_human_not": 142.0
+     },
+     "agreement_reweighted": 0.8036446059905442,
+     "kappa_reweighted": 0.6047439081827215
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.003468846153846154,
+   "cost_per_verified_submission_usd": 2.6536673076923076
+  },
+  "claude-haiku-5-5__V5H4": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8,
+    "kappa": 0.5535006605019817,
+    "table": {
+     "judge_found_human_found": 62.0,
+     "judge_found_human_not": 24.0,
+     "judge_not_human_found": 28.0,
+     "judge_not_human_not": 146.0
+    },
+    "agreement_reweighted": 0.7778379870466705,
+    "kappa_reweighted": 0.5462143717578423
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5535006605019817,
+     "table": {
+      "judge_found_human_found": 62.0,
+      "judge_found_human_not": 24.0,
+      "judge_not_human_found": 28.0,
+      "judge_not_human_not": 146.0
+     },
+     "agreement_reweighted": 0.7778379870466705,
+     "kappa_reweighted": 0.5462143717578423
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0034790322580645163,
+   "cost_per_verified_submission_usd": 2.661459677419355
+  },
+  "claude-haiku-5-5__V5H5": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8076923076923077,
+    "kappa": 0.5706737120211361,
+    "table": {
+     "judge_found_human_found": 63.0,
+     "judge_found_human_not": 23.0,
+     "judge_not_human_found": 27.0,
+     "judge_not_human_not": 147.0
+    },
+    "agreement_reweighted": 0.7833753871919138,
+    "kappa_reweighted": 0.5575250029964299
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5706737120211361,
+     "table": {
+      "judge_found_human_found": 63.0,
+      "judge_found_human_not": 23.0,
+      "judge_not_human_found": 27.0,
+      "judge_not_human_not": 147.0
+     },
+     "agreement_reweighted": 0.7833753871919138,
+     "kappa_reweighted": 0.5575250029964299
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0034734615384615385,
+   "cost_per_verified_submission_usd": 2.657198076923077
+  },
+  "claude-haiku-5-5__V5H6": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8384615384615385,
+    "kappa": 0.6625463535228678,
+    "table": {
+     "judge_found_human_found": 80.0,
+     "judge_found_human_not": 32.0,
+     "judge_not_human_found": 10.0,
+     "judge_not_human_not": 138.0
+    },
+    "agreement_reweighted": 0.8205254323951802,
+    "kappa_reweighted": 0.644003500164848
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8192307692307692,
+     "kappa": 0.6269841269841269,
+     "table": {
+      "judge_found_human_found": 80.0,
+      "judge_found_human_not": 37.0,
+      "judge_not_human_found": 10.0,
+      "judge_not_human_not": 133.0
+     },
+     "agreement_reweighted": 0.8041818579283565,
+     "kappa_reweighted": 0.6134679535525231
+    },
+    {
+     "n": 260,
+     "agreement": 0.823076923076923,
+     "kappa": 0.6267166042446941,
+     "table": {
+      "judge_found_human_found": 76.0,
+      "judge_found_human_not": 32.0,
+      "judge_not_human_found": 14.0,
+      "judge_not_human_not": 138.0
+     },
+     "agreement_reweighted": 0.8044504838972626,
+     "kappa_reweighted": 0.6102508684459051
+    },
+    {
+     "n": 260,
+     "agreement": 0.8115384615384615,
+     "kappa": 0.6013767209011264,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 33.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 137.0
+     },
+     "agreement_reweighted": 0.7911442354719666,
+     "kappa_reweighted": 0.5827595306114968
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5982694684796045,
+     "table": {
+      "judge_found_human_found": 76.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 14.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7958757577104915,
+     "kappa_reweighted": 0.594202612599865
+    },
+    {
+     "n": 260,
+     "agreement": 0.8153846153846154,
+     "kappa": 0.6181150550795593,
+     "table": {
+      "judge_found_human_found": 79.0,
+      "judge_found_human_not": 37.0,
+      "judge_not_human_found": 11.0,
+      "judge_not_human_not": 133.0
+     },
+     "agreement_reweighted": 0.7989130837520193,
+     "kappa_reweighted": 0.6018551630462636
+    }
+   ],
+   "unanimous_share": 0.7807692307692308,
+   "cost_per_call_usd": 0.0035496932515337422,
+   "cost_per_verified_submission_usd": 2.7155153374233127
+  },
+  "claude-haiku-5-5__V5H7": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7730769230769231,
+    "kappa": 0.5025940337224384,
+    "table": {
+     "judge_found_human_found": 62.0,
+     "judge_found_human_not": 31.0,
+     "judge_not_human_found": 28.0,
+     "judge_not_human_not": 139.0
+    },
+    "agreement_reweighted": 0.7559570124346034,
+    "kappa_reweighted": 0.5048456015544182
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7730769230769231,
+     "kappa": 0.5025940337224384,
+     "table": {
+      "judge_found_human_found": 62.0,
+      "judge_found_human_not": 31.0,
+      "judge_not_human_found": 28.0,
+      "judge_not_human_not": 139.0
+     },
+     "agreement_reweighted": 0.7559570124346034,
+     "kappa_reweighted": 0.5048456015544182
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0035057692307692307,
+   "cost_per_verified_submission_usd": 2.6819134615384614
+  },
+  "claude-haiku-5-5__V5H8": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7653846153846153,
+    "kappa": 0.4546079779917467,
+    "table": {
+     "judge_found_human_found": 50.0,
+     "judge_found_human_not": 21.0,
+     "judge_not_human_found": 40.0,
+     "judge_not_human_not": 149.0
+    },
+    "agreement_reweighted": 0.7329190935633512,
+    "kappa_reweighted": 0.4430924785718678
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.4546079779917467,
+     "table": {
+      "judge_found_human_found": 50.0,
+      "judge_found_human_not": 21.0,
+      "judge_not_human_found": 40.0,
+      "judge_not_human_not": 149.0
+     },
+     "agreement_reweighted": 0.7329190935633512,
+     "kappa_reweighted": 0.4430924785718678
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.00346360153256705,
+   "cost_per_verified_submission_usd": 2.649655172413793
+  },
+  "claude-haiku-5-5__V5R1": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8038461538461539,
+    "kappa": 0.5851063829787234,
+    "table": {
+     "judge_found_human_found": 73.0,
+     "judge_found_human_not": 34.0,
+     "judge_not_human_found": 17.0,
+     "judge_not_human_not": 136.0
+    },
+    "agreement_reweighted": 0.7881069094304388,
+    "kappa_reweighted": 0.5757366017949244
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8038461538461539,
+     "kappa": 0.5851063829787234,
+     "table": {
+      "judge_found_human_found": 73.0,
+      "judge_found_human_not": 34.0,
+      "judge_not_human_found": 17.0,
+      "judge_not_human_not": 136.0
+     },
+     "agreement_reweighted": 0.7881069094304388,
+     "kappa_reweighted": 0.5757366017949244
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0034542307692307693,
+   "cost_per_verified_submission_usd": 2.6424865384615384
+  },
+  "claude-haiku-5-5__V5R2": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7884615384615384,
+    "kappa": 0.5289855072463767,
+    "table": {
+     "judge_found_human_found": 61.0,
+     "judge_found_human_not": 26.0,
+     "judge_not_human_found": 29.0,
+     "judge_not_human_not": 144.0
+    },
+    "agreement_reweighted": 0.7695318868288054,
+    "kappa_reweighted": 0.5289258217610978
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5289855072463767,
+     "table": {
+      "judge_found_human_found": 61.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 29.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.7695318868288054,
+     "kappa_reweighted": 0.5289258217610978
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0034821292775665397,
+   "cost_per_verified_submission_usd": 2.663828897338403
+  },
+  "claude-haiku-5-5__V5R3": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8076923076923077,
+    "kappa": 0.5590230664857532,
+    "table": {
+     "judge_found_human_found": 58.0,
+     "judge_found_human_not": 18.0,
+     "judge_not_human_found": 32.0,
+     "judge_not_human_not": 152.0
+    },
+    "agreement_reweighted": 0.7783752389844827,
+    "kappa_reweighted": 0.5413025240156548
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5590230664857532,
+     "table": {
+      "judge_found_human_found": 58.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 32.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.7783752389844827,
+     "kappa_reweighted": 0.5413025240156548
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0034665384615384614,
+   "cost_per_verified_submission_usd": 2.651901923076923
+  },
+  "claude-haiku-5-5__V5R4": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7807692307692308,
+    "kappa": 0.4986468200270636,
+    "table": {
+     "judge_found_human_found": 55.0,
+     "judge_found_human_not": 22.0,
+     "judge_not_human_found": 35.0,
+     "judge_not_human_not": 148.0
+    },
+    "agreement_reweighted": 0.7564942643724156,
+    "kappa_reweighted": 0.4960574977034833
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7807692307692308,
+     "kappa": 0.4986468200270636,
+     "table": {
+      "judge_found_human_found": 55.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 35.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7564942643724156,
+     "kappa_reweighted": 0.4960574977034833
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.003472413793103448,
+   "cost_per_verified_submission_usd": 2.656396551724138
+  },
+  "claude-haiku-5-5__V6": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8038461538461539,
+    "kappa": 0.5632411067193677,
+    "table": {
+     "judge_found_human_found": 63.0,
+     "judge_found_human_not": 24.0,
+     "judge_not_human_found": 27.0,
+     "judge_not_human_not": 146.0
+    },
+    "agreement_reweighted": 0.7831067612230077,
+    "kappa_reweighted": 0.5583681136717765
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5314547837483617,
+     "table": {
+      "judge_found_human_found": 62.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 28.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.768980740444326,
+     "kappa_reweighted": 0.5301209570575913
+    },
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5264900662251655,
+     "table": {
+      "judge_found_human_found": 60.0,
+      "judge_found_human_not": 25.0,
+      "judge_not_human_found": 30.0,
+      "judge_not_human_not": 145.0
+     },
+     "agreement_reweighted": 0.7645317386213745,
+     "kappa_reweighted": 0.5186261524428268
+    },
+    {
+     "n": 260,
+     "agreement": 0.7807692307692308,
+     "kappa": 0.5144167758846658,
+     "table": {
+      "judge_found_human_found": 61.0,
+      "judge_found_human_not": 28.0,
+      "judge_not_human_found": 29.0,
+      "judge_not_human_not": 142.0
+     },
+     "agreement_reweighted": 0.7573408993226919,
+     "kappa_reweighted": 0.5066124335742287
+    },
+    {
+     "n": 260,
+     "agreement": 0.8038461538461539,
+     "kappa": 0.5655307994757537,
+     "table": {
+      "judge_found_human_found": 64.0,
+      "judge_found_human_not": 25.0,
+      "judge_not_human_found": 26.0,
+      "judge_not_human_not": 145.0
+     },
+     "agreement_reweighted": 0.7881069094304389,
+     "kappa_reweighted": 0.5699357073567342
+    },
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5289855072463767,
+     "table": {
+      "judge_found_human_found": 61.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 29.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.7645317386213745,
+     "kappa_reweighted": 0.520179184201517
+    }
+   ],
+   "unanimous_share": 0.8461538461538461,
+   "cost_per_call_usd": 0.0033102150537634408,
+   "cost_per_verified_submission_usd": 2.5323145161290324
+  },
+  "claude-haiku-5-5__V7": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7884615384615384,
+    "kappa": 0.5027816411682892,
+    "table": {
+     "judge_found_human_found": 51.0,
+     "judge_found_human_not": 16.0,
+     "judge_not_human_found": 39.0,
+     "judge_not_human_not": 154.0
+    },
+    "agreement_reweighted": 0.7645317386213745,
+    "kappa_reweighted": 0.506524800812668
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7961538461538461,
+     "kappa": 0.5235131396957122,
+     "table": {
+      "judge_found_human_found": 53.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 37.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7750692869740488,
+     "kappa_reweighted": 0.5301674681967662
+    },
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5285913528591354,
+     "table": {
+      "judge_found_human_found": 52.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 38.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7778379870466705,
+     "kappa_reweighted": 0.5340046941995593
+    },
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.4999999999999999,
+     "table": {
+      "judge_found_human_found": 50.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 40.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7645317386213746,
+     "kappa_reweighted": 0.5048819700261327
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5517241379310345,
+     "table": {
+      "judge_found_human_found": 55.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 35.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7883755353993449,
+     "kappa_reweighted": 0.5583451622135038
+    },
+    {
+     "n": 260,
+     "agreement": 0.8038461538461539,
+     "kappa": 0.54149377593361,
+     "table": {
+      "judge_found_human_found": 54.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 36.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7856068353267233,
+     "kappa_reweighted": 0.5521781707590476
+    }
+   ],
+   "unanimous_share": 0.7730769230769231,
+   "cost_per_call_usd": 0.0035428571428571427,
+   "cost_per_verified_submission_usd": 2.7102857142857144
+  },
+  "claude-haiku-5-5__V9": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.8038461538461539,
+    "kappa": 0.5871731008717311,
+    "table": {
+     "judge_found_human_found": 74.0,
+     "judge_found_human_not": 35.0,
+     "judge_not_human_found": 16.0,
+     "judge_not_human_not": 135.0
+    },
+    "agreement_reweighted": 0.7881069094304387,
+    "kappa_reweighted": 0.5795988204051334
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5801242236024845,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7822869888696219,
+     "kappa_reweighted": 0.5681574831171938
+    },
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5822002472187887,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 37.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 133.0
+     },
+     "agreement_reweighted": 0.7903383575652482,
+     "kappa_reweighted": 0.5844356065846797
+    },
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5801242236024845,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7822869888696219,
+     "kappa_reweighted": 0.5681574831171938
+    },
+    {
+     "n": 260,
+     "agreement": 0.8,
+     "kappa": 0.5801242236024845,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7878382834615328,
+     "kappa_reweighted": 0.5790995641370217
+    },
+    {
+     "n": 260,
+     "agreement": 0.8076923076923077,
+     "kappa": 0.5962732919254659,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 35.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 135.0
+     },
+     "agreement_reweighted": 0.793375683606776,
+     "kappa_reweighted": 0.5900850245334923
+    }
+   ],
+   "unanimous_share": 0.7884615384615384,
+   "cost_per_call_usd": 0.003532820906994619,
+   "cost_per_verified_submission_usd": 2.702607993850884
+  },
+  "claude-haiku-5-5__effortmax": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.40656205420827385,
+    "table": {
+     "judge_found_human_found": 42.0,
+     "judge_found_human_not": 16.0,
+     "judge_not_human_found": 48.0,
+     "judge_not_human_not": 154.0
+    },
+    "agreement_reweighted": 0.7121126228269082,
+    "kappa_reweighted": 0.38850141153945766
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7692307692307693,
+     "kappa": 0.44365192582025686,
+     "table": {
+      "judge_found_human_found": 44.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 46.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7331877195322573,
+     "kappa_reweighted": 0.43326680560965974
+    },
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.42180774748923944,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7226501711795829,
+     "kappa_reweighted": 0.408896239876446
+    },
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.41749644381223333,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7173813970032458,
+     "kappa_reweighted": 0.4007004754920403
+    },
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.4251069900142652,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.722650171179583,
+     "kappa_reweighted": 0.4108841085745592
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.3845050215208034,
+     "table": {
+      "judge_found_human_found": 40.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 50.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.701575074474234,
+     "kappa_reweighted": 0.36397979280134984
+    }
+   ],
+   "unanimous_share": 0.8692307692307693,
+   "cost_per_call_usd": 0.008318342820999369,
+   "cost_per_verified_submission_usd": 6.363532258064517
+  },
+  "claude-sonnet-5-5__v1prompt": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7692307692307693,
+    "kappa": 0.4404591104734577,
+    "table": {
+     "judge_found_human_found": 43.0,
+     "judge_found_human_not": 13.0,
+     "judge_not_human_found": 47.0,
+     "judge_not_human_not": 157.0
+    },
+    "agreement_reweighted": 0.7306876454285417,
+    "kappa_reweighted": 0.4237193931604304
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4141630901287552,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7173813970032455,
+     "kappa_reweighted": 0.3967531341248587
+    },
+    {
+     "n": 260,
+     "agreement": 0.7730769230769231,
+     "kappa": 0.4513590844062947,
+     "table": {
+      "judge_found_human_found": 44.0,
+      "judge_found_human_not": 13.0,
+      "judge_not_human_found": 46.0,
+      "judge_not_human_not": 157.0
+     },
+     "agreement_reweighted": 0.7334563455011633,
+     "kappa_reweighted": 0.431064967095686
+    },
+    {
+     "n": 260,
+     "agreement": 0.7692307692307693,
+     "kappa": 0.4404591104734577,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 13.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 157.0
+     },
+     "agreement_reweighted": 0.7306876454285417,
+     "kappa_reweighted": 0.4237193931604304
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.46219686162624823,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 13.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 157.0
+     },
+     "agreement_reweighted": 0.7412251937812162,
+     "kappa_reweighted": 0.4481375225785179
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.45911047345767575,
+     "table": {
+      "judge_found_human_found": 44.0,
+      "judge_found_human_not": 12.0,
+      "judge_not_human_found": 46.0,
+      "judge_not_human_not": 158.0
+     },
+     "agreement_reweighted": 0.7387251196775005,
+     "kappa_reweighted": 0.4413671835605046
+    }
+   ],
+   "unanimous_share": 0.9153846153846154,
+   "cost_per_call_usd": 0.045409248956884564,
+   "cost_per_verified_submission_usd": 34.738075452016695
+  },
+  "claude-sonnet-5-5__V4": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7846153846153846,
+    "kappa": 0.5087719298245613,
+    "table": {
+     "judge_found_human_found": 56.0,
+     "judge_found_human_not": 22.0,
+     "judge_not_human_found": 34.0,
+     "judge_not_human_not": 148.0
+    },
+    "agreement_reweighted": 0.7517627421338905,
+    "kappa_reweighted": 0.48869307178674454
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7961538461538461,
+     "kappa": 0.538821954484605,
+     "table": {
+      "judge_found_human_found": 59.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 31.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7650689905591865,
+     "kappa_reweighted": 0.5188266600413007
+    },
+    {
+     "n": 260,
+     "agreement": 0.7730769230769231,
+     "kappa": 0.47823129251700686,
+     "table": {
+      "judge_found_human_found": 53.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 37.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7359564196048789,
+     "kappa_reweighted": 0.4534625030939199
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.48846675712347365,
+     "table": {
+      "judge_found_human_found": 54.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 36.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7462253419886472,
+     "kappa_reweighted": 0.4747617794816365
+    },
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.5087719298245613,
+     "table": {
+      "judge_found_human_found": 56.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 34.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7517627421338905,
+     "kappa_reweighted": 0.48869307178674454
+    },
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.5087719298245613,
+     "table": {
+      "judge_found_human_found": 56.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 34.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.754398981814948,
+     "kappa_reweighted": 0.49375271275744653
+    }
+   ],
+   "unanimous_share": 0.8346153846153846,
+   "cost_per_call_usd": 0.052545086271567884,
+   "cost_per_verified_submission_usd": 40.19699099774943
+  },
+  "gemini-3-8-flash__v1prompt": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7730769230769231,
+    "kappa": 0.46061884669479614,
+    "table": {
+     "judge_found_human_found": 47.0,
+     "judge_found_human_not": 16.0,
+     "judge_not_human_found": 43.0,
+     "judge_not_human_not": 154.0
+    },
+    "agreement_reweighted": 0.7409565678123101,
+    "kappa_reweighted": 0.45392393661432245
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.48948106591865354,
+     "table": {
+      "judge_found_human_found": 49.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 41.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7567628903413216,
+     "kappa_reweighted": 0.4880986835522868
+    },
+    {
+     "n": 260,
+     "agreement": 0.7807692307692308,
+     "kappa": 0.48181818181818176,
+     "table": {
+      "judge_found_human_found": 49.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 41.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.748994042061269,
+     "kappa_reweighted": 0.47221092694741745
+    },
+    {
+     "n": 260,
+     "agreement": 0.7692307692307693,
+     "kappa": 0.44992947813822304,
+     "table": {
+      "judge_found_human_found": 46.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 44.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7356877936359729,
+     "kappa_reweighted": 0.44188573071156345
+    },
+    {
+     "n": 260,
+     "agreement": 0.7730769230769231,
+     "kappa": 0.46061884669479614,
+     "table": {
+      "judge_found_human_found": 47.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 43.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7409565678123101,
+     "kappa_reweighted": 0.45392393661432245
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.47124824684431976,
+     "table": {
+      "judge_found_human_found": 48.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 42.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7437252678849318,
+     "kappa_reweighted": 0.4602338305797573
+    }
+   ],
+   "unanimous_share": 0.8807692307692307,
+   "cost_per_call_usd": 0.02109646153846154,
+   "cost_per_verified_submission_usd": 16.13879307692308
+  },
+  "gemini-3-flash-preview__V4": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7884615384615384,
+    "kappa": 0.5613496932515337,
+    "table": {
+     "judge_found_human_found": 75.0,
+     "judge_found_human_not": 40.0,
+     "judge_not_human_found": 15.0,
+     "judge_not_human_not": 130.0
+    },
+    "agreement_reweighted": 0.7809299645784239,
+    "kappa_reweighted": 0.5689210347952983
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.5544675642594858,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 41.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 129.0
+     },
+     "agreement_reweighted": 0.7781612645058023,
+     "kappa_reweighted": 0.5638299161652129
+    },
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5613496932515337,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 40.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 130.0
+     },
+     "agreement_reweighted": 0.7834300386821395,
+     "kappa_reweighted": 0.5735253672851015
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.5385556915544676,
+     "table": {
+      "judge_found_human_found": 74.0,
+      "judge_found_human_not": 42.0,
+      "judge_not_human_found": 16.0,
+      "judge_not_human_not": 128.0
+     },
+     "agreement_reweighted": 0.772623864360559,
+     "kappa_reweighted": 0.5529425105901811
+    },
+    {
+     "n": 260,
+     "agreement": 0.7692307692307693,
+     "kappa": 0.5226438188494493,
+     "table": {
+      "judge_found_human_found": 73.0,
+      "judge_found_human_not": 43.0,
+      "judge_not_human_found": 17.0,
+      "judge_not_human_not": 127.0
+     },
+     "agreement_reweighted": 0.7690353919345515,
+     "kappa_reweighted": 0.5456254042826356
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.5408038976857491,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 43.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 127.0
+     },
+     "agreement_reweighted": 0.7720727179760792,
+     "kappa_reweighted": 0.5526634658523955
+    }
+   ],
+   "unanimous_share": 0.9230769230769231,
+   "cost_per_call_usd": 0.03469125081011017,
+   "cost_per_verified_submission_usd": 26.538806869734284
+  },
+  "gemini-3-flash-preview__V5": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7961538461538461,
+    "kappa": 0.5874251497005987,
+    "table": {
+     "judge_found_human_found": 81.0,
+     "judge_found_human_not": 44.0,
+     "judge_not_human_found": 9.0,
+     "judge_not_human_not": 126.0
+    },
+    "agreement_reweighted": 0.7920186593155778,
+    "kappa_reweighted": 0.5928039543424376
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7961538461538461,
+     "kappa": 0.5874251497005987,
+     "table": {
+      "judge_found_human_found": 81.0,
+      "judge_found_human_not": 44.0,
+      "judge_not_human_found": 9.0,
+      "judge_not_human_not": 126.0
+     },
+     "agreement_reweighted": 0.7920186593155778,
+     "kappa_reweighted": 0.5928039543424376
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.034988122605363985,
+   "cost_per_verified_submission_usd": 26.765913793103447
+  },
+  "gpt-6-1-sol__v1prompt": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.38913362701908943,
+    "table": {
+     "judge_found_human_found": 37.0,
+     "judge_found_human_not": 11.0,
+     "judge_not_human_found": 53.0,
+     "judge_not_human_not": 159.0
+    },
+    "agreement_reweighted": 0.7096125487231928,
+    "kappa_reweighted": 0.3721325466921191
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4004392386530014,
+     "table": {
+      "judge_found_human_found": 38.0,
+      "judge_found_human_not": 11.0,
+      "judge_not_human_found": 52.0,
+      "judge_not_human_not": 159.0
+     },
+     "agreement_reweighted": 0.71488132289953,
+     "kappa_reweighted": 0.3845779179739216
+    },
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4004392386530014,
+     "table": {
+      "judge_found_human_found": 38.0,
+      "judge_found_human_not": 11.0,
+      "judge_not_human_found": 52.0,
+      "judge_not_human_not": 159.0
+     },
+     "agreement_reweighted": 0.71488132289953,
+     "kappa_reweighted": 0.3845779179739216
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.38913362701908943,
+     "table": {
+      "judge_found_human_found": 37.0,
+      "judge_found_human_not": 11.0,
+      "judge_not_human_found": 53.0,
+      "judge_not_human_not": 159.0
+     },
+     "agreement_reweighted": 0.7096125487231928,
+     "kappa_reweighted": 0.3721325466921191
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.3927007299270072,
+     "table": {
+      "judge_found_human_found": 38.0,
+      "judge_found_human_not": 12.0,
+      "judge_not_human_found": 52.0,
+      "judge_not_human_not": 158.0
+     },
+     "agreement_reweighted": 0.7096125487231928,
+     "kappa_reweighted": 0.3742745743097929
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.38913362701908943,
+     "table": {
+      "judge_found_human_found": 37.0,
+      "judge_found_human_not": 11.0,
+      "judge_not_human_found": 53.0,
+      "judge_not_human_not": 159.0
+     },
+     "agreement_reweighted": 0.7096125487231928,
+     "kappa_reweighted": 0.3721325466921191
+    }
+   ],
+   "unanimous_share": 0.9192307692307692,
+   "cost_per_call_usd": 0.013716172106824926,
+   "cost_per_verified_submission_usd": 10.492871661721068
+  },
+  "gpt-6-1-sol__V3": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.4132581100141044,
+    "table": {
+     "judge_found_human_found": 44.0,
+     "judge_found_human_not": 18.0,
+     "judge_not_human_found": 46.0,
+     "judge_not_human_not": 152.0
+    },
+    "agreement_reweighted": 0.7196128451380552,
+    "kappa_reweighted": 0.40511120446919985
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.39492242595204524,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 19.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 151.0
+     },
+     "agreement_reweighted": 0.7090752967853807,
+     "kappa_reweighted": 0.3827540124984882
+    },
+    {
+     "n": 260,
+     "agreement": 0.7423076923076923,
+     "kappa": 0.38748241912798886,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7038065226090435,
+     "kappa_reweighted": 0.37262913152136956
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.40167364016736407,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 21.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 149.0
+     },
+     "agreement_reweighted": 0.7090752967853808,
+     "kappa_reweighted": 0.3868731768902307
+    },
+    {
+     "n": 260,
+     "agreement": 0.7423076923076923,
+     "kappa": 0.38748241912798886,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7038065226090435,
+     "kappa_reweighted": 0.37262913152136956
+    },
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4240506329113924,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.7223815452106767,
+     "kappa_reweighted": 0.41244058633766606
+    }
+   ],
+   "unanimous_share": 0.9076923076923077,
+   "cost_per_call_usd": 0.011715809768637533,
+   "cost_per_verified_submission_usd": 8.962594473007712
+  },
+  "gpt-6-luna__v1prompt": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7423076923076923,
+    "kappa": 0.3660844250363902,
+    "table": {
+     "judge_found_human_found": 37.0,
+     "judge_found_human_not": 14.0,
+     "judge_not_human_found": 53.0,
+     "judge_not_human_not": 156.0
+    },
+    "agreement_reweighted": 0.6963063002978969,
+    "kappa_reweighted": 0.3472441545084691
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.4031563845050214,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7121126228269085,
+     "kappa_reweighted": 0.3854540400756843
+    },
+    {
+     "n": 260,
+     "agreement": 0.7384615384615385,
+     "kappa": 0.35849056603773594,
+     "table": {
+      "judge_found_human_found": 37.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 53.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.6910375261215596,
+     "kappa_reweighted": 0.33704753461815473
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.39971139971139974,
+     "table": {
+      "judge_found_human_found": 40.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 50.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7146126969306239,
+     "kappa_reweighted": 0.38921635787161807
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.3880171184022825,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 17.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 153.0
+     },
+     "agreement_reweighted": 0.7040751485779496,
+     "kappa_reweighted": 0.37092717167137007
+    },
+    {
+     "n": 260,
+     "agreement": 0.7346153846153847,
+     "kappa": 0.35467625899280586,
+     "table": {
+      "judge_found_human_found": 38.0,
+      "judge_found_human_not": 17.0,
+      "judge_not_human_found": 52.0,
+      "judge_not_human_not": 153.0
+     },
+     "agreement_reweighted": 0.6907689001526535,
+     "kappa_reweighted": 0.33771082872416597
+    }
+   ],
+   "unanimous_share": 0.8115384615384615,
+   "cost_per_call_usd": 0.0008365384615384615,
+   "cost_per_verified_submission_usd": 0.6399519230769231
+  },
+  "gpt-6-luna__V1": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7576923076923077,
+    "kappa": 0.4141630901287552,
+    "table": {
+     "judge_found_human_found": 42.0,
+     "judge_found_human_not": 15.0,
+     "judge_not_human_found": 48.0,
+     "judge_not_human_not": 155.0
+    },
+    "agreement_reweighted": 0.7173813970032458,
+    "kappa_reweighted": 0.39771893583970425
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7730769230769231,
+     "kappa": 0.46061884669479614,
+     "table": {
+      "judge_found_human_found": 47.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 43.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7359564196048788,
+     "kappa_reweighted": 0.4425004665292646
+    },
+    {
+     "n": 260,
+     "agreement": 0.7423076923076923,
+     "kappa": 0.38748241912798886,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7063065967127591,
+     "kappa_reweighted": 0.3784191185600423
+    },
+    {
+     "n": 260,
+     "agreement": 0.7346153846153847,
+     "kappa": 0.3620199146514938,
+     "table": {
+      "judge_found_human_found": 40.0,
+      "judge_found_human_not": 19.0,
+      "judge_not_human_found": 50.0,
+      "judge_not_human_not": 151.0
+     },
+     "agreement_reweighted": 0.6907689001526535,
+     "kappa_reweighted": 0.34217209264288534
+    },
+    {
+     "n": 260,
+     "agreement": 0.7423076923076923,
+     "kappa": 0.380512091038407,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.6963063002978969,
+     "kappa_reweighted": 0.3549826632675663
+    },
+    {
+     "n": 260,
+     "agreement": 0.7307692307692307,
+     "kappa": 0.35092724679029946,
+     "table": {
+      "judge_found_human_found": 39.0,
+      "judge_found_human_not": 19.0,
+      "judge_not_human_found": 51.0,
+      "judge_not_human_not": 151.0
+     },
+     "agreement_reweighted": 0.6855001259763163,
+     "kappa_reweighted": 0.33090637122045213
+    }
+   ],
+   "unanimous_share": 0.75,
+   "cost_per_call_usd": 0.0008854615384615384,
+   "cost_per_verified_submission_usd": 0.6773780769230769
+  },
+  "gpt-6-luna__V10": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.75,
+    "kappa": 0.4344042838018742,
+    "table": {
+     "judge_found_human_found": 53.0,
+     "judge_found_human_not": 28.0,
+     "judge_not_human_found": 37.0,
+     "judge_not_human_not": 142.0
+    },
+    "agreement_reweighted": 0.7176907800157101,
+    "kappa_reweighted": 0.417153097389035
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7692307692307693,
+     "kappa": 0.47082767978290385,
+     "table": {
+      "judge_found_human_found": 53.0,
+      "judge_found_human_not": 23.0,
+      "judge_not_human_found": 37.0,
+      "judge_not_human_not": 147.0
+     },
+     "agreement_reweighted": 0.7376367213552087,
+     "kappa_reweighted": 0.45496059382768883
+    },
+    {
+     "n": 260,
+     "agreement": 0.7730769230769231,
+     "kappa": 0.4866131191432397,
+     "table": {
+      "judge_found_human_found": 56.0,
+      "judge_found_human_not": 25.0,
+      "judge_not_human_found": 34.0,
+      "judge_not_human_not": 145.0
+     },
+     "agreement_reweighted": 0.7473544973544972,
+     "kappa_reweighted": 0.47871104119083047
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.4179104477611942,
+     "table": {
+      "judge_found_human_found": 50.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 40.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.7110242245046167,
+     "kappa_reweighted": 0.3987368000874956
+    },
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.48034076015727384,
+     "table": {
+      "judge_found_human_found": 59.0,
+      "judge_found_human_not": 30.0,
+      "judge_not_human_found": 31.0,
+      "judge_not_human_not": 140.0
+     },
+     "agreement_reweighted": 0.7412659508247742,
+     "kappa_reweighted": 0.4723158887120649
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.4210526315789474,
+     "table": {
+      "judge_found_human_found": 51.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 39.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.7118708594548929,
+     "kappa_reweighted": 0.4023091079424694
+    }
+   ],
+   "unanimous_share": 0.676923076923077,
+   "cost_per_call_usd": 0.002450730207532667,
+   "cost_per_verified_submission_usd": 1.8748086087624904
+  },
+  "gpt-6-luna__V2": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7461538461538462,
+    "kappa": 0.37372262773722625,
+    "table": {
+     "judge_found_human_found": 37.0,
+     "judge_found_human_not": 13.0,
+     "judge_not_human_found": 53.0,
+     "judge_not_human_not": 157.0
+    },
+    "agreement_reweighted": 0.6990750003705183,
+    "kappa_reweighted": 0.3515683178936947
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7307692307692307,
+     "kappa": 0.33962264150943383,
+     "table": {
+      "judge_found_human_found": 36.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 54.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.6830000518726007,
+     "kappa_reweighted": 0.3181524918860444
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.4031563845050214,
+     "table": {
+      "judge_found_human_found": 41.0,
+      "judge_found_human_not": 15.0,
+      "judge_not_human_found": 49.0,
+      "judge_not_human_not": 155.0
+     },
+     "agreement_reweighted": 0.7121126228269085,
+     "kappa_reweighted": 0.3854540400756843
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.40656205420827385,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.714612696930624,
+     "kappa_reweighted": 0.3923573161692076
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.39971139971139974,
+     "table": {
+      "judge_found_human_found": 40.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 50.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7071124746194773,
+     "kappa_reweighted": 0.3726601054328373
+    },
+    {
+     "n": 260,
+     "agreement": 0.7346153846153847,
+     "kappa": 0.35094066570188137,
+     "table": {
+      "judge_found_human_found": 37.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 53.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.6882688260489379,
+     "kappa_reweighted": 0.33062507676374936
+    }
+   ],
+   "unanimous_share": 0.7807692307692308,
+   "cost_per_call_usd": 0.000819116527037319,
+   "cost_per_verified_submission_usd": 0.6266241431835491
+  },
+  "gpt-6-luna__V3": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7461538461538462,
+    "kappa": 0.39831697054698456,
+    "table": {
+     "judge_found_human_found": 44.0,
+     "judge_found_human_not": 20.0,
+     "judge_not_human_found": 46.0,
+     "judge_not_human_not": 150.0
+    },
+    "agreement_reweighted": 0.7065752226816652,
+    "kappa_reweighted": 0.3800263644134275
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.409090909090909,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7143440709617178,
+     "kappa_reweighted": 0.3979259601224311
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.40167364016736407,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 21.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 149.0
+     },
+     "agreement_reweighted": 0.7065752226816651,
+     "kappa_reweighted": 0.38209341164855876
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.42302357836338406,
+     "table": {
+      "judge_found_human_found": 47.0,
+      "judge_found_human_not": 21.0,
+      "judge_not_human_found": 43.0,
+      "judge_not_human_not": 149.0
+     },
+     "agreement_reweighted": 0.7196128451380552,
+     "kappa_reweighted": 0.41104634746685015
+    },
+    {
+     "n": 260,
+     "agreement": 0.7423076923076923,
+     "kappa": 0.39429763560500697,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7038065226090435,
+     "kappa_reweighted": 0.37680889050805916
+    },
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.40240452616690253,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.7118439968580024,
+     "kappa_reweighted": 0.3880882033452631
+    }
+   ],
+   "unanimous_share": 0.75,
+   "cost_per_call_usd": 0.0009265384615384615,
+   "cost_per_verified_submission_usd": 0.708801923076923
+  },
+  "gpt-6-luna__V4": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7307692307692307,
+    "kappa": 0.3792633015006821,
+    "table": {
+     "judge_found_human_found": 47.0,
+     "judge_found_human_not": 27.0,
+     "judge_not_human_found": 43.0,
+     "judge_not_human_not": 143.0
+    },
+    "agreement_reweighted": 0.6968982037259347,
+    "kappa_reweighted": 0.3678657889949084
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7192307692307692,
+     "kappa": 0.354421768707483,
+     "table": {
+      "judge_found_human_found": 46.0,
+      "judge_found_human_not": 29.0,
+      "judge_not_human_found": 44.0,
+      "judge_not_human_not": 141.0
+     },
+     "agreement_reweighted": 0.6835919553006387,
+     "kappa_reweighted": 0.3406869363313338
+    },
+    {
+     "n": 260,
+     "agreement": 0.7230769230769231,
+     "kappa": 0.35448275862068956,
+     "table": {
+      "judge_found_human_found": 44.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 46.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.6844117276540246,
+     "kappa_reweighted": 0.337856233852576
+    },
+    {
+     "n": 260,
+     "agreement": 0.7307692307692307,
+     "kappa": 0.38263229308005425,
+     "table": {
+      "judge_found_human_found": 48.0,
+      "judge_found_human_not": 28.0,
+      "judge_not_human_found": 42.0,
+      "judge_not_human_not": 142.0
+     },
+     "agreement_reweighted": 0.6968982037259347,
+     "kappa_reweighted": 0.3699462019809312
+    },
+    {
+     "n": 260,
+     "agreement": 0.7307692307692307,
+     "kappa": 0.37241379310344813,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 25.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 145.0
+     },
+     "agreement_reweighted": 0.6963470573414551,
+     "kappa_reweighted": 0.3626171968077075
+    },
+    {
+     "n": 260,
+     "agreement": 0.7576923076923077,
+     "kappa": 0.4428571428571428,
+     "table": {
+      "judge_found_human_found": 51.0,
+      "judge_found_human_not": 24.0,
+      "judge_not_human_found": 39.0,
+      "judge_not_human_not": 146.0
+     },
+     "agreement_reweighted": 0.7298817675218235,
+     "kappa_reweighted": 0.4382681964248134
+    }
+   ],
+   "unanimous_share": 0.7307692307692307,
+   "cost_per_call_usd": 0.0021239897370109043,
+   "cost_per_verified_submission_usd": 1.6248521488133418
+  },
+  "gpt-6-luna__V5": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7692307692307693,
+    "kappa": 0.5318127250900361,
+    "table": {
+     "judge_found_human_found": 77.0,
+     "judge_found_human_not": 47.0,
+     "judge_not_human_found": 13.0,
+     "judge_not_human_not": 123.0
+    },
+    "agreement_reweighted": 0.7645863901115999,
+    "kappa_reweighted": 0.5364067058814519
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.5185185185185185,
+     "table": {
+      "judge_found_human_found": 77.0,
+      "judge_found_human_not": 49.0,
+      "judge_not_human_found": 13.0,
+      "judge_not_human_not": 121.0
+     },
+     "agreement_reweighted": 0.7615490640700725,
+     "kappa_reweighted": 0.5315394495195186
+    },
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.49401197604790414,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 50.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 120.0
+     },
+     "agreement_reweighted": 0.7487939620292561,
+     "kappa_reweighted": 0.5059966863794861
+    },
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.5228640192539109,
+     "table": {
+      "judge_found_human_found": 76.0,
+      "judge_found_human_not": 47.0,
+      "judge_not_human_found": 14.0,
+      "judge_not_human_not": 123.0
+     },
+     "agreement_reweighted": 0.7593176159352628,
+     "kappa_reweighted": 0.5252910212234168
+    },
+    {
+     "n": 260,
+     "agreement": 0.7692307692307693,
+     "kappa": 0.5272727272727274,
+     "table": {
+      "judge_found_human_found": 75.0,
+      "judge_found_human_not": 45.0,
+      "judge_not_human_found": 15.0,
+      "judge_not_human_not": 125.0
+     },
+     "agreement_reweighted": 0.7601373882886485,
+     "kappa_reweighted": 0.5253102505090965
+    },
+    {
+     "n": 260,
+     "agreement": 0.7769230769230769,
+     "kappa": 0.5430303030303031,
+     "table": {
+      "judge_found_human_found": 76.0,
+      "judge_found_human_not": 44.0,
+      "judge_not_human_found": 14.0,
+      "judge_not_human_not": 126.0
+     },
+     "agreement_reweighted": 0.772623864360559,
+     "kappa_reweighted": 0.5497601573996678
+    }
+   ],
+   "unanimous_share": 0.6961538461538461,
+   "cost_per_call_usd": 0.002307461538461538,
+   "cost_per_verified_submission_usd": 1.7652080769230767
+  },
+  "gpt-6-luna__V5RL1": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.5076923076923077,
+    "table": {
+     "judge_found_human_found": 78.0,
+     "judge_found_human_not": 52.0,
+     "judge_not_human_found": 12.0,
+     "judge_not_human_not": 118.0
+    },
+    "agreement_reweighted": 0.7579605916440648,
+    "kappa_reweighted": 0.527159031055385
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.5076923076923077,
+     "table": {
+      "judge_found_human_found": 78.0,
+      "judge_found_human_not": 52.0,
+      "judge_not_human_found": 12.0,
+      "judge_not_human_not": 118.0
+     },
+     "agreement_reweighted": 0.7579605916440648,
+     "kappa_reweighted": 0.527159031055385
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0036142307692307693,
+   "cost_per_verified_submission_usd": 2.7648865384615386
+  },
+  "gpt-6-luna__V5RL2": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7653846153846153,
+    "kappa": 0.4961880559085132,
+    "table": {
+     "judge_found_human_found": 65.0,
+     "judge_found_human_not": 36.0,
+     "judge_not_human_found": 25.0,
+     "judge_not_human_not": 134.0
+    },
+    "agreement_reweighted": 0.7437660249284899,
+    "kappa_reweighted": 0.4799206378307445
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.4961880559085132,
+     "table": {
+      "judge_found_human_found": 65.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 25.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7437660249284899,
+     "kappa_reweighted": 0.4799206378307445
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.003735,
+   "cost_per_verified_submission_usd": 2.857275
+  },
+  "gpt-6-luna__V5RL3": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7769230769230769,
+    "kappa": 0.5221799746514575,
+    "table": {
+     "judge_found_human_found": 67.0,
+     "judge_found_human_not": 35.0,
+     "judge_not_human_found": 23.0,
+     "judge_not_human_not": 135.0
+    },
+    "agreement_reweighted": 0.7681748625376075,
+    "kappa_reweighted": 0.5318428974657395
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7884615384615384,
+     "kappa": 0.5434227330779055,
+     "table": {
+      "judge_found_human_found": 67.0,
+      "judge_found_human_not": 32.0,
+      "judge_not_human_found": 23.0,
+      "judge_not_human_not": 138.0
+     },
+     "agreement_reweighted": 0.7803788181939443,
+     "kappa_reweighted": 0.5548396723581152
+    },
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.5241830065359476,
+     "table": {
+      "judge_found_human_found": 62.0,
+      "judge_found_human_not": 28.0,
+      "judge_not_human_found": 28.0,
+      "judge_not_human_not": 142.0
+     },
+     "agreement_reweighted": 0.7717633349636149,
+     "kappa_reweighted": 0.531082716343428
+    },
+    {
+     "n": 260,
+     "agreement": 0.7423076923076923,
+     "kappa": 0.4351491569390402,
+     "table": {
+      "judge_found_human_found": 58.0,
+      "judge_found_human_not": 35.0,
+      "judge_not_human_found": 32.0,
+      "judge_not_human_not": 135.0
+     },
+     "agreement_reweighted": 0.7182558208468571,
+     "kappa_reweighted": 0.4231726366542681
+    },
+    {
+     "n": 260,
+     "agreement": 0.7846153846153846,
+     "kappa": 0.5339308578745199,
+     "table": {
+      "judge_found_human_found": 66.0,
+      "judge_found_human_not": 32.0,
+      "judge_not_human_found": 24.0,
+      "judge_not_human_not": 138.0
+     },
+     "agreement_reweighted": 0.7712121885791353,
+     "kappa_reweighted": 0.534647862195969
+    },
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.4520103761348897,
+     "table": {
+      "judge_found_human_found": 59.0,
+      "judge_found_human_not": 34.0,
+      "judge_not_human_found": 31.0,
+      "judge_not_human_not": 136.0
+     },
+     "agreement_reweighted": 0.7307422969187674,
+     "kappa_reweighted": 0.4492536784772593
+    }
+   ],
+   "unanimous_share": 0.6615384615384615,
+   "cost_per_call_usd": 0.0027033076923076924,
+   "cost_per_verified_submission_usd": 2.0680303846153847
+  },
+  "gpt-6-luna__V5RL4": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7346153846153847,
+    "kappa": 0.35094066570188137,
+    "table": {
+     "judge_found_human_found": 37.0,
+     "judge_found_human_not": 16.0,
+     "judge_not_human_found": 53.0,
+     "judge_not_human_not": 154.0
+    },
+    "agreement_reweighted": 0.6927178278718892,
+    "kappa_reweighted": 0.33922989247911683
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7346153846153847,
+     "kappa": 0.35094066570188137,
+     "table": {
+      "judge_found_human_found": 37.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 53.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.6927178278718892,
+     "kappa_reweighted": 0.33922989247911683
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0036619230769230765,
+   "cost_per_verified_submission_usd": 2.8013711538461536
+  },
+  "gpt-6-luna__V5RL5": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7346153846153847,
+    "kappa": 0.35467625899280586,
+    "table": {
+     "judge_found_human_found": 38.0,
+     "judge_found_human_not": 17.0,
+     "judge_not_human_found": 52.0,
+     "judge_not_human_not": 153.0
+    },
+    "agreement_reweighted": 0.6877176796644582,
+    "kappa_reweighted": 0.3307562251696904
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7346153846153847,
+     "kappa": 0.35467625899280586,
+     "table": {
+      "judge_found_human_found": 38.0,
+      "judge_found_human_not": 17.0,
+      "judge_not_human_found": 52.0,
+      "judge_not_human_not": 153.0
+     },
+     "agreement_reweighted": 0.6877176796644582,
+     "kappa_reweighted": 0.3307562251696904
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.003677307692307692,
+   "cost_per_verified_submission_usd": 2.813140384615384
+  },
+  "gpt-6-luna__V5RL6": {
+   "passes": 1,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7461538461538462,
+    "kappa": 0.3914893617021277,
+    "table": {
+     "judge_found_human_found": 42.0,
+     "judge_found_human_not": 18.0,
+     "judge_not_human_found": 48.0,
+     "judge_not_human_not": 152.0
+    },
+    "agreement_reweighted": 0.708524150400901,
+    "kappa_reweighted": 0.37960967951221847
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.3914893617021277,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.708524150400901,
+     "kappa_reweighted": 0.37960967951221847
+    }
+   ],
+   "unanimous_share": null,
+   "cost_per_call_usd": 0.0036946153846153847,
+   "cost_per_verified_submission_usd": 2.826380769230769
+  },
+  "gpt-6-luna__V6": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7153846153846154,
+    "kappa": 0.336551724137931,
+    "table": {
+     "judge_found_human_found": 43.0,
+     "judge_found_human_not": 27.0,
+     "judge_not_human_found": 47.0,
+     "judge_not_human_not": 143.0
+    },
+    "agreement_reweighted": 0.677220888355342,
+    "kappa_reweighted": 0.3220537040318107
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.4049930651872399,
+     "table": {
+      "judge_found_human_found": 46.0,
+      "judge_found_human_not": 22.0,
+      "judge_not_human_found": 44.0,
+      "judge_not_human_not": 148.0
+     },
+     "agreement_reweighted": 0.7079730040164213,
+     "kappa_reweighted": 0.385841332037441
+    },
+    {
+     "n": 260,
+     "agreement": 0.7384615384615385,
+     "kappa": 0.39699863574351996,
+     "table": {
+      "judge_found_human_found": 48.0,
+      "judge_found_human_not": 26.0,
+      "judge_not_human_found": 42.0,
+      "judge_not_human_not": 144.0
+     },
+     "agreement_reweighted": 0.7068846056941296,
+     "kappa_reweighted": 0.3887984943722561
+    },
+    {
+     "n": 260,
+     "agreement": 0.7230769230769231,
+     "kappa": 0.35802469135802467,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.6872072903235367,
+     "kappa_reweighted": 0.34634729697405287
+    },
+    {
+     "n": 260,
+     "agreement": 0.7115384615384616,
+     "kappa": 0.32572614107883824,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.6719521141790048,
+     "kappa_reweighted": 0.3098399585994693
+    },
+    {
+     "n": 260,
+     "agreement": 0.7230769230769231,
+     "kappa": 0.35802469135802467,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 27.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 143.0
+     },
+     "agreement_reweighted": 0.6877584367080165,
+     "kappa_reweighted": 0.3463597527796178
+    }
+   ],
+   "unanimous_share": 0.7153846153846154,
+   "cost_per_call_usd": 0.0021847692307692306,
+   "cost_per_verified_submission_usd": 1.6713484615384615
+  },
+  "gpt-6-luna__V7": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.4099290780141844,
+    "table": {
+     "judge_found_human_found": 43.0,
+     "judge_found_human_not": 17.0,
+     "judge_not_human_found": 47.0,
+     "judge_not_human_not": 153.0
+    },
+    "agreement_reweighted": 0.7221129192417707,
+    "kappa_reweighted": 0.40890103561716495
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7384615384615385,
+     "kappa": 0.3869625520110957,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 23.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 147.0
+     },
+     "agreement_reweighted": 0.7085380448475685,
+     "kappa_reweighted": 0.38681608484358787
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.39492242595204524,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 19.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 151.0
+     },
+     "agreement_reweighted": 0.7090752967853807,
+     "kappa_reweighted": 0.38176858840407807
+    },
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.4315937940761636,
+     "table": {
+      "judge_found_human_found": 45.0,
+      "judge_found_human_not": 17.0,
+      "judge_not_human_found": 45.0,
+      "judge_not_human_not": 153.0
+     },
+     "agreement_reweighted": 0.7251502452832985,
+     "kappa_reweighted": 0.4168597359038792
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.39971139971139974,
+     "table": {
+      "judge_found_human_found": 40.0,
+      "judge_found_human_not": 14.0,
+      "judge_not_human_found": 50.0,
+      "judge_not_human_not": 156.0
+     },
+     "agreement_reweighted": 0.7171127710343395,
+     "kappa_reweighted": 0.3931032927547425
+    },
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.40240452616690253,
+     "table": {
+      "judge_found_human_found": 43.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 47.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.7193442191691489,
+     "kappa_reweighted": 0.4025856251455483
+    }
+   ],
+   "unanimous_share": 0.6807692307692308,
+   "cost_per_call_usd": 0.0024485384615384616,
+   "cost_per_verified_submission_usd": 1.8731319230769232
+  },
+  "gpt-6-luna__V9": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.4673495518565941,
+    "table": {
+     "judge_found_human_found": 62.0,
+     "judge_found_human_not": 36.0,
+     "judge_not_human_found": 28.0,
+     "judge_not_human_not": 134.0
+    },
+    "agreement_reweighted": 0.7415623656870154,
+    "kappa_reweighted": 0.4779303323003698
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.48399487836107546,
+     "table": {
+      "judge_found_human_found": 63.0,
+      "judge_found_human_not": 35.0,
+      "judge_not_human_found": 27.0,
+      "judge_not_human_not": 135.0
+     },
+     "agreement_reweighted": 0.7420996176248276,
+     "kappa_reweighted": 0.4790156345296299
+    },
+    {
+     "n": 260,
+     "agreement": 0.7384615384615385,
+     "kappa": 0.4340588988476313,
+     "table": {
+      "judge_found_human_found": 60.0,
+      "judge_found_human_not": 38.0,
+      "judge_not_human_found": 30.0,
+      "judge_not_human_not": 132.0
+     },
+     "agreement_reweighted": 0.7193849762127071,
+     "kappa_reweighted": 0.43245836397662274
+    },
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.4520103761348897,
+     "table": {
+      "judge_found_human_found": 59.0,
+      "judge_found_human_not": 34.0,
+      "judge_not_human_found": 31.0,
+      "judge_not_human_not": 136.0
+     },
+     "agreement_reweighted": 0.7332423710224829,
+     "kappa_reweighted": 0.45728627491073076
+    },
+    {
+     "n": 260,
+     "agreement": 0.7461538461538462,
+     "kappa": 0.44787644787644787,
+     "table": {
+      "judge_found_human_found": 60.0,
+      "judge_found_human_not": 36.0,
+      "judge_not_human_found": 30.0,
+      "judge_not_human_not": 134.0
+     },
+     "agreement_reweighted": 0.7335248914380565,
+     "kappa_reweighted": 0.45873050221554773
+    },
+    {
+     "n": 260,
+     "agreement": 0.7653846153846153,
+     "kappa": 0.4936143039591314,
+     "table": {
+      "judge_found_human_found": 64.0,
+      "judge_found_human_not": 35.0,
+      "judge_not_human_found": 26.0,
+      "judge_not_human_not": 135.0
+     },
+     "agreement_reweighted": 0.7448683176974492,
+     "kappa_reweighted": 0.48582110916226073
+    }
+   ],
+   "unanimous_share": 0.6807692307692308,
+   "cost_per_call_usd": 0.0025556153846153845,
+   "cost_per_verified_submission_usd": 1.9550457692307692
+  },
+  "gpt-6-luna__effortmax": {
+   "passes": 5,
+   "cells": 260,
+   "cells_with_all_passes": 260,
+   "majority": {
+    "n": 260,
+    "agreement": 0.7538461538461538,
+    "kappa": 0.4132581100141044,
+    "table": {
+     "judge_found_human_found": 44.0,
+     "judge_found_human_not": 18.0,
+     "judge_not_human_found": 46.0,
+     "judge_not_human_not": 152.0
+    },
+    "agreement_reweighted": 0.7121126228269085,
+    "kappa_reweighted": 0.3906551029434289
+   },
+   "single_pass": [
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.4198047419804742,
+     "table": {
+      "judge_found_human_found": 46.0,
+      "judge_found_human_not": 20.0,
+      "judge_not_human_found": 44.0,
+      "judge_not_human_not": 150.0
+     },
+     "agreement_reweighted": 0.7146126969306241,
+     "kappa_reweighted": 0.3994940880737685
+    },
+    {
+     "n": 260,
+     "agreement": 0.7615384615384615,
+     "kappa": 0.4379358437935843,
+     "table": {
+      "judge_found_human_found": 47.0,
+      "judge_found_human_not": 19.0,
+      "judge_not_human_found": 43.0,
+      "judge_not_human_not": 151.0
+     },
+     "agreement_reweighted": 0.722650171179583,
+     "kappa_reweighted": 0.4177869151002569
+    },
+    {
+     "n": 260,
+     "agreement": 0.75,
+     "kappa": 0.39900426742532014,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 17.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 153.0
+     },
+     "agreement_reweighted": 0.7068438486505711,
+     "kappa_reweighted": 0.37736344160046675
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.40656205420827385,
+     "table": {
+      "judge_found_human_found": 42.0,
+      "judge_found_human_not": 16.0,
+      "judge_not_human_found": 48.0,
+      "judge_not_human_not": 154.0
+     },
+     "agreement_reweighted": 0.7096125487231928,
+     "kappa_reweighted": 0.3817110700200696
+    },
+    {
+     "n": 260,
+     "agreement": 0.7538461538461538,
+     "kappa": 0.4132581100141044,
+     "table": {
+      "judge_found_human_found": 44.0,
+      "judge_found_human_not": 18.0,
+      "judge_not_human_found": 46.0,
+      "judge_not_human_not": 152.0
+     },
+     "agreement_reweighted": 0.714612696930624,
+     "kappa_reweighted": 0.3964266639211196
+    }
+   ],
+   "unanimous_share": 0.8576923076923076,
+   "cost_per_call_usd": 0.002219923076923077,
+   "cost_per_verified_submission_usd": 1.6982411538461537
+  }
+ }
+}
