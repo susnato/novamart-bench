@@ -121,7 +121,7 @@ your-agent run --prompt-filepath "~/novamart-estate/access-pack/rendered_novamar
 
 See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric definitions, and the other notes.
 
-We use `gemini-3-flash-preview` model for the LLM Judge, the judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `VERTEX_AI_PROJECT_ID` with gcloud application-default credentials. From the repo root:
+The LLM judge is Claude Haiku 5.5 with the benchmark's judge prompt (judge v2, see [`scoring/README.md`](scoring/README.md)). Self-scoring needs either `ANTHROPIC_API_KEY` (model `claude-haiku-5-5`, the default) or AWS credentials with Bedrock access (`--judge-model bedrock/global.anthropic.claude-haiku-5-5`, the route the maintainer uses for verification). From the repo root:
 
 ```bash
 # make sure claims are in valid format
