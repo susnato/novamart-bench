@@ -1,16 +1,17 @@
 {
  "runs_sorted": [
-  64.7,
-  54.9,
-  49.0
+  62.7,
+  51.0,
+  41.2
  ],
- "mean_recall": 56.2,
+ "mean_recall": 51.6,
  "ci95": [
-  45.8,
-  66.0
+  40.5,
+  62.7
  ],
  "pass3": 31.4,
  "verified": true,
  "date": "2026-10-05",
- "verified_at": "2026-10-05"
+ "verified_at": "2026-10-21",
+ "judge": "haiku-5-5-v5h6"
 }

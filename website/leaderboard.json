@@ -3,7 +3,7 @@
   "protocol": {
     "runs_per_system": 3,
     "claims": 51,
-    "judge": "gemini-3-flash-preview (pinned)",
+    "judge": "judge v2 since 2026-10-21: claude-haiku-5-5 (Amazon Bedrock global.anthropic.claude-haiku-5-5 for verification), prompt scoring/judges/prompts/judge_v2_system_prompt.txt, effort high; v1 (gemini-3-flash-preview, 2026-08 to 2026-10-21) records are kept per entry as *_gemini-3-flash-preview.json",
     "judge_passes": 5,
     "verdict": "majority of five passes, ties resolve to the worse verdict",
     "ci": "claim-level bootstrap 95%, 10000 resamples"
@@ -18,14 +18,14 @@
       "runs_sorted": [
         82.4,
         74.5,
-        70.6
+        74.5
       ],
-      "mean_recall": 75.8,
+      "mean_recall": 77.1,
       "ci95": [
-        66.0,
-        84.3
+        67.3,
+        85.6
       ],
-      "pass3": 54.9,
+      "pass3": 60.8,
       "mode": "local-emulator",
       "verified": true,
       "submitted_by": "maintainers",
@@ -38,42 +38,20 @@
       "effort": "high",
       "date": "2026-10-05",
       "runs_sorted": [
-        78.4,
-        74.5,
-        70.6
+        72.5,
+        70.6,
+        68.6
       ],
-      "mean_recall": 74.5,
+      "mean_recall": 70.6,
       "ci95": [
-        64.7,
-        83.7
+        60.1,
+        81.0
       ],
-      "pass3": 58.8,
+      "pass3": 56.9,
       "mode": "local-emulator",
       "verified": true,
       "submitted_by": "maintainers",
       "rank": 2
-    },
-    {
-      "system": "OpenCode",
-      "version": "1.18.34",
-      "model": "GPT-6 Astra",
-      "effort": "high",
-      "date": "2026-10-05",
-      "runs_sorted": [
-        80.4,
-        74.5,
-        68.6
-      ],
-      "mean_recall": 74.5,
-      "ci95": [
-        64.1,
-        83.7
-      ],
-      "pass3": 58.8,
-      "mode": "local-emulator",
-      "verified": true,
-      "submitted_by": "maintainers",
-      "rank": 3
     },
     {
       "system": "OpenCode",
@@ -83,41 +61,19 @@
       "date": "2026-10-05",
       "runs_sorted": [
         76.5,
-        72.5,
-        62.7
+        68.6,
+        64.7
       ],
-      "mean_recall": 70.6,
+      "mean_recall": 69.9,
       "ci95": [
-        59.5,
-        81.0
+        58.8,
+        80.4
       ],
-      "pass3": 56.9,
+      "pass3": 52.9,
       "mode": "local-emulator",
       "verified": true,
       "submitted_by": "maintainers",
-      "rank": 4
-    },
-    {
-      "system": "OpenCode",
-      "version": "1.18.34",
-      "model": "GPT-6.1 Sol",
-      "effort": "high",
-      "date": "2026-10-05",
-      "runs_sorted": [
-        70.6,
-        66.7,
-        62.7
-      ],
-      "mean_recall": 66.7,
-      "ci95": [
-        55.6,
-        77.1
-      ],
-      "pass3": 51.0,
-      "mode": "local-emulator",
-      "verified": true,
-      "submitted_by": "maintainers",
-      "rank": 5
+      "rank": 3
     },
     {
       "system": "Claude Code",
@@ -126,20 +82,42 @@
       "effort": "high",
       "date": "2026-08-27",
       "runs_sorted": [
-        70.6,
-        58.8,
-        58.8
+        74.5,
+        62.7,
+        60.8
       ],
-      "mean_recall": 62.7,
+      "mean_recall": 66.0,
       "ci95": [
-        52.9,
-        72.5
+        55.6,
+        75.8
       ],
-      "pass3": 35.3,
+      "pass3": 45.1,
       "mode": "cloud-bigquery",
       "verified": true,
       "submitted_by": "maintainers",
-      "rank": 6
+      "rank": 4
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "GPT-6 Astra",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        64.7,
+        62.7,
+        60.8
+      ],
+      "mean_recall": 62.7,
+      "ci95": [
+        51.0,
+        73.9
+      ],
+      "pass3": 49.0,
+      "mode": "local-emulator",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 5
     },
     {
       "system": "Cursor",
@@ -148,17 +126,39 @@
       "effort": "high",
       "date": "2026-08-27",
       "runs_sorted": [
-        62.7,
-        56.9,
-        56.9
+        64.7,
+        60.8,
+        52.9
       ],
-      "mean_recall": 58.8,
+      "mean_recall": 59.5,
       "ci95": [
         48.4,
+        70.6
+      ],
+      "pass3": 41.2,
+      "mode": "cloud-bigquery",
+      "verified": true,
+      "submitted_by": "maintainers",
+      "rank": 6
+    },
+    {
+      "system": "OpenCode",
+      "version": "1.18.34",
+      "model": "GPT-6.1 Sol",
+      "effort": "high",
+      "date": "2026-10-05",
+      "runs_sorted": [
+        60.8,
+        56.9,
+        54.9
+      ],
+      "mean_recall": 57.5,
+      "ci95": [
+        45.8,
         69.3
       ],
-      "pass3": 35.3,
-      "mode": "cloud-bigquery",
+      "pass3": 45.1,
+      "mode": "local-emulator",
       "verified": true,
       "submitted_by": "maintainers",
       "rank": 7
@@ -170,14 +170,14 @@
       "effort": "high",
       "date": "2026-10-05",
       "runs_sorted": [
-        64.7,
-        54.9,
-        49.0
+        62.7,
+        51.0,
+        41.2
       ],
-      "mean_recall": 56.2,
+      "mean_recall": 51.6,
       "ci95": [
-        45.8,
-        66.0
+        40.5,
+        62.7
       ],
       "pass3": 31.4,
       "mode": "local-emulator",
@@ -192,16 +192,16 @@
       "effort": "high",
       "date": "2026-08-27",
       "runs_sorted": [
-        35.3,
-        33.3,
-        31.4
+        37.3,
+        31.4,
+        29.4
       ],
-      "mean_recall": 33.3,
+      "mean_recall": 32.7,
       "ci95": [
-        22.2,
+        21.6,
         44.4
       ],
-      "pass3": 19.6,
+      "pass3": 21.6,
       "mode": "cloud-bigquery",
       "verified": true,
       "submitted_by": "maintainers",
@@ -214,16 +214,16 @@
       "effort": "high",
       "date": "2026-10-05",
       "runs_sorted": [
-        31.4,
+        33.3,
         29.4,
-        29.4
+        27.5
       ],
       "mean_recall": 30.1,
       "ci95": [
-        19.6,
-        41.2
+        19.0,
+        41.8
       ],
-      "pass3": 17.6,
+      "pass3": 21.6,
       "mode": "local-emulator",
       "verified": true,
       "submitted_by": "maintainers",
@@ -236,21 +236,21 @@
       "effort": "high",
       "date": "2026-10-05",
       "runs_sorted": [
-        2.0,
-        2.0,
-        0.0
+        9.8,
+        5.9,
+        5.9
       ],
-      "mean_recall": 1.3,
+      "mean_recall": 7.2,
       "ci95": [
-        0.0,
-        3.9
+        2.0,
+        13.1
       ],
-      "pass3": 0.0,
+      "pass3": 2.0,
       "mode": "local-emulator",
       "verified": true,
       "submitted_by": "maintainers",
       "rank": 11
     }
   ],
-  "notes": "Entries 1 and 2 run the same model; their gap is inside the judge spread and they are statistically tied. Differences within roughly 10 points are inside the noise floor."
+  "notes": "All entries were rescored with judge v2 on 2026-10-21; the v1 numbers are in each entry's verified_entry_gemini-3-flash-preview.json. Differences within roughly 10 points are inside the noise floor."
 }
