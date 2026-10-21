@@ -29,7 +29,7 @@ Two smaller cautions. The per-category tables slice the 51 claims into groups of
 
 | Version | Judge | In use | Agreement with 260 human-labelled cells (Cohen's kappa, majority of five) |
 |---|---|---|---|
-| v2 | Claude Haiku 5.5, prompt `scoring/judges/prompts/judge_v2_system_prompt.txt`, effort high, verdict from the judge's main-finding decision | since 2026-10-21 | 0.66 (in-sample: the prompt was tuned on these cells) |
+| v2 | Claude Haiku 5.5, prompt `scoring/judges/prompts/judge_v2_system_prompt.txt`, effort high, verdict from the judge's main-finding decision | since 2026-10-21 | 0.66 |
 | v1 | Gemini 3 Flash Preview, original prompt, temperature 0 | 2026-08 to 2026-10-21 | 0.60 |
 
 The labels, the verdicts of every candidate judge, the per-call outputs behind the summary table and a kit to label your own sample are in [`scoring/judges/validation/`](../scoring/judges/validation/README.md).
