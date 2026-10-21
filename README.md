@@ -8,7 +8,7 @@ A research benchmark from [Pavo](https://www.pavoai.com/).
 
 ## 📰 News
 
-- **2026-10-21**: Judge v2. The leaderboard judge is now Claude Haiku 5.5 with the benchmark's judge prompt, replacing Gemini 3 Flash Preview (judge v1). Every entry was rescored and the board recompiled; each entry keeps its v1 record. Before and after, and the reasons: [Judge versions](scoring/README.md#judge-versions).
+- **2026-10-21**: Judge v2. The leaderboard judge is now Claude Haiku 5.5 with a better judge prompt, replacing Gemini 3 Flash Preview (judge v1), at about a tenth of the judge cost per verified submission (about $2.70 against about $30) and with no loss of agreement with the 260 maintainer-labelled cells (Cohen's kappa 0.66 against 0.60 for v1). Every entry was rescored and the board recompiled; each entry keeps its v1 record. Before and after, and the reasons: [Judge versions](scoring/README.md#judge-versions).
 - **2026-10-21**: Judge validation released: 260 claim-book cells labelled by the maintainer, the verdicts of every judge configuration we compared (46), per-call outputs for the configurations in the summary table, and a kit to label your own sample. See [`scoring/judges/validation/`](scoring/judges/validation/README.md).
 - **2026-10-06**: Public release: the estate on Hugging Face, the application repo, this repo and [novamartbench.com](https://novamartbench.com). Eleven entries at launch: the paper's three baselines and eight OpenCode runs.
 - **2026-09-29**: The paper is accepted at the 2nd Workshop on Agentic AI Benchmarks and Applications for Enterprise Tasks (AABA4ET), NeurIPS 2026.
