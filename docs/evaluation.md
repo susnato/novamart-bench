@@ -27,7 +27,7 @@ Two smaller cautions. The per-category tables slice the 51 claims into groups of
 
 ## Judge versions
 
-| Version | Judge | In use | Agreement with 260 maintainer-labelled cells (Cohen's kappa, majority of five) |
+| Version | Judge | In use | Agreement with 260 human-labelled cells (Cohen's kappa, majority of five) |
 |---|---|---|---|
 | v2 | Claude Haiku 5.5, prompt `scoring/judges/prompts/judge_v2_system_prompt.txt`, effort high, verdict from the judge's main-finding decision | since 2026-10-21 | 0.66 (in-sample: the prompt was tuned on these cells) |
 | v1 | Gemini 3 Flash Preview, original prompt, temperature 0 | 2026-08 to 2026-10-21 | 0.60 |
