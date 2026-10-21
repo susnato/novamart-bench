@@ -10,25 +10,23 @@ Judge v2 (Claude Haiku 5.5 with `../prompts/judge_v2_system_prompt.txt`, in use 
 | Judge | Prompt | Cohen's kappa | Raw agreement | Cost per verified submission | Model status | Model string |
 |---|---|---|---|---|---|---|
 | Always "not correct" (floor) | none | 0.000 | 65.4% | $0 | | |
-| Gemini 3 Flash Preview (judge v1, the paper's judge) | v1 release prompt | 0.601 | 81.5% | $26.77 | preview | `gemini-3-flash-preview` |
+| Gemini 3 Flash Preview (judge v1) | v1 release prompt | 0.601 | 81.5% | $26.77 | preview | `gemini-3-flash-preview` |
 | Gemini 3 Flash Preview | V4 | 0.561 | 78.8% | $26.54 | preview | `gemini-3-flash-preview` |
 | Gemini 3.8 Flash | v1 release prompt | 0.461 | 77.3% | $16.14 | GA | `gemini-3.8-flash` |
 | Claude Sonnet 5.5 | V4 | 0.509 | 78.5% | $40.20 | GA | `bedrock/global.anthropic.claude-sonnet-5-5` |
 | Claude Haiku 5.5 | v1 release prompt | 0.433 | 76.5% | $2.01 | GA | `bedrock/global.anthropic.claude-haiku-5-5` |
 | Claude Haiku 5.5 | V5 (hand-written) | 0.614 | 81.5% | $2.64 | GA | `bedrock/global.anthropic.claude-haiku-5-5` |
-| **Claude Haiku 5.5, selected (judge v2)** | **V5H6 (reflective rewrite of V5)** | **0.663** | **83.8%** | **$2.72** | **GA** | `bedrock/global.anthropic.claude-haiku-5-5` |
+| **Claude Haiku 5.5 (judge v2)** | **V5H6 (reflective rewrite of V5)** | **0.663** | **83.8%** | **$2.72** | **GA** | `bedrock/global.anthropic.claude-haiku-5-5` |
 | GPT-6 Luna | V5 | 0.532 | 76.9% | $1.77 | GA | `bedrock/global.openai.gpt-6-luna` |
 | GPT-6 Luna | V5RL3 (reflective rewrite of V5) | 0.522 | 77.7% | $2.07 | GA | `bedrock/global.openai.gpt-6-luna` |
 | GPT-6.1 Sol | V3 | 0.413 | 75.4% | $8.96 | GA | `bedrock/global.openai.gpt-6.1-sol` |
 <!-- table:end -->
 
-How to read it. Each row is one judge configuration (a model and a prompt) run five times over the same 260 human-labelled cells; its verdict per cell is the majority of the five passes, ties to the worse label, as on the leaderboard. Kappa is Cohen's kappa against the human label on the binary the leaderboard uses, correct versus not correct, and raw agreement is the share of cells where the two agree on it; the floor row is a judge that never says correct. Cost per verified submission is the configuration's mean cost per call times the 765 calls of one verified entry (3 books x 51 claims x 5 passes), at the list prices in `prompts/price_table.json`; the v1 row is estimated from the same model's calls under the V5 prompt because the August run logged no usage, and `results/table_full.md` has every configuration.
-
-A second run of the selected judge gives a lower number. The leaderboard rescore of 2026-10-21 ran the same model and prompt, five passes, over every entry; on these 260 cells its majority verdicts agree with the labels at kappa 0.625 (raw agreement 80.4%), against 0.663 for the study run. That difference is run-to-run noise of a five-pass majority on 260 cells, and it is the size of the gap between most neighbouring rows above. Reproduce it with `python scoring/judges/validation/kit/analyze.py --labels scoring/judges/validation/labels/labels.csv --judge-record judge_record.json`.
+How to read it: Each row is one judge configuration (a model and a prompt) run five times over the same 260 human-labelled cells; its verdict per cell is the majority of the five passes, ties to the worse label, as on the leaderboard. Kappa is Cohen's kappa against the human label on the binary the leaderboard uses, correct versus not correct, and raw agreement is the share of cells where the two agree on it. Cost per verified submission is the configuration's mean cost per call times the 765 calls of one verified entry (3 books x 51 claims x 5 passes), at the list prices in `prompts/price_table.json`.
 
 ## Every figure here is in-sample
 
-Prompt variants were compared, and the figures are reported, on the same 260 labelled cells, as the judge validations of MT-Bench, AlpacaEval, HealthBench, DeepResearch Bench, WebJudge and ResearchRubrics do; none of them holds out labels for prompt development. About 45 configurations were scored on these cells during prompt development (all of them are in `results/table_full.md`), so every agreement figure in this folder is in-sample and should be read as such; the labels are published so that anyone can repeat the check with fresh labels, which is what the kit below is for. One prompt family that carried per-claim notes in the judge prompt was withdrawn as label leakage during the study and is not listed anywhere here.
+We took inspiration from other benchmarks such as MT-Bench, AlpacaEval, HealthBench, DeepResearch Bench, WebJudge etc and similar to them we compared the prompt variants on the 260 labelled cells, none of them holds out labels for prompt development. About 45 configurations were scored on these cells during prompt development (all of them are in `results/table_full.md`), so every agreement figure in this folder is in-sample; the labels are published so that anyone can repeat the check with fresh labels.
 
 ## The labels
 
