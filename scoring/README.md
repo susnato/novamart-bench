@@ -39,7 +39,7 @@ The judge prompts are in `judges/llm_judge.py` and `judges/prompts/`; scoring an
 The judge version follows from the model name passed to `--judge-model`; nothing else selects it.
 
 | Version | Model string | Prompt | In use |
-|---|---|---|---|---|
+|---|---|---|---|
 | v2 (current) | `claude-haiku-5-5` (Anthropic API) or `bedrock/global.anthropic.claude-haiku-5-5` (Amazon Bedrock) | `judges/prompts/judge_v2_system_prompt.txt`, effort high | since 2026-10-21 |
 | v1 | `gemini-3-flash-preview` | the original prompt in `judges/llm_judge.py`, temperature 0 | 2026-08 to 2026-10-21 |
 
@@ -47,9 +47,9 @@ Any other model string runs the v2 prompt and rule and is reported as a custom j
 
 How the v2 judge was chosen, with the 260 human-labelled cells, the verdicts and per-call outputs of every candidate, and a kit to label your own sample: [`judges/validation/`](judges/validation/README.md).
 
-**What changed on 2026-10-21.** The judge moved from Gemini 3 Flash Preview (a preview model, about $27 of judge calls per verified submission) to Claude Haiku 5.5 (generally available, about $2.70 per verified submission) with a rewritten prompt. On 260 human-labelled claim-book cells, the majority-of-five verdict of the v2 judge agrees with the labels at Cohen's kappa 0.66, against 0.60 for v1; the v2 prompt was tuned on those same cells, so the number is in-sample. Every entry was rescored with v2 and the board was recompiled; the v1 records stay in each entry's folder as `judge_record_gemini-3-flash-preview.json`, `verified_verdicts_gemini-3-flash-preview.json` and `verified_entry_gemini-3-flash-preview.json`, and `reproduce_figures_tables.ipynb` still reads them, so the paper's tables reproduce unchanged. Mean recall before and after, by entry:
+**What changed on 2026-10-21.** The judge moved from Gemini 3 Flash Preview (a preview model, about $27 of judge calls per verified submission) to Claude Haiku 5.5 (generally available, about $2.70 per verified submission) with a rewritten prompt. On 260 human-labelled claim-book cells, the majority-of-five verdict of the v2 judge agrees with the labels at Cohen's kappa 0.66, against 0.60 for v1; the v2 prompt was tuned on those same cells, so the number is in-sample. Every entry was rescored with v2 and the board was recompiled, the v1 records stay in each entry's folder as `judge_record_gemini-3-flash-preview.json`, `verified_verdicts_gemini-3-flash-preview.json` and `verified_entry_gemini-3-flash-preview.json`.
 
-| System | Model | v1 (Gemini) | v2 (Haiku 5.5) |
+| System | Model | v1 Judge | v2 Judge |
 |---|---|---|---|
 | OpenCode 1.18.34 | Claude Fable 5.1 | 75.8 | 77.1 |
 | OpenCode 1.18.34 | Claude Opus 5.5 | 74.5 | 70.6 |
