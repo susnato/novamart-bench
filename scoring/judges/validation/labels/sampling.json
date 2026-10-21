@@ -78,7 +78,7 @@
   "I": 24
  },
  "labelled_total": 260,
- "labelling_order": "Rows within a book were shuffled by the sample seed and labelled as a prefix of that order, books E to I breadth-first; the prefix rule was declared before it applied, so no cell was chosen or skipped by its content.",
+ "labelling_order": "Rows within a book were shuffled by the sample seed and labelled as a prefix of that order, books E to I breadth-first; the prefix rule was fixed before labelling began, so no cell was chosen or skipped because of its content.",
  "fill_draw": {
   "seed": 20261015,
   "date": "2026-10-15",

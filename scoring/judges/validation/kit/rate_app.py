@@ -4,7 +4,7 @@ and saves every verdict to the kit's sheet.csv at once.
 
   python scoring/judges/validation/kit/rate_app.py --kit kit_out [--port 8795]
 
-Blind by construction: it reads books/ (opaque codes), the sheet and claims/; it never reads sealed/.
+The app is blind: it reads books/ (opaque codes), the sheet and claims/, and never reads sealed/.
 Each label is written to the sheet immediately (atomic rewrite), so closing the tab loses nothing.
 Standard library only; the optional `markdown` package gives a nicer book rendering when installed.
 """
@@ -186,7 +186,7 @@ mark{background:#FFE58A;color:#1B2430;padding:0 1px} mark.cur{background:#FF9632
         <button id="next">next</button>
         <button id="nextU" class="primary">next unlabelled</button>
       </div>
-      <div class="hint">Rules: only what the book itself says counts. Any must-not-include point in the book = contradicted. All must-include points present = correct. Some present, important ones missing = partial. Most or all missing = missing. The labels section of scoring/judges/validation/README.md describes the standard the published labels were made with.</div>
+      <div class="hint">Rules: only what the book itself says counts. Any must-not-include point in the book = contradicted. All must-include points present = correct. Some present, important ones missing = partial. Most or all missing = missing. The published labels were made with the rubric in scoring/judges/validation/prompts/v1_system_prompt.txt.</div>
     </div>
   </div>
 </main>

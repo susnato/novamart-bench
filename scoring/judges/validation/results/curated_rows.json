@@ -1,11 +1,11 @@
 [
- {"configuration": "gemini-3-flash-preview__v1", "judge": "Gemini 3 Flash Preview (judge v1, the paper's judge)", "prompt": "v1 release prompt", "status": "preview"},
+ {"configuration": "gemini-3-flash-preview__v1", "judge": "Gemini 3 Flash Preview (judge v1)", "prompt": "v1 release prompt", "status": "preview"},
  {"configuration": "gemini-3-flash-preview__V4", "judge": "Gemini 3 Flash Preview", "prompt": "V4", "status": "preview"},
  {"configuration": "gemini-3-8-flash__v1prompt", "judge": "Gemini 3.8 Flash", "prompt": "v1 release prompt", "status": "GA"},
  {"configuration": "claude-sonnet-5-5__V4", "judge": "Claude Sonnet 5.5", "prompt": "V4", "status": "GA"},
  {"configuration": "claude-haiku-5-5__v1prompt", "judge": "Claude Haiku 5.5", "prompt": "v1 release prompt", "status": "GA"},
  {"configuration": "claude-haiku-5-5__V5", "judge": "Claude Haiku 5.5", "prompt": "V5 (hand-written)", "status": "GA"},
- {"configuration": "claude-haiku-5-5__V5H6", "judge": "Claude Haiku 5.5, selected (judge v2)", "prompt": "V5H6 (reflective rewrite of V5)", "status": "GA", "selected": true},
+ {"configuration": "claude-haiku-5-5__V5H6", "judge": "Claude Haiku 5.5 (judge v2)", "prompt": "V5H6 (reflective rewrite of V5)", "status": "GA", "selected": true},
  {"configuration": "gpt-6-luna__V5", "judge": "GPT-6 Luna", "prompt": "V5", "status": "GA"},
  {"configuration": "gpt-6-luna__V5RL3", "judge": "GPT-6 Luna", "prompt": "V5RL3 (reflective rewrite of V5)", "status": "GA"},
  {"configuration": "gpt-6-1-sol__V3", "judge": "GPT-6.1 Sol", "prompt": "V3", "status": "GA"}

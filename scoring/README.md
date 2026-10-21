@@ -4,7 +4,7 @@ The judge harness behind every reported number. An LLM judge (Claude Haiku 5.5 w
 
 ## Run
 
-Work from the repo root (the directory that contains `scoring/`, `claims/`, and `submissions/`). The judge needs either an Anthropic API key (`ANTHROPIC_API_KEY`; the default model string `claude-haiku-5-5` uses it) or AWS credentials with Amazon Bedrock access (`--judge-model bedrock/global.anthropic.claude-haiku-5-5`; this is the route the maintainer uses for verification). Both routes serve the same model with the same prompt and settings; judge calls are stochastic, so two runs can differ by a claim or two either way, whichever route they use.
+Work from the repo root (the directory that contains `scoring/`, `claims/`, and `submissions/`). The judge needs either an Anthropic API key (`ANTHROPIC_API_KEY`; the default model string `claude-haiku-5-5` uses it) or AWS credentials with Amazon Bedrock access (`--judge-model bedrock/global.anthropic.claude-haiku-5-5`; this is the route the maintainer uses for verification). Both routes serve the same model with the same prompt and settings; judge calls are stochastic, so two runs can differ by a claim or two on either route.
 
 ```bash
 pip install -r setup/requirements.txt
@@ -36,20 +36,20 @@ The judge prompts are in `judges/llm_judge.py` and `judges/prompts/`; scoring an
 
 ## Judge versions
 
-The judge version follows from the model name passed to `--judge-model`; nothing else selects it.
+The judge version is set only by the model name passed to `--judge-model`.
 
 | Version | Model string | Prompt | In use |
 |---|---|---|---|
 | v2 (current) | `claude-haiku-5-5` (Anthropic API) or `bedrock/global.anthropic.claude-haiku-5-5` (Amazon Bedrock) | `judges/prompts/judge_v2_system_prompt.txt`, effort high | since 2026-10-21 |
 | v1 | `gemini-3-flash-preview` | the original prompt in `judges/llm_judge.py`, temperature 0 | 2026-08 to 2026-10-21 |
 
-Any other model string runs the v2 prompt and rule and is reported as a custom judge; fine for experiments, never for a listed number.
+Any other model string runs the v2 prompt and rule and is reported as a custom judge. Custom judges can be used for experiments but never for a listed number.
 
-How the v2 judge was chosen, with the 260 human-labelled cells, the verdicts and per-call outputs of every candidate, and a kit to label your own sample: [`judges/validation/`](judges/validation/README.md).
+[`judges/validation/`](judges/validation/README.md) explains how judge v2 was chosen. It holds the 260 human-labelled cells, every candidate's verdicts, per-call outputs for the summary-table judges, and a kit to label your own sample.
 
-**What changed on 2026-10-21.** The judge moved from Gemini 3 Flash Preview (a preview model, about $27 of judge calls per verified submission) to Claude Haiku 5.5 (generally available, about $2.70 per verified submission) with a rewritten prompt. On 260 human-labelled claim-book cells, the majority-of-five verdict of the v2 judge agrees with the labels at Cohen's kappa 0.66, against 0.60 for v1; the v2 prompt was tuned on those same cells, so the number is in-sample. Every entry was rescored with v2 and the board was recompiled, the v1 records stay in each entry's folder as `judge_record_gemini-3-flash-preview.json`, `verified_verdicts_gemini-3-flash-preview.json` and `verified_entry_gemini-3-flash-preview.json`.
+**What changed on 2026-10-21.** The judge moved from Gemini 3 Flash Preview (a preview model, about $27 of judge calls per verified submission) to Claude Haiku 5.5 (generally available, about $2.70 per verified submission) with a rewritten prompt. On 260 human-labelled claim-book cells, the majority-of-five verdict of judge v2 agrees with the labels at Cohen's kappa 0.66, against 0.60 for v1; the v2 prompt was tuned on those same cells, so the number is in-sample. Every entry was rescored with v2 and the leaderboard was recompiled. The v1 records stay in each entry's folder as `judge_record_gemini-3-flash-preview.json`, `verified_verdicts_gemini-3-flash-preview.json` and `verified_entry_gemini-3-flash-preview.json`.
 
-| System | Model | v1 Judge | v2 Judge |
+| System | Model | v1 judge | v2 judge |
 |---|---|---|---|
 | OpenCode 1.18.34 | Claude Fable 5.1 | 75.8 | 77.1 |
 | OpenCode 1.18.34 | Claude Opus 5.5 | 74.5 | 70.6 |
@@ -63,4 +63,4 @@ How the v2 judge was chosen, with the 260 human-labelled cells, the verdicts and
 | OpenCode 1.18.34 | Gemini 3.8 Flash | 30.1 | 30.1 |
 | OpenCode 1.18.34 | Gemini 3.1 Pro Preview | 1.3 | 7.2 |
 
-Three fixes shipped with the switch: a response that is not a JSON object is asked again (up to two fresh calls) instead of being scored missing; a failed judge worker now aborts the pass instead of dropping that claim from the scorecard; Gemini calls carry a request timeout (5 minutes) so a stalled call is retried instead of hanging a worker.
+Three fixes shipped with the switch: a response that is not a JSON object is re-requested (up to two fresh calls) instead of being scored missing; a failed judge worker now aborts the pass instead of dropping that claim from the scorecard; Gemini calls carry a request timeout (5 minutes) so a stalled call is retried instead of hanging a worker.

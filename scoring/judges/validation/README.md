@@ -1,8 +1,8 @@
 # Judge validation
 
-Every number on the leaderboard is a verdict from an LLM judge: for each of the 51 claims and each book, the judge decides whether the book states the claim (correct), states part of it (partial), misses it (missing) or asserts the opposite (contradicted), and the released verdict is the majority over five independent passes. This folder is the evidence for how good that judge is and how it was chosen. It holds the human labels the judges were measured against, the verdicts of every judge configuration we compared, the per-call outputs behind the summary table, and a kit so that anyone can label their own sample and score the current judge against it.
+Every number on the leaderboard is a verdict from an LLM judge: for each of the 51 claims and each book, the judge decides whether the book states the claim (correct), states part of it (partial), misses it (missing) or asserts the opposite (contradicted), and the released verdict is the majority over five independent passes. This folder shows how the judge was chosen and how well it agrees with a human. It holds the human labels, the verdicts of every judge configuration we compared, the per-call outputs behind the summary table, and a kit to label your own sample and score the current judge against it.
 
-Judge v2 (Claude Haiku 5.5 with `../prompts/judge_v2_system_prompt.txt`, in use since 2026-10-21) was selected with this study. Judge v1 (Gemini 3 Flash Preview with the original prompt, used from 2026-08 to 2026-10-21) is the first row of the table. The study was run on 2026-10-16 to 2026-10-20.
+Judge v2 (Claude Haiku 5.5 with `../prompts/judge_v2_system_prompt.txt`, in use since 2026-10-21) was selected with this study. Judge v1 (Gemini 3 Flash Preview with the original prompt, used from 2026-08 to 2026-10-21) is the first judge row of the table. The study was run on 2026-10-16 to 2026-10-20.
 
 ## Summary
 
@@ -22,21 +22,21 @@ Judge v2 (Claude Haiku 5.5 with `../prompts/judge_v2_system_prompt.txt`, in use 
 | GPT-6.1 Sol | V3 | 0.413 | 75.4% | $8.96 | GA | `bedrock/global.openai.gpt-6.1-sol` |
 <!-- table:end -->
 
-How to read it: Each row is one judge configuration (a model and a prompt) run five times over the same 260 human-labelled cells; its verdict per cell is the majority of the five passes, ties to the worse label, as on the leaderboard. Kappa is Cohen's kappa against the human label on the binary the leaderboard uses, correct versus not correct, and raw agreement is the share of cells where the two agree on it. Cost per verified submission is the configuration's mean cost per call times the 765 calls of one verified entry (3 books x 51 claims x 5 passes), at the list prices in `prompts/price_table.json`.
+Each row of the table is one judge configuration (a model and a prompt) run five times over the same 260 human-labelled cells; its verdict per cell is the majority of the five passes, ties to the worse label, as on the leaderboard. Kappa is Cohen's kappa against the human label on the binary the leaderboard uses, correct versus not correct, and raw agreement is the share of cells where the two agree on it. Cost per verified submission is the configuration's mean cost per call times the 765 calls of one verified entry (3 books x 51 claims x 5 passes), at the list prices in `prompts/price_table.json`.
 
 ## Every figure here is in-sample
 
-We took inspiration from other benchmarks such as MT-Bench, AlpacaEval, HealthBench, DeepResearch Bench, WebJudge etc and similar to them we compared the prompt variants on the 260 labelled cells, none of them holds out labels for prompt development. About 45 configurations were scored on these cells during prompt development (all of them are in `results/table_full.md`), so every agreement figure in this folder is in-sample; the labels are published so that anyone can repeat the check with fresh labels.
+Like MT-Bench, AlpacaEval, HealthBench, DeepResearch Bench and WebJudge, none of which holds out labels for prompt development, we compared the prompt variants on the same 260 labelled cells. 45 configurations besides judge v1 were scored on these cells during prompt development (all of them are in `results/table_full.md`), so every agreement figure in this folder is in-sample; the labels are published so that anyone can repeat the check with fresh labels.
 
 ## The labels
 
 The population is the 459 claim-book cells of the paper's three entries (Claude Code, Cursor and Codex CLI, three books each, 51 claims). 300 cells were sampled with seed 20261010, stratified by the v1 judge's majority verdict so that partial and missing cells are over-represented, with every cell on which the five v1 passes disagreed included. Books and cells were given opaque codes, the mapping was sealed, and the human read each book once and labelled its cells with the rubric the v1 judge used (`prompts/v1_system_prompt.txt`), blind to the entry and to the judge's verdicts, between 2026-10-11 and 2026-10-16. 260 of the 300 cells were labelled, 20 to 36 per book; the sampling record and the 40 unlabelled cells are in `labels/sampling.json`, and the labels, with the sampling judge's five votes per cell, in `labels/labels.csv`.
 
-There is one rater, so a second labeller's agreement with the first is not known; the kit exists so that this can be measured. All nine books come from the three August entries, so no book written by a later system is in the sample.
+The labels come from one rater, so inter-rater agreement has not been measured. A second rater can measure it with the kit. All nine books come from the three August entries; none comes from a later system.
 
 ## The judge configurations
 
-Every candidate was run with the same claims, the same nine books, five passes, and the settings below, through the same study driver; each call's model string, parameters, prompt hash, token usage and cost were recorded. No provider returned a dated model snapshot, so the model strings in the table are the only version pin there is, together with the run dates (2026-10-16 to 2026-10-20) in `results/configurations.json`.
+Every candidate was run with the same claims, the same nine books, five passes, and the settings below, through the same study driver; each call's model string, parameters, prompt hash, token usage and cost were recorded. No provider returned a dated model snapshot, so the only version pins are the model strings in the table and the run dates (2026-10-16 to 2026-10-20) in `results/configurations.json`.
 
 | Setting | Gemini rows | Claude rows | OpenAI rows |
 |---|---|---|---|
@@ -60,7 +60,7 @@ Prompt lineage, all files in `prompts/` except the selected one, which is the sh
 | V5 | hand-written; introduces the claim's main finding as the thing to rate, verdict from whether the book states it in full, in part or not at all |
 | V6, V7, V9, V10 | hand-written variants of V5 (tighter rules; a global rule on reading the book as a map; a taxonomy of point kinds) |
 | V5H1 to V5H8, V5R1 to V5R4 | rewrites of V5's rules section by a reflective loop (`reflect_loop.py`, our own script in the style of GEPA and RART: reflect on the disagreement cells, rewrite the rules, keep the best); Claude Sonnet 5.5 as the reflector; the H loop saw its failed rewrites, the R loop did not |
-| V5H6 | round 6 of the H loop, the selected prompt |
+| V5H6 | round 6 of the H loop, the v2 prompt |
 | V5RL1 to V5RL6 | the same loop seeded on GPT-6 Luna |
 | effortmax | the v1 prompt at the provider's maximum reasoning setting |
 
@@ -85,11 +85,11 @@ kit/                            the scripts: compile_table.py, paired_bootstrap.
                                 merge_labels.py, votes_from_scorecards.py
 ```
 
-Every number in the tables is recomputable from `labels/labels.csv` and `results/votes.csv` alone; the outputs folder is the audit trail behind the votes, for reading why a judge decided a cell the way it did. The v1 row's per-call outputs beyond the verdict were not kept in the public record.
+Every number in the tables is recomputable from `labels/labels.csv` and `results/votes.csv` alone; the outputs folder shows why each judge call gave the verdict it did. The v1 row's per-call outputs beyond the verdict were not kept in the public record.
 
 ## Label your own sample
 
-The kit builds a blind sample from any entries on the board, serves the books and the claims side by side in the browser, and scores your labels against the judge that produced the entries' records. Thirty cells from two entries is about ninety minutes, most of it reading the two books once.
+The kit builds a blind sample from any entries on the leaderboard, serves the books and the claims side by side in the browser, and scores your labels against the judge that produced the entries' records. Thirty cells from two entries is about ninety minutes, most of it reading the two books once.
 
 ```bash
 python scoring/judges/validation/kit/build_kit.py --out kit_out --entries claude-code-2.1.252 cursor-3.15.6 --n 30 --seed 1
@@ -97,4 +97,4 @@ python scoring/judges/validation/kit/rate_app.py --kit kit_out        # open htt
 python scoring/judges/validation/kit/analyze.py --kit kit_out          # when you are done: agreement with the current judge, with a bootstrap CI
 ```
 
-The kit is blind by construction: books and cells carry opaque codes and the mapping sits in `kit_out/sealed/`, which only `analyze.py` opens. Label with the rubric shown in the app. Pass `--judge-record judge_record_gemini-3-flash-preview.json` to `build_kit.py` to stratify on the v1 judge instead. `merge_labels.py` turns a finished kit into the `labels.csv` schema; if you send us that file in a pull request we will report the agreement between your labels and the published labels on the shared cells, which is the inter-rater number this folder is missing.
+The kit is blind: books and cells carry opaque codes and the mapping sits in `kit_out/sealed/`, which only `analyze.py` opens. Label with the rubric shown in the app. Pass `--judge-record judge_record_gemini-3-flash-preview.json` to `build_kit.py` to stratify on the v1 judge instead. `merge_labels.py` turns a finished kit into the `labels.csv` schema; if you send us that file in a pull request we will report the agreement between your labels and the published labels on the shared cells. That gives the inter-rater agreement, which has not been measured yet.
