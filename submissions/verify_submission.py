@@ -4,8 +4,9 @@
   python submissions/verify_submission.py --submission submissions/<dir>  # full verification:
         5 judge passes per book (scoring score-book), majority verdicts, stats
 
-Judge credentials: GEMINI_API_KEY, or Vertex AI via VERTEX_AI_PROJECT_ID with
-gcloud application-default credentials. Stats: mean claim recall over the three
+Judge: the benchmark judge (Claude Haiku 5.5, prompt v2) through Amazon Bedrock, which is the
+maintainer's verification route; pass --judge-model to use another route or the v1 judge.
+Credentials: AWS for bedrock/ models, ANTHROPIC_API_KEY for the Anthropic API. Stats: mean claim recall over the three
 runs, claim-level bootstrap 95% CI (10,000 resamples, seed 0), pass^3.
 """
 import argparse, glob, json, os, subprocess, sys
@@ -15,6 +16,7 @@ sys.path.insert(0, ROOT)  # so the scoring package imports from any cwd
 from scoring.stats import majority, stats as shared_stats
 
 PR_DATE = None  # set from --date: the submission PR's open date
+JUDGE_MODEL = "bedrock/global.anthropic.claude-haiku-5-5"  # verification route; --judge-model overrides
 SYSTEMS = {"Claude Code": "claude-code-2.1.252", "Cursor": "cursor-3.15.6", "Codex CLI": "codex-cli-0.120.0"}
 
 def stats(matrix):
@@ -34,13 +36,16 @@ def score_once(book_path):
     out_root = os.path.join(ROOT, "eval-run-outputs")
     before = set(glob.glob(os.path.join(out_root, "*")))
     r = subprocess.run([sys.executable, "-m", "scoring.cli", "score-book",
-                        "--gold", os.path.join(ROOT, "claims"), "--book", book_path],
+                        "--gold", os.path.join(ROOT, "claims"), "--book", book_path, "--judge-model", JUDGE_MODEL],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         sys.exit(f"score-book failed: {r.stderr[-500:]}")
     new = sorted(set(glob.glob(os.path.join(out_root, "*"))) - before)
     card = json.load(open(os.path.join(new[-1], "scorecard.json")))
+    JUDGE_SEEN.update({k: card.get(k) for k in ("judge_model", "judge_name", "judge_prompt_sha256")})
     return {c["claim_id"]: c["verdict"] for c in card["claim_results"]}
+
+JUDGE_SEEN = {}  # judge identity as written into the scorecards of this verification
 
 def verify_submission(subdir):
     books = sorted(glob.glob(os.path.join(subdir, "book_r*.md")))
@@ -54,8 +59,12 @@ def verify_submission(subdir):
                                      "verdicts": p} for i, p in enumerate(passes)}
         per_book.append({cid: majority([p[cid] for p in passes]) == "correct" for cid in claims})
         print(f"  {os.path.basename(b)}: 5 passes done")
+    import datetime
     json.dump({"protocol": "released verdict per claim = majority over 5 passes, ties to the worse verdict (correct>partial>missing>contradicted)",
-               "judge_model": "gemini-3-flash-preview", "books": record},
+               "judge_model": JUDGE_SEEN.get("judge_model", JUDGE_MODEL),
+               "judge": {"name": JUDGE_SEEN.get("judge_name"), "prompt_sha256": JUDGE_SEEN.get("judge_prompt_sha256"),
+                         "verified_at": datetime.date.today().isoformat()},
+               "books": record},
               open(os.path.join(subdir, "judge_record.json"), "w"), indent=1)
     claims = sorted(per_book[0])
     matrix = {cid: [pb[cid] for pb in per_book] for cid in claims}
@@ -109,16 +118,19 @@ def compare_to_board(name, matrix):
             print(f"| {other} | {metric} | {pt:+.1f} | [{lo:+.1f}, {hi:+.1f}] | {res} |")
 
 def main():
+    global PR_DATE, JUDGE_MODEL
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--from-verdicts", metavar="SYSTEM")
     g.add_argument("--submission", metavar="DIR")
+    ap.add_argument("--judge-model", default=None, help=f"judge model string (default {JUDGE_MODEL})")
     ap.add_argument("--date", metavar="YYYY-MM-DD", default=None,
                     help="REQUIRED with --submission: the submission PR's open date, which becomes the canonical date on the leaderboard")
     a = ap.parse_args()
     if a.submission and not a.date:
         ap.error("--date is required with --submission: pass the submission PR's open date (canonical on the leaderboard)")
-    global PR_DATE; PR_DATE = a.date
+    PR_DATE = a.date
+    if a.judge_model: JUDGE_MODEL = a.judge_model
     entry = from_verdicts(a.from_verdicts) if a.from_verdicts else verify_submission(a.submission)
     print(json.dumps(entry, indent=1))
     if a.from_verdicts:

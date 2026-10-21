@@ -1,0 +1,1012 @@
+{
+ "gemini-3-flash-preview__v1": {
+  "study_slug": "baseline",
+  "model": "gemini-3-flash-preview",
+  "model_id": "gemini-3-flash-preview",
+  "provider": "gemini",
+  "prompt": "v1",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "thinking": "model default",
+   "max_output_tokens": 10000,
+   "temperature": 0.0,
+   "json_mode": "response_mime_type"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-08-28",
+   "2026-08-28"
+  ],
+  "calls": null,
+  "cost_usd": null,
+  "cost_per_call_from": "gemini-3-flash-preview__V5",
+  "votes_source": "the paper's verdicts: submissions/<entry>/judge_record_gemini-3-flash-preview.json",
+  "outputs": null,
+  "note": "The released v1 judge as it scored the paper's entries in August 2026. Per-call outputs beyond the verdict were not kept in the public record; usage and cost were not logged by the 2026-08 harness."
+ },
+ "claude-haiku-5-5__v1prompt": {
+  "study_slug": "claude-haiku-5-5",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "v1",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1313,
+  "cost_usd": 3.4425,
+  "outputs": "outputs/claude-haiku-5-5__v1prompt/"
+ },
+ "claude-haiku-5-5__V10": {
+  "study_slug": "claude-haiku-5-5__V10",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V10",
+  "prompt_file": "prompts/V10_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1303,
+  "cost_usd": 4.7534,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V3": {
+  "study_slug": "claude-haiku-5-5__V3",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V3",
+  "prompt_file": "prompts/V3_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1329,
+  "cost_usd": 3.5661,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V4": {
+  "study_slug": "claude-haiku-5-5__V4",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V4",
+  "prompt_file": "prompts/V4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1303,
+  "cost_usd": 4.2923,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5": {
+  "study_slug": "claude-haiku-5-5__V5",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5",
+  "prompt_file": "prompts/V5_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1303,
+  "cost_usd": 4.4925,
+  "outputs": "outputs/claude-haiku-5-5__V5/"
+ },
+ "claude-haiku-5-5__V5H1": {
+  "study_slug": "claude-haiku-5-5__V5H1",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H1",
+  "prompt_file": "prompts/V5H1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.8987,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5H2": {
+  "study_slug": "claude-haiku-5-5__V5H2",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H2",
+  "prompt_file": "prompts/V5H2_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9014,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5H3": {
+  "study_slug": "claude-haiku-5-5__V5H3",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H3",
+  "prompt_file": "prompts/V5H3_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9019,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5H4": {
+  "study_slug": "claude-haiku-5-5__V5H4",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H4",
+  "prompt_file": "prompts/V5H4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 372,
+  "cost_usd": 1.2942,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5H5": {
+  "study_slug": "claude-haiku-5-5__V5H5",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H5",
+  "prompt_file": "prompts/V5H5_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9031,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5H6": {
+  "study_slug": "claude-haiku-5-5__V5H6",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H6",
+  "prompt_file": "../prompts/judge_v2_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-20"
+  ],
+  "calls": 1304,
+  "cost_usd": 4.6288,
+  "outputs": "outputs/claude-haiku-5-5__V5H6/"
+ },
+ "claude-haiku-5-5__V5H7": {
+  "study_slug": "claude-haiku-5-5__V5H7",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H7",
+  "prompt_file": "prompts/V5H7_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9115,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5H8": {
+  "study_slug": "claude-haiku-5-5__V5H8",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5H8",
+  "prompt_file": "prompts/V5H8_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 261,
+  "cost_usd": 0.904,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5R1": {
+  "study_slug": "claude-haiku-5-5__V5R1",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5R1",
+  "prompt_file": "prompts/V5R1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.8981,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5R2": {
+  "study_slug": "claude-haiku-5-5__V5R2",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5R2",
+  "prompt_file": "prompts/V5R2_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 263,
+  "cost_usd": 0.9158,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5R3": {
+  "study_slug": "claude-haiku-5-5__V5R3",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5R3",
+  "prompt_file": "prompts/V5R3_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9013,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V5R4": {
+  "study_slug": "claude-haiku-5-5__V5R4",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V5R4",
+  "prompt_file": "prompts/V5R4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 261,
+  "cost_usd": 0.9063,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V6": {
+  "study_slug": "claude-haiku-5-5__V6",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V6",
+  "prompt_file": "prompts/V6_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1302,
+  "cost_usd": 4.3099,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V7": {
+  "study_slug": "claude-haiku-5-5__V7",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V7",
+  "prompt_file": "prompts/V7_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1302,
+  "cost_usd": 4.6128,
+  "outputs": null
+ },
+ "claude-haiku-5-5__V9": {
+  "study_slug": "claude-haiku-5-5__V9",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "V9",
+  "prompt_file": "prompts/V9_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1301,
+  "cost_usd": 4.5962,
+  "outputs": null
+ },
+ "claude-haiku-5-5__effortmax": {
+  "study_slug": "claude-haiku-5-5__effortmax",
+  "model": "bedrock/global.anthropic.claude-haiku-5-5",
+  "model_id": "global.anthropic.claude-haiku-5-5",
+  "provider": "bedrock",
+  "prompt": "effortmax",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "effort": "max",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "calls": 1581,
+  "cost_usd": 13.1513,
+  "outputs": null
+ },
+ "claude-sonnet-5-5__v1prompt": {
+  "study_slug": "claude-sonnet-5-5",
+  "model": "bedrock/global.anthropic.claude-sonnet-5-5",
+  "model_id": "global.anthropic.claude-sonnet-5-5",
+  "provider": "bedrock",
+  "prompt": "v1",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1438,
+  "cost_usd": 65.2985,
+  "outputs": null
+ },
+ "claude-sonnet-5-5__V4": {
+  "study_slug": "claude-sonnet-5-5__V4",
+  "model": "bedrock/global.anthropic.claude-sonnet-5-5",
+  "model_id": "global.anthropic.claude-sonnet-5-5",
+  "provider": "bedrock",
+  "prompt": "V4",
+  "prompt_file": "prompts/V4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "prompt"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1333,
+  "cost_usd": 70.0426,
+  "outputs": "outputs/claude-sonnet-5-5__V4/"
+ },
+ "gemini-3-8-flash__v1prompt": {
+  "study_slug": "gemini-3-8-flash",
+  "model": "gemini-3.8-flash",
+  "model_id": "gemini-3.8-flash",
+  "provider": "gemini",
+  "prompt": "v1",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": 0.0,
+   "json_mode": "response_mime_type"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1300,
+  "cost_usd": 27.4254,
+  "outputs": "outputs/gemini-3-8-flash__v1prompt/"
+ },
+ "gemini-3-flash-preview__V4": {
+  "study_slug": "gemini-3-flash-preview__V4",
+  "model": "gemini-3-flash-preview",
+  "model_id": "gemini-3-flash-preview",
+  "provider": "gemini",
+  "prompt": "V4",
+  "prompt_file": "prompts/V4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": 0.0,
+   "json_mode": "response_mime_type"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1543,
+  "cost_usd": 53.5286,
+  "outputs": "outputs/gemini-3-flash-preview__V4/"
+ },
+ "gemini-3-flash-preview__V5": {
+  "study_slug": "gemini-3-flash-preview__V5",
+  "model": "gemini-3-flash-preview",
+  "model_id": "gemini-3-flash-preview",
+  "provider": "gemini",
+  "prompt": "V5",
+  "prompt_file": "prompts/V5_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": 0.0,
+   "json_mode": "response_mime_type"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 261,
+  "cost_usd": 9.1319,
+  "outputs": null
+ },
+ "gpt-6-1-sol__v1prompt": {
+  "study_slug": "gpt-6-1-sol",
+  "model": "bedrock/global.openai.gpt-6.1-sol",
+  "model_id": null,
+  "provider": null,
+  "prompt": "v1",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": null,
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1348,
+  "cost_usd": 18.4894,
+  "outputs": null
+ },
+ "gpt-6-1-sol__V3": {
+  "study_slug": "gpt-6-1-sol__V3",
+  "model": "bedrock/global.openai.gpt-6.1-sol",
+  "model_id": "global.openai.gpt-6.1-sol",
+  "provider": "bedrock",
+  "prompt": "V3",
+  "prompt_file": "prompts/V3_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1556,
+  "cost_usd": 18.2298,
+  "outputs": "outputs/gpt-6-1-sol__V3/"
+ },
+ "gpt-6-luna__v1prompt": {
+  "study_slug": "gpt-6-luna",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "v1",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1300,
+  "cost_usd": 1.0875,
+  "outputs": null
+ },
+ "gpt-6-luna__V1": {
+  "study_slug": "gpt-6-luna__V1",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V1",
+  "prompt_file": "prompts/v1_system_prompt.txt (plus prompts/variants_V1_V2.json)",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1300,
+  "cost_usd": 1.1511,
+  "outputs": null
+ },
+ "gpt-6-luna__V10": {
+  "study_slug": "gpt-6-luna__V10",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V10",
+  "prompt_file": "prompts/V10_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1301,
+  "cost_usd": 3.1884,
+  "outputs": null
+ },
+ "gpt-6-luna__V2": {
+  "study_slug": "gpt-6-luna__V2",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V2",
+  "prompt_file": "prompts/v1_system_prompt.txt (plus prompts/variants_V1_V2.json)",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1313,
+  "cost_usd": 1.0755,
+  "outputs": null
+ },
+ "gpt-6-luna__V3": {
+  "study_slug": "gpt-6-luna__V3",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V3",
+  "prompt_file": "prompts/V3_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1300,
+  "cost_usd": 1.2045,
+  "outputs": null
+ },
+ "gpt-6-luna__V4": {
+  "study_slug": "gpt-6-luna__V4",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V4",
+  "prompt_file": "prompts/V4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-16"
+  ],
+  "calls": 1559,
+  "cost_usd": 3.3113,
+  "outputs": null
+ },
+ "gpt-6-luna__V5": {
+  "study_slug": "gpt-6-luna__V5",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5",
+  "prompt_file": "prompts/V5_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1300,
+  "cost_usd": 2.9997,
+  "outputs": "outputs/gpt-6-luna__V5/"
+ },
+ "gpt-6-luna__V5RL1": {
+  "study_slug": "gpt-6-luna__V5RL1",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5RL1",
+  "prompt_file": "prompts/V5RL1_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9397,
+  "outputs": null
+ },
+ "gpt-6-luna__V5RL2": {
+  "study_slug": "gpt-6-luna__V5RL2",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5RL2",
+  "prompt_file": "prompts/V5RL2_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9711,
+  "outputs": null
+ },
+ "gpt-6-luna__V5RL3": {
+  "study_slug": "gpt-6-luna__V5RL3",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5RL3",
+  "prompt_file": "prompts/V5RL3_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1300,
+  "cost_usd": 3.5143,
+  "outputs": "outputs/gpt-6-luna__V5RL3/"
+ },
+ "gpt-6-luna__V5RL4": {
+  "study_slug": "gpt-6-luna__V5RL4",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5RL4",
+  "prompt_file": "prompts/V5RL4_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9521,
+  "outputs": null
+ },
+ "gpt-6-luna__V5RL5": {
+  "study_slug": "gpt-6-luna__V5RL5",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5RL5",
+  "prompt_file": "prompts/V5RL5_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9561,
+  "outputs": null
+ },
+ "gpt-6-luna__V5RL6": {
+  "study_slug": "gpt-6-luna__V5RL6",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V5RL6",
+  "prompt_file": "prompts/V5RL6_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 1,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 260,
+  "cost_usd": 0.9606,
+  "outputs": null
+ },
+ "gpt-6-luna__V6": {
+  "study_slug": "gpt-6-luna__V6",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V6",
+  "prompt_file": "prompts/V6_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1300,
+  "cost_usd": 2.8402,
+  "outputs": null
+ },
+ "gpt-6-luna__V7": {
+  "study_slug": "gpt-6-luna__V7",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V7",
+  "prompt_file": "prompts/V7_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1300,
+  "cost_usd": 3.1831,
+  "outputs": null
+ },
+ "gpt-6-luna__V9": {
+  "study_slug": "gpt-6-luna__V9",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "V9",
+  "prompt_file": "prompts/V9_system_prompt.txt",
+  "request_params": {
+   "effort": "high",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-17",
+   "2026-10-17"
+  ],
+  "calls": 1300,
+  "cost_usd": 3.3223,
+  "outputs": null
+ },
+ "gpt-6-luna__effortmax": {
+  "study_slug": "gpt-6-luna__effortmax",
+  "model": "bedrock/global.openai.gpt-6-luna",
+  "model_id": "global.openai.gpt-6-luna",
+  "provider": "bedrock",
+  "prompt": "effortmax",
+  "prompt_file": "prompts/v1_system_prompt.txt",
+  "request_params": {
+   "effort": "max",
+   "max_output_tokens": 32000,
+   "temperature": null,
+   "json_mode": "json_schema"
+  },
+  "passes": 5,
+  "run_dates": [
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "calls": 1300,
+  "cost_usd": 2.8859,
+  "outputs": null
+ }
+}

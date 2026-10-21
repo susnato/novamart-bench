@@ -1,0 +1,17 @@
+{
+ "a": "claude-haiku-5-5__V5H6",
+ "b": "claude-haiku-5-5__V5",
+ "cells": 260,
+ "kappa_a": 0.6625463535228678,
+ "kappa_b": 0.6143386897404203,
+ "diff": 0.04820766378244756,
+ "ci95": [
+  -0.012406069489918958,
+  0.11185208849896933
+ ],
+ "share_diff_positive": 0.9341,
+ "cells_same_majority_verdict": 233,
+ "resamples": 10000,
+ "seed": 0,
+ "reading": "interval excludes zero: a and b differ on this set; interval includes zero: same agreement within noise"
+}

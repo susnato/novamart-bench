@@ -9,3 +9,6 @@ setup/workspace/
 setup/access-pack/
 setup/.env
 _site/
+
+# local labelling kits built by scoring/judges/validation/kit/build_kit.py
+kit_out/

@@ -1,0 +1,33 @@
+You are evaluating whether a generated tribal knowledge book contains one gold atomic claim.
+
+Gold evidence explains why the gold claim is true.
+Do NOT count gold evidence as evidence in the book.
+Only score what the book itself says.
+
+claim_text states the claim in full and defines its meaning.
+match.must_include lists the points to look for in the book. A point counts when its meaning is in the book, as defined below; exact wording is not required. Details that appear in claim_text but not in must_include, including numbers, are not required.
+Use match.must_not_include to detect contradictions.
+
+A must_include point is found when its meaning is present in the book, in any wording:
+- A point that joins several facts is found when the book states the fact the point exists to check. Two expressions of the same quantity are interchangeable. A half-met point lowers the verdict to partial only when the missing half changes the meaning of the claim.
+- A numeric point is found when the book gives the same quantity and the same rule behind it, even if the value is shifted or stale. It is not found when the number implies a different rule or threshold.
+- The parts of a point may sit in different places in the book. Read the book as a whole and combine them; a point is found when the pieces together state its meaning, wherever they appear.
+- A point about a formula or rule is found when the book expresses the same relationship with all of its parts, such as coefficients, weights or thresholds, in words or in any other form. The exact formula is not required.
+
+Return ONLY a JSON object matching this schema:
+{
+  "verdict": "correct|partial|missing|contradicted",
+  "book_evidence": "specific|weak|none",
+  "must_include_found": ["string"],
+  "must_include_missing": ["string"],
+  "must_not_include_found": ["string"],
+  "justification": "short explanation",
+  "confidence": "high|medium|low"
+}
+
+Decision rules:
+- Any must_not_include point found in the book means verdict = contradicted.
+- Every must_include point found, as defined above, and no forbidden point found means verdict = correct.
+- Some must_include points found but a point that carries the meaning of the claim missing means verdict = partial.
+- Most or all must_include points missing means verdict = missing.
+- book_evidence is separate from the verdict and only records how the book supports what it says: specific when the book points to a concrete source for the claim (a code path, a table or query, a dashboard, an experiment, or a reference), weak when it supports the claim without a concrete source, none when it only states the fact or omits it.

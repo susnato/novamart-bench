@@ -6,6 +6,13 @@
 
 A research benchmark from [Pavo](https://www.pavoai.com/).
 
+## 📰 News
+
+- **2026-10-21**: Judge v2. The leaderboard judge is now Claude Haiku 5.5 with a rewritten judge prompt, replacing Gemini 3 Flash Preview (judge v1), at about a tenth of the judge cost per verified submission (about $2.70 against about $27). Agreement with the 260 human-labelled cells is no lower (Cohen's kappa 0.66 against 0.60 for v1). Every entry was rescored and the leaderboard recompiled; each entry keeps its v1 record. The per-entry scores before and after, and the reasons for the switch, are in [Judge versions](scoring/README.md#judge-versions).
+- **2026-10-21**: Judge validation released: 260 human-labelled claim-book cells, the verdicts of every judge configuration we compared (46), per-call outputs for the configurations in the summary table, and a kit to label your own sample. See [`scoring/judges/validation/`](scoring/judges/validation/README.md).
+- **2026-10-06**: Public release: the estate on Hugging Face, the application repo, this repo and [novamartbench.com](https://novamartbench.com). Eleven entries at launch: the paper's three baselines and eight OpenCode runs.
+- **2026-09-29**: The paper is accepted at the 2nd Workshop on Agentic AI Benchmarks and Applications for Enterprise Tasks (AABA4ET), NeurIPS 2026.
+
 ## 👋 Overview
 
 ![The NovaMart pipeline](./website/pipeline.png)
@@ -35,7 +42,7 @@ Every order and payment traces back to a real browsing session in the replayed R
 | Path                             | Contents                                                                                                                                                                                                                                                                                                                                         |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `claims/`                        | the 51 gold claims (YAML): claim text, recomputable evidence chain, scoring rubric                                                                                                                                                                                                                                                               |
-| `scoring/`                       | the scoring harness (LLM judge, majority-of-five protocol)                                                                                                                                                                                                                                                                                       |
+| `scoring/`                       | the scoring harness (LLM judge, majority-of-five protocol), and, under `judges/validation/`, the judge validation data: human labels, every candidate judge's verdicts, per-call outputs for the summary-table judges, and the labelling kit                                                                                                                                                                                                                                                                                       |
 | `default_prompts/`               | the frozen brief given to every agent, verbatim                                                                                                                                                                                                                                                                                                  |
 | `setup/`                         | one-command environment setup: the local docker compose stack (BigQuery emulator, seeded Redash, estate Postgres) and the real-BigQuery loader, plus the access check (`verify_access.py`) and the emulator parity harness (`setup/parity/`)                                                                                                     |
 | `submissions/`                   | everything the leaderboard is built from: one folder per entry (baselines included) with its books, `judge_record.json` (the raw five-pass judge record, all four verdict labels), `verified_verdicts.json` (the majority verdicts) and `verified_entry.json` (the entry's statistics); plus the submission template and the verification script |
@@ -121,7 +128,7 @@ your-agent run --prompt-filepath "~/novamart-estate/access-pack/rendered_novamar
 
 See [`docs/evaluation.md`](docs/evaluation.md) for the full protocol, metric definitions, and the other notes.
 
-We use `gemini-3-flash-preview` model for the LLM Judge, the judge needs Gemini credentials: either `GEMINI_API_KEY`, or Vertex AI via `VERTEX_AI_PROJECT_ID` with gcloud application-default credentials. From the repo root:
+The LLM judge is Claude Haiku 5.5 with the benchmark's judge prompt (judge v2, see [`scoring/README.md`](scoring/README.md)). Self-scoring needs either `ANTHROPIC_API_KEY` (model `claude-haiku-5-5`, the default) or AWS credentials with Bedrock access (`--judge-model bedrock/global.anthropic.claude-haiku-5-5`, the route the maintainer uses for verification). From the repo root:
 
 ```bash
 # make sure claims are in valid format

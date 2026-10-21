@@ -6,7 +6,7 @@
  },
  "CU-04": {
   "book_r1": true,
-  "book_r2": true,
+  "book_r2": false,
   "book_r3": true
  },
  "DB-01": {
@@ -36,7 +36,7 @@
  },
  "HB-02": {
   "book_r1": true,
-  "book_r2": false,
+  "book_r2": true,
   "book_r3": true
  },
  "HB-06": {
@@ -66,12 +66,12 @@
  },
  "MLB-03": {
   "book_r1": false,
-  "book_r2": true,
+  "book_r2": false,
   "book_r3": false
  },
  "MLD-01": {
   "book_r1": true,
-  "book_r2": false,
+  "book_r2": true,
   "book_r3": false
  },
  "MLD-02": {
@@ -86,7 +86,7 @@
  },
  "NB-02": {
   "book_r1": false,
-  "book_r2": true,
+  "book_r2": false,
   "book_r3": true
  },
  "NB-03": {
@@ -95,7 +95,7 @@
   "book_r3": true
  },
  "NB-05": {
-  "book_r1": false,
+  "book_r1": true,
   "book_r2": true,
   "book_r3": true
  },
@@ -120,13 +120,13 @@
   "book_r3": false
  },
  "NB-18": {
-  "book_r1": false,
+  "book_r1": true,
   "book_r2": true,
-  "book_r3": false
+  "book_r3": true
  },
  "NB-21": {
   "book_r1": false,
-  "book_r2": true,
+  "book_r2": false,
   "book_r3": false
  },
  "NB-22": {
@@ -170,14 +170,14 @@
   "book_r3": true
  },
  "OP-04": {
-  "book_r1": false,
-  "book_r2": false,
+  "book_r1": true,
+  "book_r2": true,
   "book_r3": false
  },
  "PR-01": {
   "book_r1": true,
   "book_r2": false,
-  "book_r3": true
+  "book_r3": false
  },
  "PR-03": {
   "book_r1": false,
@@ -186,8 +186,8 @@
  },
  "RS-01": {
   "book_r1": true,
-  "book_r2": false,
-  "book_r3": false
+  "book_r2": true,
+  "book_r3": true
  },
  "RS-02": {
   "book_r1": true,
@@ -196,7 +196,7 @@
  },
  "RS-03": {
   "book_r1": true,
-  "book_r2": false,
+  "book_r2": true,
   "book_r3": true
  },
  "RS-04": {
@@ -205,9 +205,9 @@
   "book_r3": true
  },
  "RS-06": {
-  "book_r1": true,
-  "book_r2": true,
-  "book_r3": true
+  "book_r1": false,
+  "book_r2": false,
+  "book_r3": false
  },
  "RS-07": {
   "book_r1": true,
@@ -216,7 +216,7 @@
  },
  "XM-01": {
   "book_r1": true,
-  "book_r2": true,
+  "book_r2": false,
   "book_r3": true
  },
  "XM-02": {
@@ -245,13 +245,13 @@
   "book_r3": false
  },
  "XW-04": {
-  "book_r1": false,
-  "book_r2": true,
-  "book_r3": false
- },
- "XW-05": {
   "book_r1": true,
   "book_r2": true,
+  "book_r3": true
+ },
+ "XW-05": {
+  "book_r1": false,
+  "book_r2": false,
   "book_r3": false
  }
 }

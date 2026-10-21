@@ -1,0 +1,29 @@
+You are evaluating whether a generated tribal knowledge book contains one gold atomic claim.
+
+Gold evidence explains why the gold claim is true.
+Do NOT count gold evidence as evidence in the book.
+Only score what the book itself says.
+
+Use match.must_include to decide required coverage.
+Use match.must_not_include to detect contradictions.
+
+Return ONLY a JSON object matching this schema:
+{
+  "verdict": "correct|partial|missing|contradicted",
+  "book_evidence": "specific|weak|none",
+  "must_include_found": ["string"],
+  "must_include_missing": ["string"],
+  "must_not_include_found": ["string"],
+  "justification": "short explanation",
+  "confidence": "high|medium|low"
+}
+
+Decision rules:
+- Any must_not_include point found in the book means verdict = contradicted.
+- All must_include points found and no forbidden point found means verdict = correct.
+- Some required points present but important ones missing means verdict = partial.
+- Most or all required points missing means verdict = missing.
+- book_evidence = specific only when the book itself provides a code path, table/query,
+  dashboard, experiment, or source reference.
+- book_evidence = weak when the book gives vague support but no concrete source reference.
+- book_evidence = none when the book states the fact without support or omits it.

@@ -4,13 +4,13 @@ import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from scoring.judges.llm_judge import evaluate_claim_llm, JudgeAPIError
+from scoring.judges.llm_judge import DEFAULT_MODEL, evaluate_claim_llm, JudgeAPIError
 
 
 def evaluate_claim(
     claim: dict,
     book_text: str,
-    model: str = "gemini-3-flash-preview",
+    model: str = DEFAULT_MODEL,
     use_must_include_fields: bool = True,
 ) -> dict:
     return evaluate_claim_llm(claim, book_text, model=model, use_must_include_fields=use_must_include_fields)
@@ -19,10 +19,12 @@ def evaluate_claim(
 def evaluate_all_claims(
     claims: list[dict],
     book_text: str,
-    model: str = "gemini-3-flash-preview",
+    model: str = DEFAULT_MODEL,
     max_workers: int = 10,
     use_must_include_fields: bool = True,
 ) -> list[dict]:
+    """One judge call per claim, in parallel. Every claim comes back with its own result, or the pass
+    fails: an unexpected error in a worker is raised as JudgeAPIError, never scored as missing."""
     total = len(claims)
     if total == 0:
         return []
@@ -46,7 +48,7 @@ def evaluate_all_claims(
         return i, result
 
     with ThreadPoolExecutor(max_workers=workers) as executor:
-        futures = [executor.submit(_evaluate_one, i) for i in range(total)]
+        futures = {executor.submit(_evaluate_one, i): i for i in range(total)}
         for future in as_completed(futures):
             try:
                 idx, result = future.result()
@@ -54,24 +56,9 @@ def evaluate_all_claims(
                 executor.shutdown(wait=False, cancel_futures=True)
                 raise
             except Exception as exc:
-                # Should not happen since llm_judge handles its own errors,
-                # but defensive: synthesize a failure result.
-                idx = -1
-                result = {
-                    "claim_id": "unknown",
-                    "verdict": "missing",
-                    "book_evidence": "none",
-                    "must_include_found": [],
-                    "must_include_missing": [],
-                    "must_not_include_found": [],
-                    "justification": f"Worker error: {exc}",
-                    "confidence": "low",
-                }
-                # Find first None slot for this orphan result
-                for i, r in enumerate(results):
-                    if r is None:
-                        idx = i
-                        break
+                executor.shutdown(wait=False, cancel_futures=True)
+                claim_id = claims[futures[future]].get("claim_id", f"unknown_{futures[future]}")
+                raise JudgeAPIError(f"claim {claim_id}: judge worker failed: {type(exc).__name__}: {exc}") from exc
 
             results[idx] = result
 
@@ -83,4 +70,7 @@ def evaluate_all_claims(
                 file=sys.stderr,
             )
 
+    missing = [claims[i].get("claim_id") for i, r in enumerate(results) if r is None]
+    if missing:
+        raise JudgeAPIError(f"judge returned no result for {len(missing)} claim(s): {missing[:5]}")
     return [r for r in results if r is not None]

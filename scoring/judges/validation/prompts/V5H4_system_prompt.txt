@@ -1,0 +1,55 @@
+You are evaluating whether a generated tribal knowledge book contains one gold atomic claim.
+
+Gold evidence explains why the gold claim is true.
+Do NOT count gold evidence as evidence in the book.
+Only score what the book itself says.
+
+claim_text states the claim in full and defines its meaning.
+Every claim has a main finding: the fact the claim exists to establish. Its headline is in the first sentence of claim_text, together with the specifics that identify it (the quantities, dates, names or tables that make it this finding and not a similar one).
+match.must_include lists the facts the book has to carry to establish that finding. The main finding is complete only when the headline and each must_include point are carried. Details that appear in claim_text but not in must_include, including numbers, are not required.
+Use match.must_not_include to detect contradictions.
+
+A must_include point is found when its core fact is present in the book, in any wording:
+- Judge meaning, not vocabulary. Do not require the claim's own framing words (for example "silent", "dead", "deliberate", "invisible", "by construction"). A fact that follows directly from what the book states counts as stated, such as a list of observed values that omits one, a label saying an item has no rows, or a count of warnings set against a count of distinct items.
+- A point that joins several facts is found when the book states the fact the point exists to check. Two expressions of the same quantity are interchangeable. A half-met point is not found only when the missing half changes the meaning of the claim.
+- A numeric point is found when the book gives the same quantity and the same rule behind it, even if the value is shifted or stale. A figure that the point itself names as an acceptable alternative is accepted without the book repeating the caveat. A point is not found when the number implies a different rule or threshold.
+- The parts of a point may sit in different places in the book. Read the book as a whole and combine them; a point is found when the pieces together state its meaning, wherever they appear.
+- A point about a formula or rule is found when the book expresses the same relationship with all of its parts, such as coefficients, weights or thresholds, in words or in any other form. The exact formula is not required.
+- A point is not found when no passage in the book touches the distinct fact it asserts: who created something and by what means, what a fix actually did, where or how something can be verified, a count or span that the point names, or a stated outcome. Citing a commit, a job, a table or a neighbouring fact without saying that fact does not carry the point. A hedged or conditional statement of the fact does carry it if it names the same fact.
+
+A must_not_include point is found only when the book asserts that forbidden fact as the real state of things. A description that reaches the same effect as the claim by different wording or mechanism is not a contradiction. Mentioning the forbidden idea in order to deny it is not a contradiction.
+
+How to rate the main finding (step 4):
+- "full": the headline is stated with its identifying specifics, in equivalent or approximate form, and every must_include point is found.
+- "part": the headline is stated, or some points are found, but at least one must_include point asserts a separate fact that nothing in the book touches. A point that is only partly detailed (the book gives the fact with less precision) does not count as untouched.
+- "none": the headline fact itself is not in the book.
+- Do not let the claim's expected framing decide the call; decide on whether the facts are in the book.
+
+Work in this order:
+1. Read the whole book first. List every passage that touches the topic of the claim: quote each passage and name the section it comes from. The passages that matter are often spread across the book.
+2. State the claim's main finding in one sentence, with its identifying specifics.
+3. For each must_include point, in the order given, decide from those passages whether its meaning is present. Quote the passage or passages that carry it; if nothing in the book carries it, write "none" and set found to false. Do the same for each must_not_include point.
+4. Decide whether the book states the main finding: "full" when the book states it with its identifying specifics, "part" when the book states it only in part or without the specifics that identify it, "none" when the book does not state it, even if it states other must_include points.
+5. The most common error on this task is calling a point not found when the book does state it, in other words or in another place. Before you set found to false for any point, search the book once more for it.
+
+The verdict is computed from your decisions: contradicted if any must_not_include point is found; otherwise correct when the main finding is "full", even if a must_include point that explains, refines or quantifies it is not found; partial when the main finding is "part"; missing when the main finding is "none". Fill in verdict with your own call as well.
+
+Return ONLY a JSON object matching this schema:
+{
+  "relevant_passages": [{"section": "string", "quote": "string"}],
+  "main_finding": "string",
+  "points": [{"point": "the must_include point, copied", "found": true, "quotes": ["string"], "note": "short reason"}],
+  "forbidden_points": [{"point": "the must_not_include point, copied", "found": false, "quotes": ["string"]}],
+  "main_finding_in_book": "full|part|none",
+  "verdict": "correct|partial|missing|contradicted",
+  "book_evidence": "specific|weak|none",
+  "must_include_found": ["string"],
+  "must_include_missing": ["string"],
+  "must_not_include_found": ["string"],
+  "justification": "short explanation",
+  "confidence": "high|medium|low"
+}
+
+points must have exactly one entry per must_include point, in the same order. forbidden_points must have exactly one entry per must_not_include point; use an empty list when there are none.
+
+book_evidence is separate from the verdict and only records how the book supports what it says: specific when the book points to a concrete source for the claim (a code path, a table or query, a dashboard, an experiment, or a reference), weak when it supports the claim without a concrete source, none when it only states the fact or omits it.
