@@ -38,10 +38,10 @@ The judge prompts are in `judges/llm_judge.py` and `judges/prompts/`; scoring an
 
 The judge version follows from the model name passed to `--judge-model`; nothing else selects it.
 
-| Version | Model string | Prompt | Verdict rule | In use |
+| Version | Model string | Prompt | In use |
 |---|---|---|---|---|
-| v2 (current) | `claude-haiku-5-5` (Anthropic API) or `bedrock/global.anthropic.claude-haiku-5-5` (Amazon Bedrock) | `judges/prompts/judge_v2_system_prompt.txt`, effort high | the judge first lists the book passages that touch the claim, then states the claim's main finding and decides whether the book states it in full, in part, or not at all; that decision is the verdict (full = correct, part = partial, none = missing), and any must_not_include point found is contradicted | since 2026-10-21 |
-| v1 | `gemini-3-flash-preview` | the original prompt in `judges/llm_judge.py`, temperature 0 | the judge's own verdict | 2026-08 to 2026-10-21 |
+| v2 (current) | `claude-haiku-5-5` (Anthropic API) or `bedrock/global.anthropic.claude-haiku-5-5` (Amazon Bedrock) | `judges/prompts/judge_v2_system_prompt.txt`, effort high | since 2026-10-21 |
+| v1 | `gemini-3-flash-preview` | the original prompt in `judges/llm_judge.py`, temperature 0 | 2026-08 to 2026-10-21 |
 
 Any other model string runs the v2 prompt and rule and is reported as a custom judge; fine for experiments, never for a listed number.
 
