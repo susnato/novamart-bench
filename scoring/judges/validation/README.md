@@ -38,27 +38,13 @@ A second run of the selected judge gives a lower number. The leaderboard rescore
 
 ## Every figure here is in-sample
 
-Prompt variants were compared, and the figures are reported, on the same labelled cells. That is the practice of the judge validations in MT-Bench, AlpacaEval, HealthBench, DeepResearch Bench, WebJudge and ResearchRubrics; none of them holds out labels for prompt development. About 45 configurations were scored on these 260 cells during prompt development (all of them are in `results/table_full.md`), so every agreement figure in this folder is an in-sample number and should be read as such. A few recent judge-tuning papers freeze a held-out set and report drops on it: Kochelka et al. 2026 (540 tuning cells, 108 held out; the tuned model fell from 0.555 to 0.350), SPEAR 2026 (0.82 on the development split, 0.38 on a re-split test) and Netflix's RART 2026 (train, validation and test with eight reshuffles). The labels are published so that anyone can run that check with fresh labels, which is what the kit below is for. One prompt family that carried per-claim notes in the judge prompt was withdrawn as label leakage during the study and is not listed anywhere here.
-
-| Paper | What was compared on the human labels | Held-out split |
-|---|---|---|
-| MT-Bench (Zheng et al. 2023) | prompt designs for the GPT-4 judge (default, score, short, few-shot, two multi-turn designs) and judge models | none for the prompted judges |
-| AlpacaEval (Li et al. 2023; Dubois et al. 2024) | about 14 evaluators; prompts changed to cut length bias; the evaluator chosen by agreement with the human set | none |
-| HealthBench (Arora et al. 2025) | a small search over the grading prompt and its phrasing, and grader models | none reported; the paper flags the confound |
-| DeepResearch Bench (Du et al. 2025) | six variants of the evaluation framework | none reported |
-| WebJudge, Online-Mind2Web (Xue et al. 2025) | chain-of-thought, key-point and combined prompts, and the decision threshold | none; an external check on AgentRewardBench |
-| ResearchRubrics (2025) | rubric-design ablations | none reported |
+Prompt variants were compared, and the figures are reported, on the same 260 labelled cells, as the judge validations of MT-Bench, AlpacaEval, HealthBench, DeepResearch Bench, WebJudge and ResearchRubrics do; none of them holds out labels for prompt development. About 45 configurations were scored on these cells during prompt development (all of them are in `results/table_full.md`), so every agreement figure in this folder is in-sample and should be read as such; the labels are published so that anyone can repeat the check with fresh labels, which is what the kit below is for. One prompt family that carried per-claim notes in the judge prompt was withdrawn as label leakage during the study and is not listed anywhere here.
 
 ## The labels
 
-The population is the 459 claim-book cells of the paper's three entries (Claude Code, Cursor and Codex CLI, 3 books each, 51 claims). 300 cells were sampled with seed 20261010, stratified by the v1 judge's majority verdict so that partial and missing cells are over-represented, with every cell on which the five v1 passes disagreed included and the rest filled at random and balanced across the nine books. Books and cells were given opaque codes and the mapping was sealed. The maintainer then read each book once and labelled its cells with the rubric the v1 judge used (the decision rules in `prompts/v1_system_prompt.txt`), blind to the entry and to the judge's verdicts, between 2026-10-11 and 2026-10-16. 260 of the 300 cells were labelled; the stopping rule and the ten-cell fill draw are in `labels/sampling.json`, and the 40 unlabelled cells are listed there. The sample has 20 to 36 labelled cells per book.
+The population is the 459 claim-book cells of the paper's three entries (Claude Code, Cursor and Codex CLI, three books each, 51 claims). 300 cells were sampled with seed 20261010, stratified by the v1 judge's majority verdict so that partial and missing cells are over-represented, with every cell on which the five v1 passes disagreed included. Books and cells were given opaque codes, the mapping was sealed, and the human read each book once and labelled its cells with the rubric the v1 judge used (`prompts/v1_system_prompt.txt`), blind to the entry and to the judge's verdicts, between 2026-10-11 and 2026-10-16. 260 of the 300 cells were labelled, 20 to 36 per book; the sampling record and the 40 unlabelled cells are in `labels/sampling.json`, and the labels, with the sampling judge's five votes per cell, in `labels/labels.csv`.
 
-| File | What it holds |
-|---|---|
-| `labels/labels.csv` | one row per sampled cell: entry, book, claim, the human verdict (empty for the 40 unlabelled cells), the optional evidence rating and note, and the sampling judge's majority and five votes |
-| `labels/sampling.json` | seed, strata, allocation, the book codes, the fill draw, the unlabelled cells |
-
-Two limits to keep in mind. There is one rater, so the labels carry one person's reading of the rubric, and a second labeller's agreement with the first is not known; the kit exists so that this can be measured. All nine study books come from the three August entries, so no book written by a later system is in the sample.
+There is one rater, so a second labeller's agreement with the first is not known; the kit exists so that this can be measured. All nine books come from the three August entries, so no book written by a later system is in the sample.
 
 ## The judge configurations
 
@@ -112,27 +98,6 @@ kit/                            the scripts: compile_table.py, paired_bootstrap.
 ```
 
 Every number in the tables is recomputable from `labels/labels.csv` and `results/votes.csv` alone; the outputs folder is the audit trail behind the votes, for reading why a judge decided a cell the way it did. The v1 row's per-call outputs beyond the verdict were not kept in the public record.
-
-## Reproduce
-
-```bash
-# the tables, from the labels and the votes
-python scoring/judges/validation/kit/compile_table.py            # add --check to verify the committed tables
-
-# a pre-registered comparison
-python scoring/judges/validation/kit/paired_bootstrap.py --a claude-haiku-5-5__V5H6 --b claude-haiku-5-5__V5
-
-# the published labels against any judge record under submissions/<entry>/
-python scoring/judges/validation/kit/analyze.py --labels scoring/judges/validation/labels/labels.csv --judge-record judge_record.json
-python scoring/judges/validation/kit/analyze.py --labels scoring/judges/validation/labels/labels.csv --judge-record judge_record_gemini-3-flash-preview.json
-```
-
-To add a judge of your own to the comparison, score the nine study books with it (`score-book --judge-passes 5`, five passes over each of the three books of `claude-code-2.1.252`, `cursor-3.15.6` and `codex-cli-0.120.0`), then turn the scorecards into a column of `votes.csv` and recompile:
-
-```bash
-python scoring/judges/validation/kit/votes_from_scorecards.py --configuration my-judge__v2 --scorecards eval-run-outputs/*
-python scoring/judges/validation/kit/compile_table.py
-```
 
 ## Label your own sample
 
