@@ -8,6 +8,7 @@ A research benchmark from [Pavo](https://www.pavoai.com/).
 
 ## 📰 News
 
+- **2026-10-29**: Camera-ready version of the paper uploaded to the workshop. The [paper](website/paper.pdf) here and on the website is now the final version.
 - **2026-10-21**: Judge v2. The leaderboard judge is now Claude Haiku 5.5 with a rewritten judge prompt, replacing Gemini 3 Flash Preview (judge v1), at about a tenth of the judge cost per verified submission (about $2.70 against about $27). Agreement with the 260 human-labelled cells is no lower (Cohen's kappa 0.66 against 0.60 for v1). Every entry was rescored and the leaderboard recompiled; each entry keeps its v1 record. The per-entry scores before and after, and the reasons for the switch, are in [Judge versions](scoring/README.md#judge-versions).
 - **2026-10-21**: Judge validation released: 260 human-labelled claim-book cells, the verdicts of every judge configuration we compared (46), per-call outputs for the configurations in the summary table, and a kit to label your own sample. See [`scoring/judges/validation/`](scoring/judges/validation/README.md).
 - **2026-10-06**: Public release: the estate on Hugging Face, the application repo, this repo and [novamartbench.com](https://novamartbench.com). Eleven entries at launch: the paper's three baselines and eight OpenCode runs.
@@ -166,7 +167,8 @@ Code is Apache-2.0 (`LICENSE`). The estate (the Hugging Face dataset and the `no
 @inproceedings{dhar2026novamart,
   title     = {NovaMart: A Causally Consistent Simulated Enterprise
                for Measuring Tribal Knowledge Extraction},
-  author    = {Dhar, Susnato and Saket, Srijan and Mehrotra, Rishabh},
+  author    = {Dhar, Susnato and Saket, Srijan and Seth, Siddharth
+               and Mehrotra, Rishabh},
   booktitle = {2nd Workshop on Agentic AI Benchmarks and Applications
                for Enterprise Tasks (AABA4ET), NeurIPS 2026},
   year      = {2026},

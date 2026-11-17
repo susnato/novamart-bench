@@ -6,6 +6,8 @@ authors:
     given-names: Susnato
   - family-names: Saket
     given-names: Srijan
+  - family-names: Seth
+    given-names: Siddharth
   - family-names: Mehrotra
     given-names: Rishabh
 year: 2026
@@ -22,6 +24,8 @@ preferred-citation:
       given-names: Susnato
     - family-names: Saket
       given-names: Srijan
+    - family-names: Seth
+      given-names: Siddharth
     - family-names: Mehrotra
       given-names: Rishabh
   collection-title: "2nd Workshop on Agentic AI Benchmarks and Applications for Enterprise Tasks (AABA4ET), NeurIPS 2026"
